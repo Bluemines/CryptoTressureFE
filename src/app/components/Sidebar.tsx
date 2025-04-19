@@ -1,5 +1,5 @@
 "use client"
-import { Layout, Menu, Input } from "antd"
+import { Layout, Menu } from "antd"
 import {
   DashboardOutlined,
   CompassOutlined,
@@ -17,9 +17,7 @@ import {
   LogoutOutlined,
 } from "@ant-design/icons"
 import type { MenuProps } from "antd"
-import { useRouter } from "next/navigation"
-const { Header, Sider, Content } = Layout
-const { Search } = Input
+const { Sider } = Layout
 
 type MenuItem = Required<MenuProps>["items"][number]
 
@@ -29,47 +27,47 @@ const menuItems: MenuItem[] = [
   {
     key: "dashboard",
     icon: <DashboardOutlined />,
-    label: <Link href='/dashboard'>Dashboard</Link>,
+    label: <Link href='/user/dashboard'>Dashboard</Link>,
   },
   {
     key: "explore",
     icon: <CompassOutlined />,
-    label: <Link href='/explore'>Explore</Link>,
+    label: <Link href='/user/explore'>Explore</Link>,
   },
   {
     key: "collection",
     icon: <AppstoreOutlined />,
-    label: <Link href='/collection'>My Collection</Link>,
+    label: <Link href='/user/collection'>My Collection</Link>,
   },
   {
     key: "wallet",
     icon: <WalletOutlined />,
-    label: <Link href='/wallet'>Wallet</Link>,
+    label: <Link href='/user/wallet'>Wallet</Link>,
   },
   {
     key: "deposit",
     icon: <DownloadOutlined />,
-    label: <Link href='/deposit'>Deposit</Link>,
+    label: <Link href='/user/deposit'>Deposit</Link>,
   },
   {
     key: "withdraw",
     icon: <UploadOutlined />,
-    label: <Link href='/withdraw'>Withdraw</Link>,
+    label: <Link href='/user/withdraw'>Withdraw</Link>,
   },
   {
     key: "referral",
     icon: <ShareAltOutlined />,
-    label: <Link href='/referral'>Referral</Link>,
+    label: <Link href='/user/referral'>Referral</Link>,
   },
   {
     key: "commission",
     icon: <DollarOutlined />,
-    label: <Link href='/commission'>Referral Commission</Link>,
+    label: <Link href='/user/commission'>Referral Commission</Link>,
   },
   {
     key: "settings",
     icon: <SettingOutlined />,
-    label: <Link href='/settings'>Settings</Link>,
+    label: <Link href='/user/settings'>Settings</Link>,
   },
   {
     type: "group",
