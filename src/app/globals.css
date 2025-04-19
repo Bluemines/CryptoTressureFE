@@ -12,5 +12,21 @@
 }
 
 body {
+  background-color: #080a0c;
+}
 
+.custom-dark-input::placeholder {
+  color: white !important;
+}
+
+@layer utilities {
+  .scrollbar-hide {
+    scrollbar-width: none;
+
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
 }
