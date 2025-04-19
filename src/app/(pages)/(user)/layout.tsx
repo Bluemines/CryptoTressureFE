@@ -1,6 +1,4 @@
-import { ConfigProvider } from "antd"
 import Sidebar from "@/app/components/Sidebar"
-import { Layout } from "antd"
 import Header from "@/app/components/Header"
 
 const layout = ({ children }: { children: React.ReactNode }) => {
