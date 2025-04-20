@@ -1,16 +1,11 @@
 "use client";
-
 import { NFTCard } from "@/app/components/cards/NFTCard";
-import { StatsCard } from "@/app/components/cards/StatsCard";
+import NFTModal from "@/app/components/modals/NFTModal";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
-const page = () => {
-  const statsData = [
-    { value: "24K", label: "Current Deposit", color: "bg-[#7C3AED]" },
-    { value: "82K", label: "Current Balance", color: "bg-[#22C55E]" },
-    { value: "200", label: "Total Withdraw", color: "bg-[#EAB308]" },
-    { value: "89", label: "Total Referral Bonus", color: "bg-[#F97316]" },
-  ];
-
+export default function page() {
+  const router = useRouter();
   const nftData = [
     {
       image: "https://images.unsplash.com/photo-1531297484001-80022131f5a1",
@@ -49,43 +44,32 @@ const page = () => {
       level: "Lv1-Lv3",
     },
   ];
+  const [isModalOpen, setIsModalOpen] = useState(false);
   return (
     <div className="min-h-screen bg-black p-4 md:p-8">
       <div className="max-w-7xl mx-auto space-y-8">
-        {/* Stats Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {statsData.map((stat, index) => (
-            <StatsCard
-              key={index}
-              value={stat.value}
-              label={stat.label}
-              color={stat.color}
-            />
-          ))}
-        </div>
-
-        {/* Popular NFTs */}
-        <div>
-          <h2 className="text-2xl font-bold text-white mb-4">Popular NFTS</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {nftData.map((nft, index) => (
-              <NFTCard key={index} {...nft} action="Buy" />
-            ))}
-          </div>
-        </div>
-
         {/* My NFTs */}
         <div>
           <h2 className="text-2xl font-bold text-white mb-4">My NFTS</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {nftData.map((nft, index) => (
-              <NFTCard key={index} {...nft} action="Sell" />
+              <NFTCard
+                key={index}
+                {...nft}
+                action="Sell"
+                onClick={() => setIsModalOpen(true)}
+              />
             ))}
           </div>
         </div>
       </div>
+      <NFTModal
+        open={isModalOpen}
+        onOpenChange={setIsModalOpen}
+        title="NFT Title"
+        image={require("../../../../assets/Images/exploreImg.png")}
+        type="sell"
+      />
     </div>
   );
-};
-
-export default page;
+}
