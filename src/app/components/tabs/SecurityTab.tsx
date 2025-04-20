@@ -44,7 +44,7 @@ const SecurityTab = () => {
               setPasswords({ ...passwords, current: e.target.value })
             }
             placeholder="Enter your price"
-            className="w-full h-10 px-3 py-2 bg-[rgba(32,32,36,0.5)] border border-purple-500 rounded-md text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors"
+            className="w-full h-10 px-3 py-2 bg-[#212121] border border-[#3c3c3c] rounded-md text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors"
           />
         </div>
 
@@ -67,7 +67,7 @@ const SecurityTab = () => {
                 setPasswords({ ...passwords, new: e.target.value })
               }
               placeholder="Enter your price"
-              className="w-full h-10 px-3 py-2 bg-[rgba(32,32,36,0.5)] border border-purple-500 rounded-md text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors"
+              className="w-full h-10 px-3 py-2 bg-[#212121] border border-[#3c3c3c] rounded-md text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors"
             />
           </div>
           <div className="space-y-2">
@@ -88,13 +88,13 @@ const SecurityTab = () => {
                 setPasswords({ ...passwords, confirm: e.target.value })
               }
               placeholder="Enter your price"
-              className="w-full h-10 px-3 py-2 bg-[rgba(32,32,36,0.5)] border border-purple-500 rounded-md text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors"
+              className="w-full h-10 px-3 py-2 bg-[#212121] border border-[#3c3c3c] rounded-md text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors"
             />
           </div>
         </div>
       </div>
 
-      <Button className="bg-purple-600 hover:bg-purple-700 text-white">
+      <Button className="bg-[#7367f0] hover:bg-purple-700 w-20 h-7 text-white">
         Update
       </Button>
     </div>

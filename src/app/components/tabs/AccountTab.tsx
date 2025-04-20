@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { useState } from "react";
 // import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 // import { Button } from "@/components/ui/button";
@@ -30,28 +31,31 @@ const AccountTab = () => {
       <h2 className="text-xl font-semibold mb-4">Profile Details</h2>
 
       <div className="flex items-start gap-4">
-        {/* <Avatar className="w-24 h-24">
-          <AvatarImage src="public/lovable-uploads/c8256b45-0134-46fd-829f-af751fd30b65.png" />
-          <AvatarFallback>JD</AvatarFallback>
-        </Avatar> */}
-        <div className="space-y-2">
-          <Button
+        <Image alt="profile" src={require("../../assets/Images/profile.png")} />
+        <div className="flex flex-row gap-5 mt-4">
+          {/* <Button
             // onClick={onClick}
             className="w-full h-10 mt-6 bg-purple-600 hover:bg-purple-700"
           >
             Upload new photo
-          </Button>
-          <Button
+          </Button> */}
+          <div className="bg-[#242330] cursor-pointer hover:bg-white hover:text-black text-[#7367f0] text-center pt-2 rounded-lg h-10 w-44">
+            Upload new Photo
+          </div>
+          <div className="bg-[#323233] cursor-pointer hover:bg-purple-700 hover:text-white text-[#a8aaad] text-center pt-2 rounded-lg h-10 w-30">
+            Reset
+          </div>
+          {/* <Button
             //    onClick={onClick}
             className="w-full h-10 mt-6 bg-purple-600 hover:bg-purple-700"
           >
             Reset
-          </Button>
-          <p className="text-sm text-gray-400">
-            Allowed JPG, GIF or PNG. Max size of 800K
-          </p>
+          </Button> */}
         </div>
       </div>
+      <p className="text-sm text-gray-400">
+        Allowed JPG, GIF or PNG. Max size of 800K
+      </p>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="space-y-2">
@@ -66,7 +70,7 @@ const AccountTab = () => {
             value={formData.name}
             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
             placeholder="Enter your price"
-            className="w-full h-10 px-3 py-2 bg-[rgba(32,32,36,0.5)] border border-purple-500 rounded-md text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors"
+            className="w-full h-10 px-3 py-2 bg-[#212121] border border-[#3c3c3c] rounded-md text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors"
           />
         </div>
         <div className="space-y-2">
@@ -83,7 +87,7 @@ const AccountTab = () => {
               setFormData({ ...formData, username: e.target.value })
             }
             placeholder="Enter your price"
-            className="w-full h-10 px-3 py-2 bg-[rgba(32,32,36,0.5)] border border-purple-500 rounded-md text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors"
+            className="w-full h-10 px-3 py-2 bg-[#212121] border border-[#3c3c3c] rounded-md text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors"
           />
         </div>
         <div className="space-y-2">
@@ -103,7 +107,7 @@ const AccountTab = () => {
               setFormData({ ...formData, email: e.target.value })
             }
             placeholder="Enter your price"
-            className="w-full h-10 px-3 py-2 bg-[rgba(32,32,36,0.5)] border border-purple-500 rounded-md text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors"
+            className="w-full h-10 px-3 py-2 bg-[#212121] border border-[#3c3c3c] rounded-md text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors"
           />
         </div>
         <div className="space-y-2">
@@ -122,12 +126,12 @@ const AccountTab = () => {
               setFormData({ ...formData, phone: e.target.value })
             }
             placeholder="Enter your price"
-            className="w-full h-10 px-3 py-2 bg-[rgba(32,32,36,0.5)] border border-purple-500 rounded-md text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors"
+            className="w-full h-10 px-3 py-2 bg-[#212121] border border-[#3c3c3c] rounded-md text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors"
           />
         </div>
       </div>
 
-      <Button className="bg-purple-600 hover:bg-purple-700 text-white">
+      <Button className="bg-[#7367f0] hover:bg-purple-700 w-20 h-7 text-white">
         Update
       </Button>
     </div>

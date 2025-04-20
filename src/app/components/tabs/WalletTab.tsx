@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 const WalletTab = () => {
   const Button = ({
     children,
@@ -23,15 +25,15 @@ const WalletTab = () => {
         Velit officia consequat duis enim velit mollit.
       </p>
 
-      <div className="max-w-sm p-6 border border-gray-800 rounded-lg">
+      <div className="max-w-sm p-6 border border-[#3c3c3c] rounded-lg">
         <div className="flex flex-col items-center space-y-4">
-          <img
-            src="/lovable-uploads/fa83a6d5-2ba0-4c7e-9799-7ad1024f3979.png"
+          <Image
+            src={require("../../assets/Images/easypaisa.png")}
             alt="Easypaisa"
-            className="w-20 h-20"
+            // className="w-20 h-20"
           />
           <span className="text-lg font-medium">Easypaisa</span>
-          <Button className="bg-purple-600 hover:bg-purple-700 text-white">
+          <Button className="bg-[#7367f0] hover:bg-purple-700 w-44 h-7 text-white">
             Connect Wallet
           </Button>
         </div>
