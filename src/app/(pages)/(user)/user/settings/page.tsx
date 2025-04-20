@@ -9,7 +9,7 @@ const Settings = () => {
       <div className="min-h-screen bg-[#0A0A0B] text-white p-4 md:p-8">
         <div className="max-w-4xl mx-auto">
           <h1 className="text-2xl font-bold mb-6">Settings</h1>
-          
+{/*           
           <Tabs defaultValue="account" className="w-full">
             <TabsList className="bg-[#1A1A1D] border-b border-gray-800">
               <TabsTrigger value="account" className="gap-2">
@@ -37,7 +37,7 @@ const Settings = () => {
                 <WalletTab />
               </TabsContent>
             </div>
-          </Tabs>
+          </Tabs> */}
         </div>
       </div>
     );
