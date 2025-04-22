@@ -8,60 +8,60 @@ const page = () => {
   const data = [
     {
       id: 1,
-      packageName: "Level One",
-      depositPrice: "$20",
-      depositId: 2414142,
-      status: "Success",
-      depositDate: "04/22/2016",
+      withdrawAmount: "$20",
+      withdrawFees: "$20",
+      totalAmount: "$20",
+      withdrawWallet: "Easypaisa",
+      withdrawId: "214142",
+      status: "Completed",
+      withdrawDate: '04/22/2016'
     },
     {
       id: 2,
-      packageName: "Level One",
-      depositPrice: "$20",
-      depositId: 2414142,
-      status: "Success",
-      depositDate: "04/22/2016",
+      withdrawAmount: "$20",
+      withdrawFees: "$20",
+      totalAmount: "$20",
+      withdrawWallet: "Easypaisa",
+      withdrawId: "214142",
+      status: "Pending",
+      withdrawDate: '04/22/2016'
     },
     {
       id: 3,
-      packageName: "Level One",
-      depositPrice: "$20",
-      depositId: 2414142,
-      status: "Success",
-      depositDate: "04/22/2016",
-    },
-    {
-      id: 4,
-      packageName: "Level One",
-      depositPrice: "$20",
-      depositId: 2414142,
-      status: "Success",
-      depositDate: "04/22/2016",
-    },
-    {
-      id: 5,
-      packageName: "Level One",
-      depositPrice: "$20",
-      depositId: 2414142,
-      status: "Success",
-      depositDate: "04/22/2016",
+      withdrawAmount: "$20",
+      withdrawFees: "$20",
+      totalAmount: "$20",
+      withdrawWallet: "Easypaisa",
+      withdrawId: "214142",
+      status: "Declined",
+      withdrawDate: '04/22/2016'
     },
   ]
 
   const columns = [
     {
-      name: "Package Name",
-      selector: (row: any) => row.packageName,
+      name: "Withdraw Amount",
+      selector: (row: any) => row.withdrawAmount,
       sortable: true,
     },
     {
-      name: "Deposit Price",
-      selector: (row: any) => row.depositPrice,
+      name: "Withdraw Fees",
+      selector: (row: any) => row.withdrawFees,
       sortable: true,
     },
     {
-      name: "Deposit id",
-      selector: (row: any) => row.depositId,
+      name: "Total Amount",
+      selector: (row: any) => row.totalAmount,
+      sortable: true,
+    },
+    {
+      name: "Withdraw Wallet",
+      selector: (row: any) => row.withdrawWallet,
+      sortable: true,
+    },
+    {
+      name: "Withdraw id",
+      selector: (row: any) => row.withdrawId,
       sortable: true,
     },
     {
@@ -71,18 +71,18 @@ const page = () => {
       cell: (row: any) => <StatusBadge status={row.status} />,
     },
     {
-      name: "Deposit Date",
-      selector: (row: any) => row.depositDate,
+      name: "Withdraw date",
+      selector: (row: any) => row.withdrawDate,
       sortable: true,
     },
   ]
   return (
     <div>
-      <div className='text-white text-lg mt-2'>Deposit</div>
+      <div className='text-white text-lg mt-2'>Withdraw Amount</div>
       <div className='bg-[#161616] p-4 rounded-lg my-4 flex gap-4 items-center'>
         <div className='space-y-2 flex-1'>
-          <label htmlFor='depositAmount' className='block text-white text-sm'>
-            Deposit Amount
+          <label htmlFor='withdrawAmount' className='block text-white text-sm'>
+          Withdraw Amount
           </label>
           <input
             type='text'
@@ -101,7 +101,7 @@ const page = () => {
           />
         </div>
 
-        <div className="self-end"><Button variant="contained">Deposit</Button></div>
+        <div className="self-end"><Button variant="contained">Withdraw</Button></div>
       </div>
       <DataTable data={data} columns={columns} themeStyle='black' />
     </div>
