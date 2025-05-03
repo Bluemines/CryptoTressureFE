@@ -6,6 +6,7 @@ import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter"
 import ClientOnly from "./components/ClientOnly"
 import { ThemeProvider } from "@mui/material/styles"
 import theme from "./lib/theme"
+import 'react-quill-new/dist/quill.snow.css';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
