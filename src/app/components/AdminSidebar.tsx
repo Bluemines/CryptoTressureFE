@@ -32,7 +32,7 @@ const routeMap = {
   rewardsDistribution: "/admin/rewards-distribution",
   referalSystemManagement: "/admin/referral-system-management",
   walletManagement: "/user/withdraw",
-  settings: "/user/settings",
+  settings: "/admin/settings",
   faqs: "/faqs",
   termsAndConditions: "/contact",
   contactInformation: "/contact",
