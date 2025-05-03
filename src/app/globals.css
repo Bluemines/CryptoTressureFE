@@ -50,6 +50,14 @@ body {
   .scrollbar-hide::-webkit-scrollbar {
     display: none;
   }
+
+  .text-muted {
+    color: #c0c0c0
+  }
+
+  .text-primary {
+    color: #7367F0
+  }
 }
 
 .ant-table-thead .ant-table-cell {
