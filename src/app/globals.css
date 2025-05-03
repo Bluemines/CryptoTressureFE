@@ -1,5 +1,36 @@
 @import "tailwindcss";
 
+:root {
+}
+
+@theme inline {
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+  }
+}
+
+body {
+  background-color: #080a0c;
+}
+
+.custom-dark-input::placeholder {
+  color: white !important;
+}
+
+@layer utilities {
+  .scrollbar-hide {
+    scrollbar-width: none;
+
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}@import "tailwindcss";
+
 body {
   background-color: #080a0c;
   color: white;
