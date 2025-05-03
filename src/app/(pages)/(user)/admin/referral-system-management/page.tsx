@@ -1,8 +1,9 @@
 "use client"
 import AdminTable from "@/app/components/ui/tables/AdminTable";
+import { useRouter } from "next/navigation";
 
 const page = () => {
-
+  const router = useRouter()
   const columns = [
     { id: "name", label: "User" },
     { id: "email", label: "Email" },
@@ -47,7 +48,7 @@ const page = () => {
   return (
     <div>
       <div className='font-semibold text-xl my-3'>Referral System Management</div>
-      <AdminTable data={data} columns={columns} actions={false} />
+      <AdminTable onClick={()=>router.push("referral-system-management/CommissionLevels")} showHeader buttonText="Manage Commission Level" data={data} columns={columns} actions={false} />
     </div>
   )
 }

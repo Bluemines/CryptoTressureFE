@@ -23,7 +23,6 @@
     "react-data-table-component": "^7.7.0",
     "react-dom": "^19.0.0",
     "react-phone-input-2": "^2.15.1",
-    "react-quill": "^2.0.0",
     "react-quill-new": "^3.4.6",
     "recharts": "^2.15.3",
     "tailwind-scrollbar-hide": "^2.0.0"
