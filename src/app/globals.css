@@ -116,3 +116,31 @@ body {
 .ant-otp-input {
   background-color: #404040;
 }
+
+/* quill-dark.css */
+
+.ql-toolbar {
+  background-color: #262626; /* Tailwind gray-800 */
+  border: none;
+}
+
+.ql-toolbar .ql-picker,
+.ql-toolbar button {
+  color: #f9fafb; /* Tailwind gray-100 */
+}
+
+.ql-container {
+  background-color: #262626;
+  color: #e5e7eb; /* Tailwind gray-200 */
+  border: none;
+  height: calc(100vh - 3.5rem);
+  font-size: 1rem;
+}
+
+.ql-editor {
+  min-height: 100%;
+}
+
+.ql-editor::before {
+  color: #6b7280; /* Tailwind gray-500 */
+}
