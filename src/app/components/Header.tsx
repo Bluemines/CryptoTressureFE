@@ -7,7 +7,7 @@ const Header = () => {
   const [value, setValue] = useState("")
   // const onSearch = (value: string) => console.log("search:", value)
   return (
-    <header className='flex items-center gap-4 sticky top-0 z-50'>
+    <header className='flex items-center gap-4 z-50'>
       <Input
         placeholder='Search here'
         value={value}

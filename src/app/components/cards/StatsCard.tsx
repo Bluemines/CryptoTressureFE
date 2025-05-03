@@ -4,6 +4,7 @@ interface StatsCardProps {
   value: string;
   label: string;
   color: string;
+  image?:string
 }
 const Card = ({
   children,
@@ -11,12 +12,13 @@ const Card = ({
 }: {
   children: React.ReactNode;
   className?: string;
+  image?:string
 }) => {
   return <div className={`rounded-lg shadow-sm ${className}`}>{children}</div>;
 };
-export function StatsCard({ value, label, color }: StatsCardProps) {
+export function StatsCard({ value, label, color,image }: StatsCardProps) {
   return (
-    <Card className="bg-[#1A1F2C] border-none p-4">
+    <Card className="bg-[#2b2b2b] border-none p-4">
       <div className="flex items-center gap-3">
         <div className={`p-2 rounded-full ${color}`}>
           {/* <Circle className="w-5 h-5 text-white" /> */}

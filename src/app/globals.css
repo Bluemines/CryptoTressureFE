@@ -29,4 +29,82 @@ body {
   .scrollbar-hide::-webkit-scrollbar {
     display: none;
   }
+}@import "tailwindcss";
+
+body {
+  background-color: #080a0c;
+  color: white;
+}
+
+.custom-dark-input::placeholder {
+  color: white !important;
+}
+
+@layer utilities {
+  .scrollbar-hide {
+    scrollbar-width: none;
+
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.ant-table-thead .ant-table-cell {
+  background-color: #232323 !important;
+  color: white !important;
+}
+
+.ant-table-tbody .ant-table-cell {
+  background-color: #232323 !important;
+  color: #9d9d9d !important;
+}
+
+.ant-pagination-item {
+  background-color: #7367f0 !important;
+}
+
+.ant-pagination-item a {
+  color: white !important;
+}
+
+.ant-pagination {
+  background-color: #232323 !important;
+  margin: 0 !important;
+  padding: 1rem !important;
+}
+
+.ant-pagination-prev {
+  background-color: #373737 !important;
+  color: white !important;
+}
+
+.ant-pagination-next {
+  background-color: #373737 !important;
+  color: white !important;
+}
+.ant-pagination-prev button span svg {
+  background-color: #373737 !important;
+  fill: white;
+}
+
+.ant-pagination-next button span svg {
+  background-color: #373737 !important;
+  fill: white;
+}
+
+.ant-modal-content,
+.ant-modal-title {
+  background-color: #161616 !important;
+  color: white !important;
+}
+
+.ant-modal-close-icon svg {
+  fill: white;
+}
+
+.ant-otp-input {
+  background-color: #404040;
 }

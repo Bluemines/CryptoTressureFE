@@ -1,4 +1,6 @@
 "use client"
+
+import { usePathname } from "next/navigation"
 import { Layout, Menu } from "antd"
 import {
   DashboardOutlined,
@@ -17,57 +19,72 @@ import {
   LogoutOutlined,
 } from "@ant-design/icons"
 import type { MenuProps } from "antd"
-const { Sider } = Layout
+import Link from "next/link"
 
+const { Sider } = Layout
 type MenuItem = Required<MenuProps>["items"][number]
 
-import Link from "next/link"
+const routeMap = {
+  dashboard: "/user/dashboard",
+  explore: "/user/explore",
+  collection: "/user/collection",
+  wallet: "/user/wallet",
+  deposit: "/user/deposit",
+  withdraw: "/user/withdraw",
+  referral: "/user/referral",
+  commission: "/user/commission",
+  settings: "/user/settings",
+  about: "/about",
+  team: "/team",
+  faqs: "/faqs",
+  contact: "/contact",
+}
 
 const menuItems: MenuItem[] = [
   {
     key: "dashboard",
     icon: <DashboardOutlined />,
-    label: <Link href='/user/dashboard'>Dashboard</Link>,
+    label: <Link href={routeMap.dashboard}>Dashboard</Link>,
   },
   {
     key: "explore",
     icon: <CompassOutlined />,
-    label: <Link href='/user/explore'>Explore</Link>,
+    label: <Link href={routeMap.explore}>Explore</Link>,
   },
   {
     key: "collection",
     icon: <AppstoreOutlined />,
-    label: <Link href='/user/collection'>My Collection</Link>,
+    label: <Link href={routeMap.collection}>My Collection</Link>,
   },
   {
     key: "wallet",
     icon: <WalletOutlined />,
-    label: <Link href='/user/wallet'>Wallet</Link>,
+    label: <Link href={routeMap.wallet}>Wallet</Link>,
   },
   {
     key: "deposit",
     icon: <DownloadOutlined />,
-    label: <Link href='/user/deposit'>Deposit</Link>,
+    label: <Link href={routeMap.deposit}>Deposit</Link>,
   },
   {
     key: "withdraw",
     icon: <UploadOutlined />,
-    label: <Link href='/user/withdraw'>Withdraw</Link>,
+    label: <Link href={routeMap.withdraw}>Withdraw</Link>,
   },
   {
     key: "referral",
     icon: <ShareAltOutlined />,
-    label: <Link href='/user/referral'>Referral</Link>,
+    label: <Link href={routeMap.referral}>Referral</Link>,
   },
   {
     key: "commission",
     icon: <DollarOutlined />,
-    label: <Link href='/user/commission'>Referral Commission</Link>,
+    label: <Link href={routeMap.commission}>Referral Commission</Link>,
   },
   {
     key: "settings",
     icon: <SettingOutlined />,
-    label: <Link href='/user/settings'>Settings</Link>,
+    label: <Link href={routeMap.settings}>Settings</Link>,
   },
   {
     type: "group",
@@ -76,12 +93,12 @@ const menuItems: MenuItem[] = [
       {
         key: "about",
         icon: <InfoCircleOutlined />,
-        label: <Link href='/about'>About Us</Link>,
+        label: <Link href={routeMap.about}>About Us</Link>,
       },
       {
         key: "team",
         icon: <TeamOutlined />,
-        label: <Link href='/team'>Team</Link>,
+        label: <Link href={routeMap.team}>Team</Link>,
       },
     ],
   },
@@ -92,44 +109,49 @@ const menuItems: MenuItem[] = [
       {
         key: "faqs",
         icon: <QuestionCircleOutlined />,
-        label: <Link href='/faqs'>FAQs</Link>,
+        label: <Link href={routeMap.faqs}>FAQs</Link>,
       },
       {
         key: "contact",
         icon: <PhoneOutlined />,
-        label: <Link href='/contact'>Contact Information</Link>,
+        label: <Link href={routeMap.contact}>Contact Information</Link>,
       },
     ],
   },
   {
     key: "logout",
     icon: <LogoutOutlined />,
-    label: <span>Logout</span>, // Handle manually in onClick
+    label: <span>Logout</span>,
   },
 ]
 
 const Sidebar = () => {
+  const pathname = usePathname()
+
+  const selectedKey =
+    Object.entries(routeMap).find(([, path]) => pathname.startsWith(path))?.[0] || "dashboard"
+
   const handleClick: MenuProps["onClick"] = ({ key }) => {
     if (key === "logout") {
-      return
+      // handle logout logic
     }
   }
 
   return (
     <Sider
-      theme='dark'
-      className='!bg-[#161616] h-screen max-h-screen overflow-hidden'
+      theme="dark"
+      className="!bg-[#161616] h-screen max-h-screen overflow-hidden !sticky !top-0"
     >
-      <div className='h-16 text-gray-300 font-bold text-lg grid place-items-center'>
+      <div className="h-16 text-gray-300 font-bold text-lg grid place-items-center">
         LOGO
       </div>
-      <div className='overflow-y-auto max-h-[calc(100vh-64px)] scrollbar-hide'>
+      <div className="overflow-y-auto max-h-[calc(100vh-64px)] scrollbar-hide">
         <Menu
-          mode='inline'
-          defaultSelectedKeys={["dashboard"]}
-          theme='dark'
+          mode="inline"
+          selectedKeys={[selectedKey]}
+          theme="dark"
           items={menuItems}
-          className='!bg-[#161616]'
+          className="!bg-[#161616]"
           onClick={handleClick}
         />
       </div>
