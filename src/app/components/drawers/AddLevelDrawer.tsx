@@ -15,7 +15,7 @@ import { useState } from "react";
 
 const levels = ["Low", "Medium", "High"]; // Example levels
 
-export default function AddMachineDrawer({
+export default function AddLevelDrawer({
   open,
   onClose,
 }: {
@@ -50,12 +50,12 @@ export default function AddMachineDrawer({
       }}
     >
       <Typography variant="h6" fontWeight={600} gutterBottom>
-        Add Machine
+        Add Level
       </Typography>
 
       <TextField
         name="title"
-        label="Title"
+        label="Level Number"
         variant="outlined"
         fullWidth
         value={form.title}
@@ -65,24 +65,10 @@ export default function AddMachineDrawer({
         InputProps={{ style: { color: "#fff" } }}
       />
 
-      <Button
-        component="label"
-        variant="outlined"
-        fullWidth
-        sx={{
-          my: 2,
-          color: "#aaa",
-          borderColor: "#555",
-          textTransform: "none",
-        }}
-      >
-        Choose Image
-        <input type="file" hidden />
-      </Button>
 
       <TextField
-        name="price"
-        label="Price"
+        name="amount"
+        label="Amount"
         variant="outlined"
         fullWidth
         value={form.price}
@@ -93,8 +79,8 @@ export default function AddMachineDrawer({
       />
 
       <TextField
-        name="income"
-        label="Daily Income (%)"
+        name="points"
+        label="Points Required"
         variant="outlined"
         fullWidth
         value={form.income}
@@ -105,46 +91,8 @@ export default function AddMachineDrawer({
         InputProps={{ style: { color: "#fff" } }}
       />
 
-      <TextField
-        name="fee"
-        label="Fee"
-        variant="outlined"
-        fullWidth
-        value={form.fee}
-        onChange={handleChange}
-        margin="normal"
-        InputLabelProps={{ style: { color: "#aaa" } }}
-        InputProps={{ style: { color: "#fff" } }}
-      />
+     
 
-      <TextField
-        name="days"
-        label="Number of Days for Rent"
-        variant="outlined"
-        fullWidth
-        value={form.days}
-        onChange={handleChange}
-        margin="normal"
-        InputLabelProps={{ style: { color: "#aaa" } }}
-        InputProps={{ style: { color: "#fff" } }}
-      />
-
-      <FormControl fullWidth margin="normal">
-        <InputLabel sx={{ color: "#aaa" }}>Level</InputLabel>
-        <Select
-          name="level"
-          value={form.level}
-          label="Level"
-          onChange={handleChange}
-          sx={{ color: "#fff" }}
-        >
-          {levels.map((lvl) => (
-            <MenuItem key={lvl} value={lvl}>
-              {lvl}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
 
       <Box display="flex" justifyContent="space-between" mt={4} gap={2}>
         <Button
@@ -155,9 +103,9 @@ export default function AddMachineDrawer({
           Add
         </Button>
         <Button
-          //   variant="outlined"
+        //   variant="outlined"
           fullWidth
-          sx={{ color: "#a64445", textTransform: "none", bgcolor: "#3a2b2b" }}
+          sx={{ color: "#a64445", textTransform: "none",bgcolor:"#3a2b2b" }}
           onClick={onClose}
         >
           Discard
