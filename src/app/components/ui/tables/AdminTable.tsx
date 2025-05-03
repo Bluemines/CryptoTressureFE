@@ -14,49 +14,51 @@ import {
   Tabs,
   Tab,
   Paper,
-} from "@mui/material"
-import EditIcon from "@mui/icons-material/Edit"
-import MoreVertIcon from "@mui/icons-material/MoreVert"
-import { useState } from "react"
+} from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import { useState } from "react";
 
 interface Column {
-  id: string
-  label: string
+  id: string;
+  label: string;
 }
 
 interface Row {
-  id: string | number
-  [key: string]: any
+  id: string | number;
+  [key: string]: any;
 }
 
 interface CustomUserTableProps {
-  columns: Column[]
-  data: Row[]
-  total?: number
-  rowsPerPage?: number
-  icon1?: boolean
-  icon2?: boolean
-  title?: string
-  onClick?: () => void
-  actions?: boolean
-  showHeader?: boolean; 
-  buttonText?:string
+  columns: Column[];
+  data: Row[];
+  total?: number;
+  rowsPerPage?: number;
+  icon1?: boolean;
+  icon2?: boolean;
+  title?: string;
+  onClick?: () => void;
+  actions?: boolean;
+  showHeader?: boolean;
+  buttonText?: string;
+  showSearch?: boolean;
+  showButton?: boolean;
 }
 
 const statusColors: Record<string, string> = {
   Approved: "#28C76F",
   Pending: "#E46A11",
   Suspend: "#F04438",
-  Success: '#28C76F',
-  Failed: '#F04438'
-}
+  Success: "#28C76F",
+  Failed: "#F04438",
+};
 const statusBgColors: Record<string, string> = {
   Approved: "#274635",
   Pending: "#4c3422",
   Suspend: "#4f2c2a",
-  Success: '#28C76F33',
-  Failed: '#F0443833'
-}
+  Success: "#28C76F33",
+  Failed: "#F0443833",
+};
 
 const AdminTable = ({
   columns,
@@ -69,19 +71,21 @@ const AdminTable = ({
   onClick,
   actions = true,
   showHeader = false,
-  buttonText
+  buttonText,
+  showSearch = true,
+  showButton = true,
 }: CustomUserTableProps) => {
-  const [page, setPage] = useState(1)
-  const [statusTab, setStatusTab] = useState("All")
-  const [timeTab, setTimeTab] = useState("All Time")
+  const [page, setPage] = useState(1);
+  const [statusTab, setStatusTab] = useState("All");
+  const [timeTab, setTimeTab] = useState("All Time");
 
   const handlePageChange = (_: any, value: number) => {
-    setPage(value)
-  }
+    setPage(value);
+  };
 
   return (
     <Box sx={{ bgcolor: "#1E1E1E", borderRadius: 3, p: 2 }}>
-      <Typography variant='h6' color='white' fontWeight='bold' mb={2}>
+      <Typography variant="h6" color="white" fontWeight="bold" mb={2}>
         {title}
       </Typography>
 
@@ -147,7 +151,6 @@ const AdminTable = ({
         </Tabs>
       </Box> */}
       {showHeader ? (
-        // Custom Header (Search + Button)
         <Box
           display="flex"
           justifyContent="space-between"
@@ -156,41 +159,72 @@ const AdminTable = ({
           gap={2}
           sx={{ flexDirection: { xs: "column", md: "row" } }}
         >
-          <Box
-            component="input"
-            placeholder="Search here"
-            sx={{
-              flex: 1,
-              bgcolor: "#2B2B2B",
-              color: "#fff",
-              border: "1px solid #444",
-              borderRadius: 2,
-              px: 2,
-              py: 1,
-              outline: "none",
-              "&::placeholder": {
-                color: "#aaa",
-              },
-            }}
-          />
-          <Button
-            variant="contained"
-            startIcon={<span style={{ fontSize: 20 }}>＋</span>}
-            sx={{
-              bgcolor: "#7367F0",
-              color: "#fff",
-              textTransform: "none",
-              fontWeight: "bold",
-              borderRadius: 2,
-              px: 3,
-              "&:hover": {
-                bgcolor: "#5e50ee",
-              },
-            }}
-            onClick={onClick}
-          >
-            {buttonText}
-          </Button>
+          {showSearch ? (
+            <>
+              <Box
+                component="input"
+                placeholder="Search here"
+                sx={{
+                  flex: 1,
+                  bgcolor: "#2B2B2B",
+                  color: "#fff",
+                  border: "1px solid #444",
+                  borderRadius: 2,
+                  px: 2,
+                  py: 1,
+                  outline: "none",
+                  "&::placeholder": {
+                    color: "#aaa",
+                  },
+                }}
+              />
+              {showButton && (
+                <Button
+                  variant="contained"
+                  startIcon={<span style={{ fontSize: 20 }}>＋</span>}
+                  sx={{
+                    bgcolor: "#7367F0",
+                    color: "#fff",
+                    textTransform: "none",
+                    fontWeight: "bold",
+                    borderRadius: 2,
+
+                    px: 3,
+                    "&:hover": {
+                      bgcolor: "#5e50ee",
+                    },
+                  }}
+                  onClick={onClick}
+                >
+                  {buttonText}
+                </Button>
+              )}
+            </>
+          ) : (
+            <>
+              <Box></Box>
+              <Button
+                variant="contained"
+                startIcon={<span style={{ fontSize: 20 }}>＋</span>}
+                sx={{
+                  bgcolor: "#7367F0",
+                  color: "#fff",
+                  textTransform: "none",
+                  fontWeight: "bold",
+                  borderRadius: 2,
+
+                  px: 3,
+                  "&:hover": {
+                    bgcolor: "#5e50ee",
+                  },
+                }}
+                onClick={onClick}
+                className="flex self-end "
+              >
+                {buttonText}
+              </Button>
+            </>
+          )}
         </Box>
       ) : (
         // Tabs Block
@@ -330,11 +364,11 @@ const AdminTable = ({
       {/* Footer Pagination */}
       <Box
         mt={2}
-        display='flex'
-        justifyContent='space-between'
-        alignItems='center'
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
       >
-        <Typography variant='body2' color='#aaa'>
+        <Typography variant="body2" color="#aaa">
           Showing {Math.min((page - 1) * rowsPerPage + 1, total)}–
           {Math.min(page * rowsPerPage, total)} from {total}
         </Typography>
@@ -356,7 +390,7 @@ const AdminTable = ({
         />
       </Box>
     </Box>
-  )
-}
+  );
+};
 
-export default AdminTable
+export default AdminTable;
