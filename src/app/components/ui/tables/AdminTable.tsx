@@ -14,42 +14,47 @@ import {
   Tabs,
   Tab,
   Paper,
-} from "@mui/material";
-import EditIcon from "@mui/icons-material/Edit";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
-import { useState } from "react";
+} from "@mui/material"
+import EditIcon from "@mui/icons-material/Edit"
+import MoreVertIcon from "@mui/icons-material/MoreVert"
+import { useState } from "react"
 
 interface Column {
-  id: string;
-  label: string;
+  id: string
+  label: string
 }
 
 interface Row {
-  id: string | number;
-  [key: string]: any;
+  id: string | number
+  [key: string]: any
 }
 
 interface CustomUserTableProps {
-  columns: Column[];
-  data: Row[];
-  total?: number;
-  rowsPerPage?: number;
-  icon1?: boolean;
-  icon2?: boolean;
-  title?: string;
-  onClick?: () => void;
+  columns: Column[]
+  data: Row[]
+  total?: number
+  rowsPerPage?: number
+  icon1?: boolean
+  icon2?: boolean
+  title?: string
+  onClick?: () => void
+  actions?: boolean
 }
 
 const statusColors: Record<string, string> = {
   Approved: "#28C76F",
   Pending: "#E46A11",
   Suspend: "#F04438",
-};
+  Success: '#28C76F',
+  Failed: '#F04438'
+}
 const statusBgColors: Record<string, string> = {
   Approved: "#274635",
   Pending: "#4c3422",
   Suspend: "#4f2c2a",
-};
+  Success: '#28C76F33',
+  Failed: '#F0443833'
+}
 
 const AdminTable = ({
   columns,
@@ -60,25 +65,25 @@ const AdminTable = ({
   icon2 = true,
   title,
   onClick,
+  actions = true,
 }: CustomUserTableProps) => {
-  const [page, setPage] = useState(1);
-  const [statusTab, setStatusTab] = useState("All");
-  const [timeTab, setTimeTab] = useState("All Time");
+  const [page, setPage] = useState(1)
+  const [statusTab, setStatusTab] = useState("All")
+  const [timeTab, setTimeTab] = useState("All Time")
 
   const handlePageChange = (_: any, value: number) => {
-    setPage(value);
-  };
+    setPage(value)
+  }
 
   return (
     <Box sx={{ bgcolor: "#1E1E1E", borderRadius: 3, p: 2 }}>
-      <Typography variant="h6" color="white" fontWeight="bold" mb={2}>
+      <Typography variant='h6' color='white' fontWeight='bold' mb={2}>
         {title}
       </Typography>
 
-        
       {/* Tabs */}
       <Box
-        display="flex"
+        display='flex'
         flexDirection={{ xs: "column", md: "row" }}
         gap={2}
         mb={2}
@@ -86,10 +91,10 @@ const AdminTable = ({
         <Tabs
           value={statusTab}
           onChange={(_, val) => setStatusTab(val)}
-          textColor="inherit"
-          indicatorColor="primary"
-          variant="scrollable"
-          scrollButtons="auto"
+          textColor='inherit'
+          indicatorColor='primary'
+          variant='scrollable'
+          scrollButtons='auto'
           sx={{ flex: 1 }}
         >
           {["All", "Approved", "Pending", "Declined"].map((tab) => (
@@ -112,10 +117,10 @@ const AdminTable = ({
         <Tabs
           value={timeTab}
           onChange={(_, val) => setTimeTab(val)}
-          textColor="inherit"
-          indicatorColor="primary"
-          variant="scrollable"
-          scrollButtons="auto"
+          textColor='inherit'
+          indicatorColor='primary'
+          variant='scrollable'
+          scrollButtons='auto'
           sx={{ flex: 1 }}
         >
           {["All Time", "12 Months", "30 Days", "7 Days", "24 Hour"].map(
@@ -155,9 +160,13 @@ const AdminTable = ({
                   {col.label}
                 </TableCell>
               ))}
-              <TableCell sx={{ color: "#fff", borderBottom: "1px solid #333" }}>
-                Action
-              </TableCell>
+              {actions && (
+                <TableCell
+                  sx={{ color: "#fff", borderBottom: "1px solid #333" }}
+                >
+                  Action
+                </TableCell>
+              )}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -185,18 +194,20 @@ const AdminTable = ({
                       )}
                     </TableCell>
                   ))}
-                  <TableCell>
-                    {icon1 && (
-                      <IconButton>
-                        <MoreVertIcon sx={{ color: "#A78BFA" }} />
-                      </IconButton>
-                    )}
-                    {icon2 && (
-                      <IconButton onClick={onClick}>
-                        <EditIcon sx={{ color: "#A78BFA" }} />
-                      </IconButton>
-                    )}
-                  </TableCell>
+                  {actions && (
+                    <TableCell>
+                      {icon1 && (
+                        <IconButton>
+                          <MoreVertIcon sx={{ color: "#A78BFA" }} />
+                        </IconButton>
+                      )}
+                      {icon2 && (
+                        <IconButton onClick={onClick}>
+                          <EditIcon sx={{ color: "#A78BFA" }} />
+                        </IconButton>
+                      )}
+                    </TableCell>
+                  )}
                 </TableRow>
               ))}
           </TableBody>
@@ -206,11 +217,11 @@ const AdminTable = ({
       {/* Footer Pagination */}
       <Box
         mt={2}
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
+        display='flex'
+        justifyContent='space-between'
+        alignItems='center'
       >
-        <Typography variant="body2" color="#aaa">
+        <Typography variant='body2' color='#aaa'>
           Showing {Math.min((page - 1) * rowsPerPage + 1, total)}–
           {Math.min(page * rowsPerPage, total)} from {total}
         </Typography>
@@ -232,7 +243,7 @@ const AdminTable = ({
         />
       </Box>
     </Box>
-  );
-};
+  )
+}
 
-export default AdminTable;
+export default AdminTable
