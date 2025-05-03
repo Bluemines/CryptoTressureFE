@@ -26,44 +26,70 @@ const page = () => {
   ]
 
   const columns = [
-    { id: "name", label: "User" },
-    { id: "email", label: "Email" },
-    { id: "level", label: "Level" },
+    { id: "user", label: "User" },
+    { id: "amount", label: "Amount" },
     { id: "date", label: "Date" },
-    { id: "rewardAmount", label: "Reward Amount" },
+    { id: "paymentMethod", label: "Payment Method" },
     { id: "status", label: "Status" },
   ]
 
   const data = [
     {
       id: 1,
-      name: "John Bushmill",
-      email: "Johnb@mail.com",
-      level: 2,
+      user: "John Bushmill",
+      amount: "$50",
       date: "1 min ago",
-      rewardAmount: "$1000",
-      status: "Failed",
+      paymentMethod: "Easypaisa",
+      status: "Pending",
     },
     {
       id: 2,
-      name: "John Bushmill",
-      email: "Johnb@mail.com",
-      level: 2,
+      user: "John Bushmill",
+      amount: "$50",
       date: "1 min ago",
-      rewardAmount: "$1000",
-      status: "Success",
+      paymentMethod: "Easypaisa",
+      status: "Pending",
     },
     {
       id: 3,
-      name: "John Bushmill",
-      email: "Johnb@mail.com",
-      level: 2,
+      user: "John Bushmill",
+      amount: "$50",
       date: "1 min ago",
-      rewardAmount: "$1000",
-      status: "Success",
+      paymentMethod: "Easypaisa",
+      status: "Pending",
     },
-
     // Add more entries...
+  ]
+
+  const walletHistoryColumns = [
+    { id: "user", label: "User" },
+    { id: "balance", label: "Balance" },
+    { id: "totalWithdrawn", label: "Total Withdrawn" },
+    { id: 'lastActivity', label: 'Last Activity'}
+  ]
+
+  const walletHistoryData = [
+    {
+      id: 1,
+      user: "John Bushmill",
+      balance: "$1000",
+      totalWithdrawn: "$50",
+      lastActivity: 'Withdraw $10'
+    },
+    {
+      id: 2,
+      user: "John Bushmill",
+      balance: "$1000",
+      totalWithdrawn: "$50",
+      lastActivity: 'Withdraw $10'
+    },
+    {
+      id: 3,
+      user: "John Bushmill",
+      balance: "$1000",
+      totalWithdrawn: "$50",
+      lastActivity: 'Withdraw $10'
+    },
   ]
   return (
     <div>
@@ -96,9 +122,9 @@ const page = () => {
         ))}
       </div>
       <div className='font-semibold text-xl my-3'>Pending Withdrawal</div>
-      <AdminTable data={data} columns={columns} actions={false} showHeader={true} />
+      <AdminTable data={data} columns={columns} actions={true} showHeader={true} icon2={false} showButton={false} />
       <div className='font-semibold text-xl my-3'>Wallet History</div>
-      <AdminTable data={data} columns={columns} actions={false} showHeader={true} />
+      <AdminTable data={walletHistoryData} columns={walletHistoryColumns} actions={false} showHeader={true} showButton={false} />
     </div>
   )
 }
