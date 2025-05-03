@@ -38,6 +38,8 @@ interface CustomUserTableProps {
   icon2?: boolean;
   title?: string;
   onClick?: () => void;
+  showHeader?: boolean; 
+  buttonText?:string
 }
 
 const statusColors: Record<string, string> = {
@@ -60,6 +62,8 @@ const AdminTable = ({
   icon2 = true,
   title,
   onClick,
+  showHeader = false,
+  buttonText
 }: CustomUserTableProps) => {
   const [page, setPage] = useState(1);
   const [statusTab, setStatusTab] = useState("All");
@@ -75,9 +79,8 @@ const AdminTable = ({
         {title}
       </Typography>
 
-        
       {/* Tabs */}
-      <Box
+      {/* <Box
         display="flex"
         flexDirection={{ xs: "column", md: "row" }}
         gap={2}
@@ -136,7 +139,116 @@ const AdminTable = ({
             )
           )}
         </Tabs>
-      </Box>
+      </Box> */}
+      {showHeader ? (
+        // Custom Header (Search + Button)
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+          mb={2}
+          gap={2}
+          sx={{ flexDirection: { xs: "column", md: "row" } }}
+        >
+          <Box
+            component="input"
+            placeholder="Search here"
+            sx={{
+              flex: 1,
+              bgcolor: "#2B2B2B",
+              color: "#fff",
+              border: "1px solid #444",
+              borderRadius: 2,
+              px: 2,
+              py: 1,
+              outline: "none",
+              "&::placeholder": {
+                color: "#aaa",
+              },
+            }}
+          />
+          <Button
+            variant="contained"
+            startIcon={<span style={{ fontSize: 20 }}>＋</span>}
+            sx={{
+              bgcolor: "#7367F0",
+              color: "#fff",
+              textTransform: "none",
+              fontWeight: "bold",
+              borderRadius: 2,
+              px: 3,
+              "&:hover": {
+                bgcolor: "#5e50ee",
+              },
+            }}
+            onClick={onClick}
+          >
+            {buttonText}
+          </Button>
+        </Box>
+      ) : (
+        // Tabs Block
+        <Box
+          display="flex"
+          flexDirection={{ xs: "column", md: "row" }}
+          gap={2}
+          mb={2}
+        >
+          <Tabs
+            value={statusTab}
+            onChange={(_, val) => setStatusTab(val)}
+            textColor="inherit"
+            indicatorColor="primary"
+            variant="scrollable"
+            scrollButtons="auto"
+            sx={{ flex: 1 }}
+          >
+            {["All", "Approved", "Pending", "Declined"].map((tab) => (
+              <Tab
+                key={tab}
+                value={tab}
+                label={tab}
+                sx={{
+                  textTransform: "none",
+                  color: "white",
+                  bgcolor: statusTab === tab ? "#7367F0" : "transparent",
+                  borderRadius: 2,
+                  px: 2,
+                  minHeight: 36,
+                }}
+              />
+            ))}
+          </Tabs>
+
+          <Tabs
+            value={timeTab}
+            onChange={(_, val) => setTimeTab(val)}
+            textColor="inherit"
+            indicatorColor="primary"
+            variant="scrollable"
+            scrollButtons="auto"
+            sx={{ flex: 1 }}
+          >
+            {["All Time", "12 Months", "30 Days", "7 Days", "24 Hour"].map(
+              (tab) => (
+                <Tab
+                  key={tab}
+                  value={tab}
+                  label={tab}
+                  sx={{
+                    textTransform: "none",
+                    color: "white",
+                    bgcolor: timeTab === tab ? "#7367F0" : "transparent",
+                    borderRadius: 2,
+                    px: 2,
+                    minHeight: 36,
+                  }}
+                />
+              )
+            )}
+          </Tabs>
+        </Box>
+      )}
 
       {/* Table */}
       <TableContainer component={Paper} sx={{ background: "transparent" }}>
