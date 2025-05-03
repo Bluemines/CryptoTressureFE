@@ -1,0 +1,238 @@
+import {
+  Box,
+  Typography,
+  Chip,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  IconButton,
+  Button,
+  Pagination,
+  Tabs,
+  Tab,
+  Paper,
+} from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import { useState } from "react";
+
+interface Column {
+  id: string;
+  label: string;
+}
+
+interface Row {
+  id: string | number;
+  [key: string]: any;
+}
+
+interface CustomUserTableProps {
+  columns: Column[];
+  data: Row[];
+  total?: number;
+  rowsPerPage?: number;
+  icon1?: boolean;
+  icon2?: boolean;
+  title?: string;
+  onClick?: () => void;
+}
+
+const statusColors: Record<string, string> = {
+  Approved: "#28C76F",
+  Pending: "#E46A11",
+  Suspend: "#F04438",
+};
+const statusBgColors: Record<string, string> = {
+  Approved: "#274635",
+  Pending: "#4c3422",
+  Suspend: "#4f2c2a",
+};
+
+const AdminTable = ({
+  columns,
+  data,
+  total = 100,
+  rowsPerPage = 5,
+  icon1 = true,
+  icon2 = true,
+  title,
+  onClick,
+}: CustomUserTableProps) => {
+  const [page, setPage] = useState(1);
+  const [statusTab, setStatusTab] = useState("All");
+  const [timeTab, setTimeTab] = useState("All Time");
+
+  const handlePageChange = (_: any, value: number) => {
+    setPage(value);
+  };
+
+  return (
+    <Box sx={{ bgcolor: "#1E1E1E", borderRadius: 3, p: 2 }}>
+      <Typography variant="h6" color="white" fontWeight="bold" mb={2}>
+        {title}
+      </Typography>
+
+        
+      {/* Tabs */}
+      <Box
+        display="flex"
+        flexDirection={{ xs: "column", md: "row" }}
+        gap={2}
+        mb={2}
+      >
+        <Tabs
+          value={statusTab}
+          onChange={(_, val) => setStatusTab(val)}
+          textColor="inherit"
+          indicatorColor="primary"
+          variant="scrollable"
+          scrollButtons="auto"
+          sx={{ flex: 1 }}
+        >
+          {["All", "Approved", "Pending", "Declined"].map((tab) => (
+            <Tab
+              key={tab}
+              value={tab}
+              label={tab}
+              sx={{
+                textTransform: "none",
+                color: "white",
+                bgcolor: statusTab === tab ? "#7367F0" : "transparent",
+                borderRadius: 2,
+                px: 2,
+                minHeight: 36,
+              }}
+            />
+          ))}
+        </Tabs>
+
+        <Tabs
+          value={timeTab}
+          onChange={(_, val) => setTimeTab(val)}
+          textColor="inherit"
+          indicatorColor="primary"
+          variant="scrollable"
+          scrollButtons="auto"
+          sx={{ flex: 1 }}
+        >
+          {["All Time", "12 Months", "30 Days", "7 Days", "24 Hour"].map(
+            (tab) => (
+              <Tab
+                key={tab}
+                value={tab}
+                label={tab}
+                sx={{
+                  textTransform: "none",
+                  color: "white",
+                  bgcolor: timeTab === tab ? "#7367F0" : "transparent",
+                  borderRadius: 2,
+                  px: 2,
+                  minHeight: 36,
+                }}
+              />
+            )
+          )}
+        </Tabs>
+      </Box>
+
+      {/* Table */}
+      <TableContainer component={Paper} sx={{ background: "transparent" }}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              {columns.map((col) => (
+                <TableCell
+                  key={col.id}
+                  sx={{
+                    color: "#fff",
+                    borderBottom: "1px solid #333",
+                    fontWeight: 600,
+                  }}
+                >
+                  {col.label}
+                </TableCell>
+              ))}
+              <TableCell sx={{ color: "#fff", borderBottom: "1px solid #333" }}>
+                Action
+              </TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {data
+              .slice((page - 1) * rowsPerPage, page * rowsPerPage)
+              .map((row) => (
+                <TableRow
+                  key={row.id}
+                  sx={{ "&:last-child td": { border: 0 } }}
+                >
+                  {columns.map((col) => (
+                    <TableCell key={col.id} sx={{ color: "#ddd" }}>
+                      {col.id === "status" ? (
+                        <Chip
+                          label={row[col.id]}
+                          sx={{
+                            backgroundColor:
+                              statusBgColors[row[col.id]] || "#888",
+                            color: statusColors[row[col.id]] || "#888",
+                            fontWeight: 500,
+                          }}
+                        />
+                      ) : (
+                        row[col.id]
+                      )}
+                    </TableCell>
+                  ))}
+                  <TableCell>
+                    {icon1 && (
+                      <IconButton>
+                        <MoreVertIcon sx={{ color: "#A78BFA" }} />
+                      </IconButton>
+                    )}
+                    {icon2 && (
+                      <IconButton onClick={onClick}>
+                        <EditIcon sx={{ color: "#A78BFA" }} />
+                      </IconButton>
+                    )}
+                  </TableCell>
+                </TableRow>
+              ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+
+      {/* Footer Pagination */}
+      <Box
+        mt={2}
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+      >
+        <Typography variant="body2" color="#aaa">
+          Showing {Math.min((page - 1) * rowsPerPage + 1, total)}–
+          {Math.min(page * rowsPerPage, total)} from {total}
+        </Typography>
+        <Pagination
+          count={Math.ceil(total / rowsPerPage)}
+          page={page}
+          onChange={handlePageChange}
+          sx={{
+            "& .MuiPaginationItem-root": {
+              color: "#fff",
+              borderRadius: "8px",
+              backgroundColor: "#2B2B2B",
+            },
+            "& .Mui-selected": {
+              backgroundColor: "#7367F0",
+              color: "#fff",
+            },
+          }}
+        />
+      </Box>
+    </Box>
+  );
+};
+
+export default AdminTable;

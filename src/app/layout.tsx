@@ -2,6 +2,10 @@ import type { Metadata } from "next"
 import { Geist, Geist_Mono } from "next/font/google"
 import "./globals.css"
 import { ConfigProvider } from "antd"
+import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter"
+import ClientOnly from "./components/ClientOnly"
+import { ThemeProvider } from "@mui/material/styles"
+import theme from "./lib/theme"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,15 +33,19 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiase`}
         cz-shortcut-listen='true'
       >
-        <ConfigProvider
-          theme={{
-            token: {
-              colorPrimary: "#7367F0",
-            },
-          }}
-        >
-          {children}
-        </ConfigProvider>
+        <ClientOnly>
+          <ConfigProvider
+            theme={{
+              token: {
+                colorPrimary: "#7367F0",
+              },
+            }}
+          >
+            <ThemeProvider theme={theme}>
+            <AppRouterCacheProvider>{children}</AppRouterCacheProvider>
+            </ThemeProvider>
+          </ConfigProvider>
+        </ClientOnly>
       </body>
     </html>
   )
