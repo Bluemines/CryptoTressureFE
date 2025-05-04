@@ -1,11 +1,9 @@
 "use client";
 import { NFTCard } from "@/app/components/cards/NFTCard";
 import NFTModal from "@/app/components/modals/NFTModal";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
-
-export default function page() {
-  const router = useRouter();
+import Image from "../../../../assets/Images/exploreImg.png"
+export default function Collection() {
   const nftData = [
     {
       image: "https://images.unsplash.com/photo-1531297484001-80022131f5a1",
@@ -67,7 +65,7 @@ export default function page() {
         open={isModalOpen}
         onOpenChange={setIsModalOpen}
         title="NFT Title"
-        image={require("../../../../assets/Images/exploreImg.png")}
+        image={Image}
         type="sell"
       />
     </div>

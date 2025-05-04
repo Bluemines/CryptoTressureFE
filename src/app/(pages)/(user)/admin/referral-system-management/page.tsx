@@ -2,7 +2,7 @@
 import AdminTable from "@/app/components/ui/tables/AdminTable";
 import { useRouter } from "next/navigation";
 
-const page = () => {
+const ReferalManagement = () => {
   const router = useRouter()
   const columns = [
     { id: "name", label: "User" },
@@ -53,4 +53,4 @@ const page = () => {
   )
 }
 
-export default page
+export default ReferalManagement

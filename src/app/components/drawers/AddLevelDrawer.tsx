@@ -6,14 +6,9 @@ import {
   Typography,
   TextField,
   Button,
-  MenuItem,
-  InputLabel,
-  Select,
-  FormControl,
 } from "@mui/material";
 import { useState } from "react";
 
-const levels = ["Low", "Medium", "High"]; // Example levels
 
 export default function AddLevelDrawer({
   open,

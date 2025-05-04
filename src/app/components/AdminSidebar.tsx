@@ -11,11 +11,8 @@ import {
   UploadOutlined,
   ShareAltOutlined,
   DollarOutlined,
-  SettingOutlined,
   InfoCircleOutlined,
   TeamOutlined,
-  QuestionCircleOutlined,
-  PhoneOutlined,
   LogoutOutlined,
 } from "@ant-design/icons";
 import type { MenuProps } from "antd";

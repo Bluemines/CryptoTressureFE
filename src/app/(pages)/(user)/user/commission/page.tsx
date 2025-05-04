@@ -1,5 +1,13 @@
-"use client"
-import DataTable from "@/app/components/DataTable/DataTable"
+"use client";
+import DataTable from "@/app/components/DataTable/DataTable";
+import { TableColumn } from "react-data-table-component";
+
+type CommissionRow = {
+  id: number;
+  percentage: string;
+  amount: string;
+  date: string;
+};
 
 const page = () => {
   const data = [
@@ -21,31 +29,31 @@ const page = () => {
       percentage: "10%",
       date: "04/22/2016",
     },
-  ]
+  ];
 
-  const columns = [
+  const columns: TableColumn<CommissionRow>[] = [
     {
       name: "Commission Percentage",
-      selector: (row: any) => row.percentage,
+      selector: (row) => row.percentage,
       sortable: true,
     },
     {
       name: "Commission Amount",
-      selector: (row: any) => row.amount,
+      selector: (row) => row.amount,
       sortable: true,
     },
     {
       name: "Commission Date",
-      selector: (row: any) => row.date,
+      selector: (row) => row.date,
       sortable: true,
     },
-  ]
+  ];
   return (
     <div>
-      <div className='text-[#C0C0C0] text-xl my-4'>Referral Commission</div>
-      <DataTable data={data} columns={columns} themeStyle='black' />
+      <div className="text-[#C0C0C0] text-xl my-4">Referral Commission</div>
+      <DataTable data={data} columns={columns} themeStyle="black" />
     </div>
-  )
-}
+  );
+};
 
-export default page
+export default page;
