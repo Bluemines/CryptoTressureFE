@@ -14,35 +14,38 @@ import {
   Tabs,
   Tab,
   Paper,
-} from "@mui/material";
-import EditIcon from "@mui/icons-material/Edit";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
-import { useState } from "react";
+  Popover,
+  MenuItem,
+} from "@mui/material"
+import EditIcon from "@mui/icons-material/Edit"
+import MoreVertIcon from "@mui/icons-material/MoreVert"
+import { useState } from "react"
+import Modal from "../../modals/Modal"
 
 interface Column {
-  id: string;
-  label: string;
+  id: string
+  label: string
 }
 
 interface Row {
-  id: string | number;
-  [key: string]: any;
+  id: string | number
+  [key: string]: any
 }
 
 interface CustomUserTableProps {
-  columns: Column[];
-  data: Row[];
-  total?: number;
-  rowsPerPage?: number;
-  icon1?: boolean;
-  icon2?: boolean;
-  title?: string;
-  onClick?: () => void;
-  actions?: boolean;
-  showHeader?: boolean;
-  buttonText?: string;
-  showSearch?: boolean;
-  showButton?: boolean;
+  columns: Column[]
+  data: Row[]
+  total?: number
+  rowsPerPage?: number
+  icon1?: boolean
+  icon2?: boolean
+  title?: string
+  onClick?: () => void
+  actions?: boolean
+  showHeader?: boolean
+  buttonText?: string
+  showSearch?: boolean
+  showButton?: boolean
 }
 
 const statusColors: Record<string, string> = {
@@ -51,14 +54,14 @@ const statusColors: Record<string, string> = {
   Suspend: "#F04438",
   Success: "#28C76F",
   Failed: "#F04438",
-};
+}
 const statusBgColors: Record<string, string> = {
   Approved: "#274635",
   Pending: "#4c3422",
   Suspend: "#4f2c2a",
   Success: "#28C76F33",
   Failed: "#F0443833",
-};
+}
 
 const AdminTable = ({
   columns,
@@ -75,17 +78,45 @@ const AdminTable = ({
   showSearch = true,
   showButton = true,
 }: CustomUserTableProps) => {
-  const [page, setPage] = useState(1);
-  const [statusTab, setStatusTab] = useState("All");
-  const [timeTab, setTimeTab] = useState("All Time");
+  const [page, setPage] = useState(1)
+  const [statusTab, setStatusTab] = useState("All")
+  const [timeTab, setTimeTab] = useState("All Time")
+  const [isApproveWithdrawModalOpen, setIsApproveWithdrawModalOpen] =
+    useState(false)
+  const [isSuspendedModalOpen, setIsSuspendedModalOpen] =
+    useState(false)
 
   const handlePageChange = (_: any, value: number) => {
-    setPage(value);
-  };
+    setPage(value)
+  }
+
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget)
+  }
+
+  const handleClose = () => {
+    setAnchorEl(null)
+  }
+
+  const open = Boolean(anchorEl)
+  const id = open ? "status-popover" : undefined
+
+  const handleOption = (status: string) => {
+    console.log("Selected:", status)
+    if (status === "Approved") {
+      setIsApproveWithdrawModalOpen(true)
+    }
+    if (status === "Suspended") {
+      setIsSuspendedModalOpen(true)
+    }
+    handleClose()
+  }
 
   return (
     <Box sx={{ bgcolor: "#1E1E1E", borderRadius: 3, p: 2 }}>
-      <Typography variant="h6" color="white" fontWeight="bold" mb={2}>
+      <Typography variant='h6' color='white' fontWeight='bold' mb={2}>
         {title}
       </Typography>
 
@@ -152,9 +183,9 @@ const AdminTable = ({
       </Box> */}
       {showHeader ? (
         <Box
-          display="flex"
-          justifyContent="space-between"
-          alignItems="center"
+          display='flex'
+          justifyContent='space-between'
+          alignItems='center'
           mb={2}
           gap={2}
           sx={{ flexDirection: { xs: "column", md: "row" } }}
@@ -162,8 +193,8 @@ const AdminTable = ({
           {showSearch ? (
             <>
               <Box
-                component="input"
-                placeholder="Search here"
+                component='input'
+                placeholder='Search here'
                 sx={{
                   flex: 1,
                   bgcolor: "#2B2B2B",
@@ -180,7 +211,7 @@ const AdminTable = ({
               />
               {showButton && (
                 <Button
-                  variant="contained"
+                  variant='contained'
                   startIcon={<span style={{ fontSize: 20 }}>＋</span>}
                   sx={{
                     bgcolor: "#7367F0",
@@ -204,7 +235,7 @@ const AdminTable = ({
             <>
               <Box></Box>
               <Button
-                variant="contained"
+                variant='contained'
                 startIcon={<span style={{ fontSize: 20 }}>＋</span>}
                 sx={{
                   bgcolor: "#7367F0",
@@ -219,7 +250,7 @@ const AdminTable = ({
                   },
                 }}
                 onClick={onClick}
-                className="flex self-end "
+                className='flex self-end '
               >
                 {buttonText}
               </Button>
@@ -229,7 +260,7 @@ const AdminTable = ({
       ) : (
         // Tabs Block
         <Box
-          display="flex"
+          display='flex'
           flexDirection={{ xs: "column", md: "row" }}
           gap={2}
           mb={2}
@@ -237,10 +268,10 @@ const AdminTable = ({
           <Tabs
             value={statusTab}
             onChange={(_, val) => setStatusTab(val)}
-            textColor="inherit"
-            indicatorColor="primary"
-            variant="scrollable"
-            scrollButtons="auto"
+            textColor='inherit'
+            indicatorColor='primary'
+            variant='scrollable'
+            scrollButtons='auto'
             sx={{ flex: 1 }}
           >
             {["All", "Approved", "Pending", "Declined"].map((tab) => (
@@ -263,10 +294,10 @@ const AdminTable = ({
           <Tabs
             value={timeTab}
             onChange={(_, val) => setTimeTab(val)}
-            textColor="inherit"
-            indicatorColor="primary"
-            variant="scrollable"
-            scrollButtons="auto"
+            textColor='inherit'
+            indicatorColor='primary'
+            variant='scrollable'
+            scrollButtons='auto'
             sx={{ flex: 1 }}
           >
             {["All Time", "12 Months", "30 Days", "7 Days", "24 Hour"].map(
@@ -344,9 +375,29 @@ const AdminTable = ({
                   {actions && (
                     <TableCell>
                       {icon1 && (
-                        <IconButton>
-                          <MoreVertIcon sx={{ color: "#A78BFA" }} />
-                        </IconButton>
+                        <>
+                          <IconButton onClick={handleClick}>
+                            <MoreVertIcon sx={{ color: "#A78BFA" }} />
+                          </IconButton>
+
+                          <Popover
+                            id={id}
+                            open={open}
+                            anchorEl={anchorEl}
+                            onClose={handleClose}
+                            anchorOrigin={{
+                              vertical: "bottom",
+                              horizontal: "left",
+                            }}
+                          >
+                            <MenuItem onClick={() => handleOption("Approved")}>
+                              Approved
+                            </MenuItem>
+                            <MenuItem onClick={() => handleOption("Suspended")}>
+                              Suspended
+                            </MenuItem>
+                          </Popover>
+                        </>
                       )}
                       {icon2 && (
                         <IconButton onClick={onClick}>
@@ -364,11 +415,11 @@ const AdminTable = ({
       {/* Footer Pagination */}
       <Box
         mt={2}
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
+        display='flex'
+        justifyContent='space-between'
+        alignItems='center'
       >
-        <Typography variant="body2" color="#aaa">
+        <Typography variant='body2' color='#aaa'>
           Showing {Math.min((page - 1) * rowsPerPage + 1, total)}–
           {Math.min(page * rowsPerPage, total)} from {total}
         </Typography>
@@ -389,8 +440,50 @@ const AdminTable = ({
           }}
         />
       </Box>
+      <Modal
+        open={isApproveWithdrawModalOpen}
+        setOpen={setIsApproveWithdrawModalOpen}
+      >
+        <div className='text-lg font-medium'>Approve withdrawl?</div>
+        <div className='text-[#A9A9A9] mt-4'>
+          Do you want to approve withdrawal of $10 of User John Doe?
+        </div>
+        <div className='flex'>
+          <Button
+            sx={{
+              backgroundColor: "#008A3D",
+              color: "#fff",
+              marginTop: "22px",
+              marginLeft: "auto",
+            }}
+          >
+            Confirm
+          </Button>
+        </div>
+      </Modal>
+      <Modal
+        open={isSuspendedModalOpen}
+        setOpen={setIsSuspendedModalOpen}
+      >
+        <div className='text-lg font-medium'>Suspend withdrawal?</div>
+        <div className='text-[#A9A9A9] mt-4'>
+          Do you want to Suspend withdrawal of $10 of User John Doe?
+        </div>
+        <div className='flex'>
+          <Button
+            sx={{
+              backgroundColor: "#F04438",
+              color: "#fff",
+              marginTop: "22px",
+              marginLeft: "auto",
+            }}
+          >
+            Suspended
+          </Button>
+        </div>
+      </Modal>
     </Box>
-  );
-};
+  )
+}
 
-export default AdminTable;
+export default AdminTable
