@@ -3,7 +3,7 @@
 import { NFTCard } from "@/app/components/cards/NFTCard";
 import { useRouter } from "next/navigation";
 
-export default function page() {
+export default function Explore() {
   const router = useRouter();
   const nftData = [
     {

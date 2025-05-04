@@ -1,20 +1,41 @@
 "use client";
 
-import { Button, Checkbox, Input } from "@mui/material";
+import {
+  Button,
+  Checkbox,
+  Snackbar,
+  // SnackbarOrigin,
+} from "@mui/material";
 import { Divider } from "antd";
 import Link from "next/link";
 import { useState } from "react";
 import Modal from "./modals/Modal";
 import FormInput from "./ui/Inputs/FormInput";
-import { useForm } from "react-hook-form";
 import useLogin from "../(auth)/login/hooks";
-
+// interface State extends SnackbarOrigin {
+//   open: boolean;
+// }
 const Login = () => {
   const [IsForgotPasswordModalOpen, setIsForgotPasswordModalOpen] =
     useState<boolean>(false);
-  const { control, handleSubmit, errors, handleLogin } = useLogin();
+  const { control, handleSubmit, errors, handleLogin, open, setOpen, message } =
+    useLogin();
+  // const [state, setState] = useState<State>({
+  //   open: open,
+  //   vertical: "top",
+  //   horizontal: "center",
+  // });
+  // const { vertical, horizontal } = state;
   return (
     <div className="w-full max-w-md">
+      <Snackbar
+        // anchorOrigin={{ vertical, horizontal }}
+        // key={vertical + horizontal}
+        open={open}
+        onClose={() => setOpen(false)}
+        autoHideDuration={2000}
+        message={message}
+      />
       <div className="text-[#737373] font-medium text-2xl">LOGO</div>
       <div className="text-3xl mt-4">Welcome to NFT!</div>
       <div className="text-[#c0c0c0] text-sm mt-2">
