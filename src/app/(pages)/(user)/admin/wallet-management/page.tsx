@@ -2,8 +2,12 @@
 import { StatsCard } from "@/app/components/cards/StatsCard"
 import PrimaryButton from "@/app/components/ui/PrimaryButton"
 import AdminTable from "@/app/components/ui/tables/AdminTable"
+import { useRouter } from "next/navigation"
 
 const page = () => {
+
+  const router = useRouter()
+
   const statsData = [
     {
       value: "4,235",
@@ -101,7 +105,7 @@ const page = () => {
           </div>
           <div>
             <PrimaryButton
-              // onClick={() => router.push("/user/wallet/add-new-wallet")}
+              onClick={() => router.push("/admin/wallet-management/add-new-wallet")}
               bgColor='#7367F0'
               className='!text-white !border-none !font-medium'
             >
