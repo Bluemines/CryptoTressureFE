@@ -5,7 +5,7 @@ import AdminTable from "@/app/components/ui/tables/AdminTable";
 import { Typography } from "@mui/material";
 import { useState } from "react";
 
-export default function page() {
+export default function MachineManagemnt() {
   const columns = [
     { id: "name", label: "User" },
     { id: "rentDays", label: "Rent Days" },

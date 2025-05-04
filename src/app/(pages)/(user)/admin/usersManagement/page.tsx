@@ -3,10 +3,10 @@
 import { StatsCard } from "@/app/components/cards/StatsCard";
 import React from "react";
 import AdminTable from "../../../../components/ui/tables/AdminTable";
-import { Card, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
 
-export default function page() {
+export default function UsersManagement() {
   const router = useRouter()
   const columns = [
     { id: "name", label: "User" },

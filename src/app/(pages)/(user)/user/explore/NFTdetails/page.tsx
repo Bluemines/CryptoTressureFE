@@ -4,7 +4,7 @@ import ExploreNFTCard from "@/app/components/cards/ExploreNftCard";
 import { NFTCard } from "@/app/components/cards/NFTCard";
 import NFTModal from "@/app/components/modals/NFTModal";
 import { useState } from "react";
-
+import Image from "../../../../../assets/Images/exploreImg.png"
 export default function NFTdetails() {
   const heroNFT = {
     title: "NFT Name",
@@ -86,7 +86,7 @@ export default function NFTdetails() {
         open={isModalOpen}
         onOpenChange={setIsModalOpen}
         title="NFT Title"
-        image={require("../../../../../assets/Images/exploreImg.png")}
+        image={Image}
         type="buy"
       />
     </div>

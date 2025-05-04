@@ -1,12 +1,11 @@
 "use client"
 import { Avatar, Badge } from "antd"
 import { BellOutlined, SearchOutlined } from "@ant-design/icons"
-import { useState } from "react"
 import { Input } from "@mui/material"
 
 const Header = () => {
-  const [value, setValue] = useState("")
-  // const onSearch = (value: string) => console.log("search:", value)
+
+
   return (
     <header className='flex items-center gap-4 z-50'>
       <div className='relative w-full'>
