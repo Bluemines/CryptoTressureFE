@@ -4,7 +4,7 @@ import { ArrowRightOutlined } from "@ant-design/icons"
 import { Input, Modal } from "antd"
 import { useState } from "react"
 
-const page = () => {
+const AddNewWallet = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false)
 
@@ -68,4 +68,4 @@ const page = () => {
   )
 }
 
-export default page
+export default AddNewWallet

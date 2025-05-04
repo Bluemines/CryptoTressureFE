@@ -2,7 +2,7 @@ import Image from "next/image";
 import React from "react";
 // import { Card } from "@/components/ui/card";
 // import { Button } from "@/components/ui/button";
-
+import img from "../../assets/Images/exploreImg.png"
 interface NFTCardProps {
   title: string;
   image: string;
@@ -40,7 +40,7 @@ const Button = ({
 };
 const ExploreNFTCard: React.FC<NFTCardProps> = ({
   title,
-  image,
+  // image,
   price,
   dailyIncome,
   fee,
@@ -113,7 +113,7 @@ const ExploreNFTCard: React.FC<NFTCardProps> = ({
       </div>
       <div className={`relative ${isHero ? "lg:w-1/2" : "w-full"}`}>
         <Image
-          src={require("../../assets/Images/exploreImg.png")}
+          src={img}
           alt={title}
           className={`w-full object-cover ${
             isHero ? "h-[400px] lg:h-full" : "h-48"
