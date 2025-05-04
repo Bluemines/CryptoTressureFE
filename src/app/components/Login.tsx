@@ -1,33 +1,41 @@
-"use client";
+"use client"
 
-import {
-  Button,
-  Checkbox,
-  Snackbar,
-  // SnackbarOrigin,
-} from "@mui/material";
-import { Divider } from "antd";
-import Link from "next/link";
-import { useState } from "react";
-import Modal from "./modals/Modal";
-import FormInput from "./ui/Inputs/FormInput";
-import useLogin from "../(auth)/login/hooks";
-// interface State extends SnackbarOrigin {
-//   open: boolean;
-// }
+
+import { Button, Checkbox, TextField } from "@mui/material"
+import { Divider } from "antd"
+import Link from "next/link"
+import { useState } from "react"
+import Modal from "./modals/Modal"
+import FormInput from "./ui/Inputs/FormInput"
+import useLogin from "../(auth)/login/hooks"
+import OTP from "antd/es/input/OTP"
+
 const Login = () => {
   const [IsForgotPasswordModalOpen, setIsForgotPasswordModalOpen] =
-    useState<boolean>(false);
-  const { control, handleSubmit, errors, handleLogin, open, setOpen, message } =
-    useLogin();
-  // const [state, setState] = useState<State>({
-  //   open: open,
-  //   vertical: "top",
-  //   horizontal: "center",
-  // });
-  // const { vertical, horizontal } = state;
+    useState<boolean>(false)
+  const { control, handleSubmit, errors, handleLogin } = useLogin()
+
+  const [resetPassForm, setResetPassForm] = useState({
+    newPassword: '',
+    confirmPassword: ''
+  })
+  const handlePassChange = (e: any) => {
+    setForm({ ...form, [e.target.name]: e.target.value })
+  }
+
+  const [form, setForm] = useState({
+    email: "",
+  })
+
+  const handleChange = (e: any) => {
+    setForm({ ...form, [e.target.name]: e.target.value })
+  }
   return (
-    <div className="w-full max-w-md">
+    <div className='w-full max-w-md'>
+      <div className='text-[#737373] font-medium text-2xl'>LOGO</div>
+      <div className='text-3xl mt-4'>Welcome to NFT!</div>
+      <div className='text-[#c0c0c0] text-sm mt-2'>
+
       <Snackbar
         // anchorOrigin={{ vertical, horizontal }}
         // key={vertical + horizontal}
@@ -36,78 +44,166 @@ const Login = () => {
         autoHideDuration={2000}
         message={message}
       />
-      <div className="text-[#737373] font-medium text-2xl">LOGO</div>
-      <div className="text-3xl mt-4">Welcome to NFT!</div>
-      <div className="text-[#c0c0c0] text-sm mt-2">
+
         Please sign in to your account and start the adventure
       </div>
 
-      <div className="space-y-4">
-        <div className="space-y-1">
+      <div className='space-y-4'>
+        <div className='space-y-1'>
           <FormInput
-            name="email"
+            name='email'
             control={control}
-            label="Email or Username"
+            label='Email or Username'
             errors={errors}
             rules={{ required: "Email is required" }}
           />
           <FormInput
-            name="password"
+            name='password'
             control={control}
-            label="Password"
-            type="password"
+            label='Password'
+            type='password'
             errors={errors}
             rules={{ required: "Password is required" }}
           />
           <Button
-            variant="text"
-            className="block text-[#7367F0]"
+            variant='text'
+            className='block text-[#7367F0]'
             onClick={() => setIsForgotPasswordModalOpen(true)}
           >
             Forgot Password?
           </Button>
         </div>
 
-        <div className="flex items-center gap-2">
-          <Checkbox className="!p-0" />{" "}
-          <span className="text-muted">Remember Me</span>
+        <div className='flex items-center gap-2'>
+          <Checkbox className='!p-0' />{" "}
+          <span className='text-muted'>Remember Me</span>
         </div>
 
         <Button
-          variant="contained"
+          variant='contained'
           fullWidth
           onClick={handleSubmit(handleLogin)}
         >
           Sign in
         </Button>
 
-        <div className="text-sm text-center block mt-2">
+        <div className='text-sm text-center block mt-2'>
           New on our platform?{" "}
-          <Link className="text-primary" href="/register">
+          <Link className='text-primary' href='/register'>
             Create an account
           </Link>
         </div>
 
         <Divider>Or</Divider>
 
-        <div className="flex items-center justify-center gap-2 mt-4">
-          <div className="h-[38px] w-[38px] bg-[#1d2b48] grid place-items-center rounded">
-            <img src="/icons/fb.png" alt="" />
+        <div className='flex items-center justify-center gap-2 mt-4'>
+          <div className='h-[38px] w-[38px] bg-[#1d2b48] grid place-items-center rounded'>
+            <img src='/icons/fb.png' alt='' />
           </div>
-          <div className="h-[38px] w-[38px] bg-[#0d3148] grid place-items-center rounded">
-            <img src="/icons/twitter.png" alt="" />
+          <div className='h-[38px] w-[38px] bg-[#0d3148] grid place-items-center rounded'>
+            <img src='/icons/twitter.png' alt='' />
           </div>
-          <div className="h-[38px] w-[38px] bg-[#3f1917] grid place-items-center rounded">
-            <img src="/icons/google.png" alt="" />
+          <div className='h-[38px] w-[38px] bg-[#3f1917] grid place-items-center rounded'>
+            <img src='/icons/google.png' alt='' />
           </div>
         </div>
       </div>
+      {/* forget pass modal */}
       <Modal
         open={IsForgotPasswordModalOpen}
         setOpen={setIsForgotPasswordModalOpen}
-      ></Modal>
-    </div>
-  );
-};
+      >
+        <div className="space-y-4">
+        <div className='text-[#737373] text-2xl text-center'>LOGO</div>
+        <div className='font-medium text-xl'>Forgot Password? 🔒</div>
+        <div className='text-[#737373] text-sm'>
+          Enter your email, and we'll send you OTP to reset your password
+        </div>
 
-export default Login;
+        <TextField
+          name='email'
+          label='Email'
+          variant='outlined'
+          fullWidth
+          value={form.email}
+          onChange={handleChange}
+          margin='normal'
+          InputLabelProps={{ style: { color: "#aaa" } }}
+          InputProps={{ style: { color: "#fff" } }}
+        />
+
+        <Button variant="contained" fullWidth>Send Reset Link</Button>
+        <Button variant="text" fullWidth>Back to log in</Button>
+        </div>
+      </Modal>
+      {/* tfv modal */}
+      {/* <Modal
+        open={IsForgotPasswordModalOpen}
+        setOpen={setIsForgotPasswordModalOpen}
+      >
+        <div className='space-y-4'>
+          <div className='text-[#737373] text-2xl text-center'>LOGO</div>
+          <div className='font-medium text-xl'>Two-Step Verification 💬</div>
+          <div className='text-[#737373] text-sm'>
+            We sent a verification code to your Email. Enter the code from the
+            eamil in the field below.
+            <div>*****d20@gmail.com</div>
+          </div>
+
+          <div className='w-full'>
+            <OTP style={{ width: "100%", justifyContent: "center" }} />
+          </div>
+
+          <Button variant='contained' fullWidth>
+            Verify my account
+          </Button>
+          <div className='flex gap-2 items-center justify-center'>
+            <div>Didn't get the code?</div>
+            <div className='text-primary'>Resend</div>
+          </div>
+        </div>
+      </Modal> */}
+      {/* reset password */}
+      {/* <Modal
+        open={IsForgotPasswordModalOpen}
+        setOpen={setIsForgotPasswordModalOpen}
+      >
+        <div className="space-y-4">
+        <div className='text-[#737373] text-2xl text-center'>LOGO</div>
+        <div className='font-medium text-xl'>Reset Password 🔒</div>
+        <div className='text-[#737373] text-sm'>
+          for john.doe@email.com
+        </div>
+
+        <TextField
+          name='newPassword'
+          label='New Password'
+          variant='outlined'
+          fullWidth
+          value={resetPassForm.newPassword}
+          onChange={handlePassChange}
+          margin='normal'
+          InputLabelProps={{ style: { color: "#aaa" } }}
+          InputProps={{ style: { color: "#fff" } }}
+        />
+        <TextField
+          name='confirmPassword'
+          label='Confirm Password'
+          variant='outlined'
+          fullWidth
+          value={resetPassForm.confirmPassword}
+          onChange={handlePassChange}
+          margin='normal'
+          InputLabelProps={{ style: { color: "#aaa" } }}
+          InputProps={{ style: { color: "#fff" } }}
+        />
+
+        <Button variant="contained" fullWidth>Set New Password</Button>
+        <Button variant="text" fullWidth>Back to log in</Button>
+        </div>
+      </Modal> */}
+    </div>
+  )
+}
+
+export default Login
