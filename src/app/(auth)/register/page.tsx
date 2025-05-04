@@ -1,7 +1,16 @@
+"use client"
+import FormInput from "@/app/components/ui/Inputs/FormInput"
 import { Button, Checkbox, Divider, Input } from "@mui/material"
 import Link from "next/link"
+import { useForm } from "react-hook-form";
 
 const page = () => {
+  const {
+    control,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
   return (
     <div className='h-dvh flex'>
       <div className='w-[50%] lg:w-[50%] overflow-hidden'>
@@ -21,7 +30,7 @@ const page = () => {
 
           <div className='space-y-4'>
             <div className='space-y-1'>
-              <label htmlFor='username' className='block mt-4'>
+              {/* <label htmlFor='username' className='block mt-4'>
                 Username
               </label>
               <Input
@@ -30,7 +39,8 @@ const page = () => {
                 type='text'
                 placeholder='Enter your Username'
                 className='bg-[#262626] px-4 py-2 rounded-md'
-              />
+              /> */}
+              <FormInput name="username" control={control} errors={errors} label="Username" />
             </div>
             <div className='space-y-1'>
               <label htmlFor='phoneNo' className='block mt-4'>
