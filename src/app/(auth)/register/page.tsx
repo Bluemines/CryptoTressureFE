@@ -6,7 +6,7 @@ import Link from "next/link";
 import useRegisterHook from "./hooks";
 
 const Register = () => {
-  const { control, errors } = useRegisterHook();
+  const { control, errors,handleSubmit,onSubmit,submitCode } = useRegisterHook();
   return (
     <div className="h-dvh flex">
       <div className="w-[50%] lg:w-[50%] overflow-hidden">
@@ -62,6 +62,7 @@ const Register = () => {
                     fullWidth
                     variant="outlined"
                     sx={{ height: "70%", mt: "15%" }}
+                    onClick={submitCode}
                   >
                     Get Code
                   </Button>
@@ -104,7 +105,7 @@ const Register = () => {
               </span>
             </div>
 
-            <Button variant="contained" fullWidth>
+            <Button variant="contained" fullWidth onClick={handleSubmit(onSubmit)}>
               Sign up
             </Button>
 
