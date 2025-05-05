@@ -1,9 +1,10 @@
-import { useForm } from "react-hook-form";
-import { RegisterFormType, registerSchema } from "../schema";
+import { Resolver, SubmitHandler, useForm } from "react-hook-form";
+import { registerSchema } from "../schema";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useMutation } from "@tanstack/react-query";
 import { ConfirmEmailApi, RegisterApi } from "@/api/authentication";
 import { ISignupBody } from "@/api/authentication/types";
+import { RegisterFormType } from "../types";
 
 export default function useRegisterHook() {
   const {
@@ -12,7 +13,7 @@ export default function useRegisterHook() {
     getValues,
     formState: { errors },
   } = useForm<RegisterFormType>({
-    resolver: yupResolver(registerSchema),
+    resolver: yupResolver(registerSchema) as Resolver<RegisterFormType>,
     defaultValues: {
       username: "",
       email: "",
@@ -71,5 +72,6 @@ export default function useRegisterHook() {
     const response = await registerUser(payload);
     console.log(response);
   };
+
   return { control, errors, handleSubmit, onSubmit, error, submitCode };
 }
