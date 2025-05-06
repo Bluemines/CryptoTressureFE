@@ -9,14 +9,14 @@ const Register = () => {
   const { control, errors } = useRegisterHook();
   return (
     <div className="h-dvh flex">
-      <div className="w-[50%] lg:w-[50%] overflow-hidden">
+      <div className="w-[50%] lg:w-[50%] overflow-hidden hidden md:block">
         <img
           src="/images/register-hero.png"
           alt=""
           className="h-[1016px] w-full"
         />
       </div>
-      <div className="w-[50%] grid place-items-center overflow-y-auto p-8 py-16">
+      <div className="md:w-[50%] w-full grid place-items-center overflow-y-auto p-8 py-16">
         <div className="w-full max-w-md">
           <div className="text-[#737373] font-medium text-2xl">LOGO</div>
           <div className="text-3xl mt-4">Welcome to NFT!</div>

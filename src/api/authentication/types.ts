@@ -12,3 +12,9 @@ export interface ISignupBody {
 export interface ISendEmailBody{
     email:string
 }
+export interface IResetPasswordBody{
+    email:string
+    code: string
+    newPassword: string
+    confirmPassword: string
+}
