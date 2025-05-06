@@ -8,11 +8,12 @@ import { useMutation } from "@tanstack/react-query";
 import { loginApi } from "@/api/authentication";
 import { useState } from "react";
 import { AxiosError } from "axios";
+import auth from "@/app/utils/auth";
 
 export default function useLogin() {
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
-  console.log(message)
+  console.log(message);
   const {
     control,
     handleSubmit,
@@ -31,15 +32,15 @@ export default function useLogin() {
   const handleLogin: SubmitHandler<IAddLoginFormValues> = async (data) => {
     try {
       const response = await loginUser(data);
+      console.log("response: ",response);
       if (response.success === true) {
-        
         setMessage(response.message);
+        localStorage.setItem("accessToken", response?.data?.access_token);
         setOpen(true);
       } else {
         setMessage(response.message);
       }
-    } 
-    catch (error: unknown) {
+    } catch (error: unknown) {
       const err = error as AxiosError<{ message: string }>;
       if (err?.response?.data?.message) {
         setMessage(err.response.data.message);
