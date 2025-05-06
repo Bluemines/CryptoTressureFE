@@ -7,10 +7,10 @@ import { useState } from "react";
 import useMachineManagement from "./hooks";
 
 export default function MachineManagemnt() {
-  const { machines } = useMachineManagement();
+  const { machines,handelSetEditValues } = useMachineManagement();
   console.log(machines)
   const columns = [
-    { id: "name", label: "User" },
+    { id: "title", label: "Title" },
     { id: "rentalDays", label: "Rent Days" },
     { id: "price", label: "Price" },
   ];
@@ -51,12 +51,13 @@ export default function MachineManagemnt() {
         <main className="mt-10">
           <AdminTable
             buttonText="Add machine"
+            editProduct={true}
             showHeader={true}
             columns={columns}
             data={machines}
-            onClick={() => setOpen(true)}
+            onClick={() => {setOpen(true);}}
           />
-          <AddMachineDrawer open={open} onClose={() => setOpen(false)} />
+          <AddMachineDrawer  open={open} onClose={() => setOpen(false)} />
         </main>
       </div>
     </div>

@@ -470,6 +470,7 @@ const getMachinesApi = ()=>({
     });
 const DeleteMachineByID = {
     mutationFn: (id)=>{
+        console.log("id: ", id);
         return (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$utils$2f$axios$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["mutationFn"])(`products/${id}`, 'DELETE');
     }
 };
@@ -486,14 +487,17 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$zustand$2f$e
 ;
 const useMachineStore = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$zustand$2f$esm$2f$react$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["create"])((set)=>({
         machines: [],
-        setMachines: (newMachine)=>set((state)=>({
+        setAllMachines: (machines)=>set(()=>({
+                    machines: machines
+                })),
+        addMachine: (machine)=>set((state)=>({
                     machines: [
                         ...state.machines,
-                        newMachine
+                        machine
                     ]
                 })),
-        deleteMachine: (id)=>set((state)=>({
-                    machines: state.machines.filter((mac)=>mac.id !== id)
+        deleteMachineById: (id)=>set((state)=>({
+                    machines: state.machines.filter((machine)=>machine.id !== id)
                 }))
     }));
 }}),
@@ -521,7 +525,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$store$2f$machinesStor
 ;
 ;
 function useMachineManagement() {
-    const { control, handleSubmit, setValue, watch, formState: { errors, isValid } } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$hook$2d$form$2f$dist$2f$index$2e$esm$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useForm"])({
+    const { control, handleSubmit, setValue, getValues, watch, reset, formState: { errors, isValid } } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$hook$2d$form$2f$dist$2f$index$2e$esm$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useForm"])({
         resolver: (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$hookform$2f$resolvers$2f$yup$2f$dist$2f$yup$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["yupResolver"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f28$pages$292f28$user$292f$admin$2f$machineManagement$2f$schema$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["addMachineSchema"]),
         defaultValues: {
             title: "",
@@ -580,11 +584,13 @@ function useMachineManagement() {
             setMessage(err.message);
         }
     };
-    const { machines, setMachines } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$store$2f$machinesStore$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useMachineStore"])();
+    const { machines, setAllMachines, deleteMachineById } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$store$2f$machinesStore$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useMachineStore"])();
     const { data: allMacchines, isLoading, refetch, isError: onError, isSuccess: onSuccess } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$tanstack$2f$react$2d$query$2f$build$2f$modern$2f$useQuery$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useQuery"])((0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$api$2f$machineManagement$2f$index$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getMachinesApi"])());
     const getMachines = ()=>{
         if (onSuccess) {
-            setMachines(allMacchines?.data?.items);
+            if (allMacchines?.data?.items) {
+                setAllMachines(allMacchines.data.items);
+            }
         }
         if (isError) {
             setOpenToast(true);
@@ -592,12 +598,44 @@ function useMachineManagement() {
         }
     };
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
-        if (allMacchines && machines.length !== 1) {
+        if (allMacchines) {
             getMachines();
         }
     }, [
         allMacchines
     ]);
+    const { mutateAsync: deleteMachine } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$tanstack$2f$react$2d$query$2f$build$2f$modern$2f$useMutation$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useMutation"])({
+        mutationFn: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$api$2f$machineManagement$2f$index$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["DeleteMachineByID"].mutationFn
+    });
+    const handleDeleteMachine = async (id)=>{
+        try {
+            const response = await deleteMachine(id);
+            deleteMachineById(Number(id));
+            console.log("delete: ", response);
+        } catch (error) {
+            console.log("error: ", error);
+        }
+    };
+    const getMachineById = (id)=>{
+        return machines.find((machine)=>machine.id === Number(id)) || null;
+    };
+    const [currentMachineId, setCurrentMachineId] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])("");
+    const handelSetEditValues = (id)=>{
+        const machine = getMachineById(id);
+        setCurrentMachineId(String(machine?.id));
+        console.log("machine: ", machine);
+        reset({
+            title: machine?.title,
+            description: machine?.description,
+            price: machine?.price,
+            dailyIncome: machine?.dailyIncome,
+            image: machine?.image,
+            fee: machine?.fee,
+            rentalDays: machine?.rentalDays
+        });
+    };
+    const values = getValues();
+    console.log("values: ", values);
     const selectedImage = watch("image");
     return {
         control,
@@ -610,9 +648,224 @@ function useMachineManagement() {
         message,
         setOpenToast,
         openToast,
-        machines
+        machines,
+        handleDeleteMachine,
+        handelSetEditValues,
+        currentMachineId
     };
-}
+} // import React, { useEffect, useState } from "react";
+ // import { FormSubmitHandler, useForm } from "react-hook-form";
+ // import { AddMachineFormType } from "../types";
+ // import { addMachineSchema } from "../schema";
+ // import { yupResolver } from "@hookform/resolvers/yup";
+ // import { useMutation, useQuery } from "@tanstack/react-query";
+ // import {
+ //   addMachineApi,
+ //   DeleteMachineByID,
+ //   getMachinesApi,
+ // } from "@/api/machineManagement";
+ // import { useMachineStore } from "@/store/machinesStore";
+ // export default function useMachineManagement() {
+ //   const [isEditMode, setIsEditMode] = useState(false);
+ //   const [currentMachineId, setCurrentMachineId] = useState<number | null>(null);
+ //   const [selectedImage, setSelectedImage] = useState<File | null>(null);
+ //   const {
+ //     control,
+ //     handleSubmit,
+ //     setValue,
+ //     getValues,
+ //     watch,
+ //     reset,
+ //     formState: { errors, isValid },
+ //   } = useForm<AddMachineFormType>({
+ //     resolver: yupResolver(addMachineSchema),
+ //     mode: "onChange",
+ //     defaultValues: {
+ //       title: "",
+ //       description: "",
+ //       price: "",
+ //       dailyIncome: "",
+ //       fee: "",
+ //       rentalDays: 0,
+ //     },
+ //   });
+ //   const handleImageSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+ //     const file = event.target.files?.[0];
+ //     if (file) {
+ //       setSelectedImage(file);
+ //       setValue("image", file);
+ //     }
+ //   };
+ //   const {
+ //     mutateAsync: addMachine,
+ //     isSuccess,
+ //     isError,
+ //     error,
+ //   } = useMutation({
+ //     mutationFn: addMachineApi.mutationFn,
+ //   });
+ //   const [message, setMessage] = useState("");
+ //   const [openToast, setOpenToast] = useState(false);
+ //   const handleAddMachine: FormSubmitHandler<AddMachineFormType> = async (
+ //     data
+ //   ) => {
+ //     if (!selectedImage && !isEditMode) {
+ //       setOpenToast(true);
+ //       setMessage("Please upload an Image");
+ //       return;
+ //     }
+ //     try {
+ //       setMessage("");
+ //       const { title, description, price, dailyIncome, fee, rentalDays } =
+ //         data as any;
+ //       const formData = new FormData();
+ //       formData.append("title", title);
+ //       formData.append("description", description);
+ //       formData.append("price", price);
+ //       formData.append("dailyIncome", dailyIncome);
+ //       formData.append("fee", fee);
+ //       formData.append("rentalDays", String(rentalDays));
+ //       if (selectedImage) {
+ //         formData.append("image", selectedImage);
+ //       }
+ //       // If in edit mode, add the machine ID to the request
+ //       if (isEditMode && currentMachineId) {
+ //         formData.append("id", String(currentMachineId));
+ //         // Add your edit machine API call here
+ //       }
+ //       const response = await addMachine({ body: formData });
+ //       if (response.success === true) {
+ //         setOpenToast(true);
+ //         setMessage(
+ //           isEditMode
+ //             ? "Machine Updated Successfully"
+ //             : "Machine Added Successfully"
+ //         );
+ //         resetForm();
+ //       }
+ //       if (response.success === false) {
+ //         setOpenToast(true);
+ //         setMessage(response.message || "Operation failed");
+ //       }
+ //     } catch (err: any) {
+ //       setOpenToast(true);
+ //       setMessage(err.message);
+ //     }
+ //   };
+ //   const resetForm = () => {
+ //     reset({
+ //       title: "",
+ //       description: "",
+ //       price: "",
+ //       dailyIncome: "",
+ //       fee: "",
+ //       rentalDays: 0,
+ //     });
+ //     setSelectedImage(null);
+ //     setIsEditMode(false);
+ //     setCurrentMachineId(null);
+ //   };
+ //   const { machines, setAllMachines, deleteMachineById } = useMachineStore();
+ //   const {
+ //     data: allMacchines,
+ //     isLoading,
+ //     refetch,
+ //     isError: onError,
+ //     isSuccess: onSuccess,
+ //   } = useQuery(getMachinesApi());
+ //   const getMachines = () => {
+ //     if (onSuccess) {
+ //       if (allMacchines?.data?.items) {
+ //         setAllMachines(allMacchines.data.items);
+ //       }
+ //     }
+ //     if (isError) {
+ //       setOpenToast(true);
+ //       setMessage(error.message);
+ //     }
+ //   };
+ //   useEffect(() => {
+ //     if (allMacchines) {
+ //       getMachines();
+ //     }
+ //   }, [allMacchines]);
+ //   const { mutateAsync: deleteMachine } = useMutation({
+ //     mutationFn: DeleteMachineByID.mutationFn,
+ //   });
+ //   const handleDeleteMachine = async (id: string) => {
+ //     try {
+ //       const response = await deleteMachine(id);
+ //       deleteMachineById(Number(id));
+ //       if (response.success === true) {
+ //         setOpenToast(true);
+ //         setMessage("Machine Deleted Successfully");
+ //       } else {
+ //         setMessage(response.message);
+ //       }
+ //     } catch (error:any) {
+ //       setOpenToast(true);
+ //       setMessage(error);
+ //     }
+ //   };
+ //   const getMachineById = (id: string) => {
+ //     return machines.find((machine) => machine.id === Number(id)) || null;
+ //   };
+ //   const handelSetEditValues = (id: string) => {
+ //     const machine = getMachineById(id);
+ //     console.log("machine for editing: ", machine);
+ //     if (machine) {
+ //       // Use setValue for each field individually instead of reset()
+ //       setValue("title", machine.title || "", {
+ //         shouldValidate: true,
+ //         shouldDirty: true,
+ //       });
+ //       setValue("description", machine.description || "", {
+ //         shouldValidate: true,
+ //         shouldDirty: true,
+ //       });
+ //       setValue("price", machine.price || "", {
+ //         shouldValidate: true,
+ //         shouldDirty: true,
+ //       });
+ //       setValue("dailyIncome", machine.dailyIncome || "", {
+ //         shouldValidate: true,
+ //         shouldDirty: true,
+ //       });
+ //       setValue("fee", machine.fee || "", {
+ //         shouldValidate: true,
+ //         shouldDirty: true,
+ //       });
+ //       setValue("rentalDays", machine.rentalDays || 0, {
+ //         shouldValidate: true,
+ //         shouldDirty: true,
+ //       });
+ //       // Set edit mode and current machine ID
+ //       setIsEditMode(true);
+ //       setCurrentMachineId(machine.id);
+ //     }
+ //   };
+ //   // Clear form and reset edit mode
+ //   const handleCancelEdit = () => {
+ //     resetForm();
+ //   };
+ //   return {
+ //     control,
+ //     errors,
+ //     handleSubmit,
+ //     selectedImage,
+ //     handleImageSelect,
+ //     handleAddMachine,
+ //     isValid,
+ //     message,
+ //     setOpenToast,
+ //     openToast,
+ //     machines,
+ //     handleDeleteMachine,
+ //     handelSetEditValues,
+ //     isEditMode,
+ //     handleCancelEdit,
+ //   };
+ // }
 }}),
 "[project]/src/app/components/Toast.tsx [app-ssr] (ecmascript)": ((__turbopack_context__) => {
 "use strict";
@@ -656,6 +909,158 @@ const __TURBOPACK__default__export__ = Toast;
 
 var { g: global, __dirname } = __turbopack_context__;
 {
+// "use client";
+// import {
+//   Box,
+//   Drawer,
+//   Typography,
+//   TextField,
+//   Button,
+//   MenuItem,
+//   InputLabel,
+//   Select,
+//   FormControl,
+// } from "@mui/material";
+// import { useEffect, useState } from "react";
+// import FormInput from "../ui/Inputs/FormInput";
+// import useMachineManagement from "@/app/(pages)/(user)/admin/machineManagement/hooks";
+// import Toast from "../Toast";
+// const levels = ["Low", "Medium", "High"]; // Example levels
+// export default function AddMachineDrawer({
+//   open,
+//   onClose,
+// }: {
+//   open: boolean;
+//   onClose: () => void;
+// }) {
+//   const {
+//     control,
+//     errors,
+//     selectedImage,
+//     handleImageSelect,
+//     handleSubmit,
+//     handleAddMachine,
+//     isValid,
+//     message,
+//     openToast,
+//     setOpenToast,
+//     currentMachineId,
+//     handelSetEditValues,
+//   } = useMachineManagement();
+//   useEffect(() => {
+//     if (open && currentMachineId) {
+//       handelSetEditValues(currentMachineId); // Prefill form on drawer open
+//     }
+//   }, [open, currentMachineId]);
+//   return (
+//     <Drawer
+//       anchor="right"
+//       open={open}
+//       onClose={onClose}
+//       PaperProps={{
+//         sx: {
+//           width: { xs: "100%", sm: 400 },
+//           bgcolor: "black",
+//           color: "#fff",
+//           p: 3,
+//         },
+//       }}
+//     >
+//       <Toast open={openToast} message={message} setOpen={setOpenToast} />
+//       <Typography variant="h6" fontWeight={600} gutterBottom>
+//         Add Machine
+//       </Typography>
+//       {/* <TextField
+//         name="title"
+//         label="Title"
+//         variant="outlined"
+//         fullWidth
+//         value={form.title}
+//         onChange={handleChange}
+//         margin="normal"
+//         InputLabelProps={{ style: { color: "#aaa" } }}
+//         InputProps={{ style: { color: "#fff" } }}
+//       /> */}
+//       <FormInput
+//         name="title"
+//         label="Title"
+//         control={control}
+//         errors={errors}
+//         rules={{ required: "Title is required" }}
+//       />
+//       <FormInput
+//         name="description"
+//         label="Descriptions"
+//         control={control}
+//         errors={errors}
+//         multiline
+//         rows={4}
+//       />
+//       <Button
+//         component="label"
+//         variant="outlined"
+//         fullWidth
+//         sx={{
+//           my: 2,
+//           color: "#aaa",
+//           borderColor: "#555",
+//           textTransform: "none",
+//         }}
+//       >
+//         {selectedImage ? selectedImage.name : "Choose Image"}
+//         <input type="file" hidden onChange={handleImageSelect} />
+//       </Button>
+//       <FormInput name="price" label="Price" control={control} errors={errors} />
+//       <FormInput
+//         name="dailyIncome"
+//         label="Daily Income"
+//         control={control}
+//         errors={errors}
+//       />
+//       <FormInput name="fee" label="Fee" control={control} errors={errors} />
+//       <FormInput
+//         name="rentalDays"
+//         label="Rental Days"
+//         control={control}
+//         errors={errors}
+//       />
+//       {/* <FormControl fullWidth margin="normal">
+//         <InputLabel sx={{ color: "#aaa" }}>Level</InputLabel>
+//         <Select
+//           name="level"
+//           value={form.level}
+//           label="Level"
+//           onChange={handleChange}
+//           sx={{ color: "#fff" }}
+//         >
+//           {levels.map((lvl) => (
+//             <MenuItem key={lvl} value={lvl}>
+//               {lvl}
+//             </MenuItem>
+//           ))}
+//         </Select>
+//       </FormControl> */}
+//       <Box display="flex" justifyContent="space-between" mt={4} gap={2}>
+//         <Button
+//           variant="contained"
+//           fullWidth
+//           sx={{ bgcolor: "#7367F0", textTransform: "none" }}
+//           onClick={handleSubmit(handleAddMachine)}
+//           disabled={!isValid}
+//         >
+//           Add
+//         </Button>
+//         <Button
+//           fullWidth
+//           sx={{ color: "#a64445", textTransform: "none", bgcolor: "#3a2b2b" }}
+//           onClick={onClose}
+//         >
+//           Discard
+//         </Button>
+//       </Box>
+//     </Drawer>
+//   );
+// }
 __turbopack_context__.s({
     "default": (()=>AddMachineDrawer)
 });
@@ -664,6 +1069,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$mat
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Drawer$2f$Drawer$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Drawer$3e$__ = __turbopack_context__.i("[project]/node_modules/@mui/material/esm/Drawer/Drawer.js [app-ssr] (ecmascript) <export default as Drawer>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Typography$2f$Typography$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Typography$3e$__ = __turbopack_context__.i("[project]/node_modules/@mui/material/esm/Typography/Typography.js [app-ssr] (ecmascript) <export default as Typography>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Button$2f$Button$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Button$3e$__ = __turbopack_context__.i("[project]/node_modules/@mui/material/esm/Button/Button.js [app-ssr] (ecmascript) <export default as Button>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/server/route-modules/app-page/vendored/ssr/react.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$ui$2f$Inputs$2f$FormInput$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/app/components/ui/Inputs/FormInput.tsx [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f28$pages$292f28$user$292f$admin$2f$machineManagement$2f$hooks$2f$index$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/app/(pages)/(user)/admin/machineManagement/hooks/index.ts [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$Toast$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/app/components/Toast.tsx [app-ssr] (ecmascript)");
@@ -673,17 +1079,29 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$
 ;
 ;
 ;
-const levels = [
-    "Low",
-    "Medium",
-    "High"
-]; // Example levels
-function AddMachineDrawer({ open, onClose }) {
-    const { control, errors, selectedImage, handleImageSelect, handleSubmit, handleAddMachine, isValid, message, openToast, setOpenToast } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f28$pages$292f28$user$292f$admin$2f$machineManagement$2f$hooks$2f$index$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"])();
+;
+function AddMachineDrawer({ open, onClose, editMachineId }) {
+    const { control, errors, selectedImage, handleImageSelect, handleSubmit, handleAddMachine, isValid, message, openToast, setOpenToast, handelSetEditValues } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f28$pages$292f28$user$292f$admin$2f$machineManagement$2f$hooks$2f$index$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"])();
+    // Set edit values when drawer opens with an editMachineId
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
+        if (open && editMachineId) {
+            // Directly call handelSetEditValues without setTimeout
+            handelSetEditValues(editMachineId);
+        }
+    }, [
+        open,
+        editMachineId,
+        handelSetEditValues
+    ]);
+    // Handle closing the drawer
+    const handleClose = ()=>{
+        // handleCancelEdit();
+        onClose();
+    };
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Drawer$2f$Drawer$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Drawer$3e$__["Drawer"], {
         anchor: "right",
         open: open,
-        onClose: onClose,
+        onClose: handleClose,
         PaperProps: {
             sx: {
                 width: {
@@ -702,17 +1120,16 @@ function AddMachineDrawer({ open, onClose }) {
                 setOpen: setOpenToast
             }, void 0, false, {
                 fileName: "[project]/src/app/components/drawers/AddMachineDrawer.tsx",
-                lineNumber: 55,
+                lineNumber: 230,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Typography$2f$Typography$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Typography$3e$__["Typography"], {
                 variant: "h6",
                 fontWeight: 600,
-                gutterBottom: true,
-                children: "Add Machine"
+                gutterBottom: true
             }, void 0, false, {
                 fileName: "[project]/src/app/components/drawers/AddMachineDrawer.tsx",
-                lineNumber: 56,
+                lineNumber: 231,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$ui$2f$Inputs$2f$FormInput$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
@@ -725,7 +1142,7 @@ function AddMachineDrawer({ open, onClose }) {
                 }
             }, void 0, false, {
                 fileName: "[project]/src/app/components/drawers/AddMachineDrawer.tsx",
-                lineNumber: 71,
+                lineNumber: 235,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$ui$2f$Inputs$2f$FormInput$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
@@ -737,7 +1154,7 @@ function AddMachineDrawer({ open, onClose }) {
                 rows: 4
             }, void 0, false, {
                 fileName: "[project]/src/app/components/drawers/AddMachineDrawer.tsx",
-                lineNumber: 78,
+                lineNumber: 243,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Button$2f$Button$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Button$3e$__["Button"], {
@@ -758,13 +1175,13 @@ function AddMachineDrawer({ open, onClose }) {
                         onChange: handleImageSelect
                     }, void 0, false, {
                         fileName: "[project]/src/app/components/drawers/AddMachineDrawer.tsx",
-                        lineNumber: 99,
+                        lineNumber: 265,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/components/drawers/AddMachineDrawer.tsx",
-                lineNumber: 87,
+                lineNumber: 253,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$ui$2f$Inputs$2f$FormInput$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
@@ -774,7 +1191,7 @@ function AddMachineDrawer({ open, onClose }) {
                 errors: errors
             }, void 0, false, {
                 fileName: "[project]/src/app/components/drawers/AddMachineDrawer.tsx",
-                lineNumber: 102,
+                lineNumber: 268,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$ui$2f$Inputs$2f$FormInput$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
@@ -784,7 +1201,7 @@ function AddMachineDrawer({ open, onClose }) {
                 errors: errors
             }, void 0, false, {
                 fileName: "[project]/src/app/components/drawers/AddMachineDrawer.tsx",
-                lineNumber: 104,
+                lineNumber: 275,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$ui$2f$Inputs$2f$FormInput$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
@@ -794,17 +1211,18 @@ function AddMachineDrawer({ open, onClose }) {
                 errors: errors
             }, void 0, false, {
                 fileName: "[project]/src/app/components/drawers/AddMachineDrawer.tsx",
-                lineNumber: 111,
+                lineNumber: 282,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$ui$2f$Inputs$2f$FormInput$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
                 name: "rentalDays",
                 label: "Rental Days",
                 control: control,
-                errors: errors
+                errors: errors,
+                type: "number"
             }, void 0, false, {
                 fileName: "[project]/src/app/components/drawers/AddMachineDrawer.tsx",
-                lineNumber: 113,
+                lineNumber: 289,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Box$2f$Box$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Box$3e$__["Box"], {
@@ -821,11 +1239,10 @@ function AddMachineDrawer({ open, onClose }) {
                             textTransform: "none"
                         },
                         onClick: handleSubmit(handleAddMachine),
-                        disabled: !isValid,
-                        children: "Add"
+                        disabled: !isValid
                     }, void 0, false, {
                         fileName: "[project]/src/app/components/drawers/AddMachineDrawer.tsx",
-                        lineNumber: 138,
+                        lineNumber: 298,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Button$2f$Button$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Button$3e$__["Button"], {
@@ -835,23 +1252,23 @@ function AddMachineDrawer({ open, onClose }) {
                             textTransform: "none",
                             bgcolor: "#3a2b2b"
                         },
-                        onClick: onClose,
+                        onClick: handleClose,
                         children: "Discard"
                     }, void 0, false, {
                         fileName: "[project]/src/app/components/drawers/AddMachineDrawer.tsx",
-                        lineNumber: 147,
+                        lineNumber: 307,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/components/drawers/AddMachineDrawer.tsx",
-                lineNumber: 137,
+                lineNumber: 297,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/components/drawers/AddMachineDrawer.tsx",
-        lineNumber: 42,
+        lineNumber: 217,
         columnNumber: 5
     }, this);
 }
@@ -945,6 +1362,8 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$ico
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$icons$2d$material$2f$esm$2f$MoreVert$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/@mui/icons-material/esm/MoreVert.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/server/route-modules/app-page/vendored/ssr/react.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$modals$2f$Modal$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/app/components/modals/Modal.tsx [app-ssr] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f28$pages$292f28$user$292f$admin$2f$machineManagement$2f$hooks$2f$index$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/app/(pages)/(user)/admin/machineManagement/hooks/index.ts [app-ssr] (ecmascript)");
+;
 ;
 ;
 ;
@@ -965,8 +1384,10 @@ const statusBgColors = {
     Success: "#28C76F33",
     Failed: "#F0443833"
 };
-const AdminTable = ({ columns, data, total = 100, rowsPerPage = 5, icon1 = true, icon2 = true, title, onClick, actions = true, showHeader = false, buttonText, showSearch = true, showButton = true })=>{
+const AdminTable = ({ columns, data, total = 100, rowsPerPage = 5, icon1 = true, icon2 = true, title, onClick, actions = true, showHeader = false, buttonText, showSearch = true, showButton = true, editProduct = false })=>{
+    const { handleDeleteMachine, handelSetEditValues } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f28$pages$292f28$user$292f$admin$2f$machineManagement$2f$hooks$2f$index$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"])();
     const [page, setPage] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(1);
+    const [DeleteID, setDeleteID] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])("");
     const [statusTab, setStatusTab] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])("All");
     const [timeTab, setTimeTab] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])("All Time");
     const [isApproveWithdrawModalOpen, setIsApproveWithdrawModalOpen] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
@@ -1011,7 +1432,7 @@ const AdminTable = ({ columns, data, total = 100, rowsPerPage = 5, icon1 = true,
                 children: title
             }, void 0, false, {
                 fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                lineNumber: 123,
+                lineNumber: 126,
                 columnNumber: 7
             }, this),
             showHeader ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Box$2f$Box$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Box$3e$__["Box"], {
@@ -1046,7 +1467,7 @@ const AdminTable = ({ columns, data, total = 100, rowsPerPage = 5, icon1 = true,
                             }
                         }, void 0, false, {
                             fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                            lineNumber: 199,
+                            lineNumber: 202,
                             columnNumber: 15
                         }, this),
                         showButton && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Button$2f$Button$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Button$3e$__["Button"], {
@@ -1058,7 +1479,7 @@ const AdminTable = ({ columns, data, total = 100, rowsPerPage = 5, icon1 = true,
                                 children: "＋"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                                lineNumber: 219,
+                                lineNumber: 222,
                                 columnNumber: 30
                             }, void 0),
                             sx: {
@@ -1076,7 +1497,7 @@ const AdminTable = ({ columns, data, total = 100, rowsPerPage = 5, icon1 = true,
                             children: buttonText
                         }, void 0, false, {
                             fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                            lineNumber: 217,
+                            lineNumber: 220,
                             columnNumber: 17
                         }, this)
                     ]
@@ -1084,7 +1505,7 @@ const AdminTable = ({ columns, data, total = 100, rowsPerPage = 5, icon1 = true,
                     children: [
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Box$2f$Box$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Box$3e$__["Box"], {}, void 0, false, {
                             fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                            lineNumber: 240,
+                            lineNumber: 243,
                             columnNumber: 15
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Button$2f$Button$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Button$3e$__["Button"], {
@@ -1096,7 +1517,7 @@ const AdminTable = ({ columns, data, total = 100, rowsPerPage = 5, icon1 = true,
                                 children: "＋"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                                lineNumber: 243,
+                                lineNumber: 246,
                                 columnNumber: 28
                             }, void 0),
                             sx: {
@@ -1115,14 +1536,14 @@ const AdminTable = ({ columns, data, total = 100, rowsPerPage = 5, icon1 = true,
                             children: buttonText
                         }, void 0, false, {
                             fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                            lineNumber: 241,
+                            lineNumber: 244,
                             columnNumber: 15
                         }, this)
                     ]
                 }, void 0, true)
             }, void 0, false, {
                 fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                lineNumber: 189,
+                lineNumber: 192,
                 columnNumber: 9
             }, this) : // Tabs Block
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Box$2f$Box$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Box$3e$__["Box"], {
@@ -1162,12 +1583,12 @@ const AdminTable = ({ columns, data, total = 100, rowsPerPage = 5, icon1 = true,
                                 }
                             }, tab, false, {
                                 fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                                lineNumber: 282,
+                                lineNumber: 285,
                                 columnNumber: 15
                             }, this))
                     }, void 0, false, {
                         fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                        lineNumber: 272,
+                        lineNumber: 275,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Tabs$2f$Tabs$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Tabs$3e$__["Tabs"], {
@@ -1199,18 +1620,18 @@ const AdminTable = ({ columns, data, total = 100, rowsPerPage = 5, icon1 = true,
                                 }
                             }, tab, false, {
                                 fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                                lineNumber: 309,
+                                lineNumber: 312,
                                 columnNumber: 17
                             }, this))
                     }, void 0, false, {
                         fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                        lineNumber: 298,
+                        lineNumber: 301,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                lineNumber: 266,
+                lineNumber: 269,
                 columnNumber: 9
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$TableContainer$2f$TableContainer$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__TableContainer$3e$__["TableContainer"], {
@@ -1232,7 +1653,7 @@ const AdminTable = ({ columns, data, total = 100, rowsPerPage = 5, icon1 = true,
                                             children: col.label
                                         }, col.id, false, {
                                             fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                                            lineNumber: 334,
+                                            lineNumber: 337,
                                             columnNumber: 17
                                         }, this)),
                                     actions && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$TableCell$2f$TableCell$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__TableCell$3e$__["TableCell"], {
@@ -1243,18 +1664,18 @@ const AdminTable = ({ columns, data, total = 100, rowsPerPage = 5, icon1 = true,
                                         children: "Action"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                                        lineNumber: 346,
+                                        lineNumber: 349,
                                         columnNumber: 17
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                                lineNumber: 332,
+                                lineNumber: 335,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                            lineNumber: 331,
+                            lineNumber: 334,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$TableBody$2f$TableBody$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__TableBody$3e$__["TableBody"], {
@@ -1278,12 +1699,12 @@ const AdminTable = ({ columns, data, total = 100, rowsPerPage = 5, icon1 = true,
                                                     }
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                                                    lineNumber: 365,
+                                                    lineNumber: 368,
                                                     columnNumber: 25
                                                 }, this) : row[col.id]
                                             }, col.id, false, {
                                                 fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                                                lineNumber: 363,
+                                                lineNumber: 366,
                                                 columnNumber: 21
                                             }, this)),
                                         actions && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$TableCell$2f$TableCell$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__TableCell$3e$__["TableCell"], {
@@ -1298,12 +1719,12 @@ const AdminTable = ({ columns, data, total = 100, rowsPerPage = 5, icon1 = true,
                                                                 }
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                                                                lineNumber: 384,
+                                                                lineNumber: 389,
                                                                 columnNumber: 29
                                                             }, this)
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                                                            lineNumber: 383,
+                                                            lineNumber: 386,
                                                             columnNumber: 27
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Popover$2f$Popover$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Popover$3e$__["Popover"], {
@@ -1321,7 +1742,7 @@ const AdminTable = ({ columns, data, total = 100, rowsPerPage = 5, icon1 = true,
                                                                     children: "Approved"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                                                                    lineNumber: 397,
+                                                                    lineNumber: 402,
                                                                     columnNumber: 29
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$MenuItem$2f$MenuItem$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__MenuItem$3e$__["MenuItem"], {
@@ -1329,67 +1750,77 @@ const AdminTable = ({ columns, data, total = 100, rowsPerPage = 5, icon1 = true,
                                                                     children: "Suspended"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                                                                    lineNumber: 400,
+                                                                    lineNumber: 405,
                                                                     columnNumber: 29
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$MenuItem$2f$MenuItem$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__MenuItem$3e$__["MenuItem"], {
-                                                                    onClick: ()=>handleOption("Delete"),
+                                                                    onClick: ()=>{
+                                                                        handleOption("Delete");
+                                                                        setDeleteID(String(row.id));
+                                                                    },
                                                                     children: "Delete"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                                                                    lineNumber: 403,
+                                                                    lineNumber: 408,
                                                                     columnNumber: 29
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                                                            lineNumber: 387,
+                                                            lineNumber: 392,
                                                             columnNumber: 27
                                                         }, this)
                                                     ]
                                                 }, void 0, true),
                                                 icon2 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$IconButton$2f$IconButton$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__IconButton$3e$__["IconButton"], {
-                                                    onClick: onClick,
+                                                    onClick: ()=>{
+                                                        if (editProduct) {
+                                                            handelSetEditValues(String(row.id));
+                                                            onClick();
+                                                        } else {
+                                                            onClick();
+                                                        }
+                                                    },
                                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$icons$2d$material$2f$esm$2f$Edit$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
                                                         sx: {
                                                             color: "#A78BFA"
                                                         }
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                                                        lineNumber: 411,
+                                                        lineNumber: 429,
                                                         columnNumber: 27
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                                                    lineNumber: 410,
+                                                    lineNumber: 420,
                                                     columnNumber: 25
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                                            lineNumber: 380,
+                                            lineNumber: 383,
                                             columnNumber: 21
                                         }, this)
                                     ]
                                 }, row.id, true, {
                                     fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                                    lineNumber: 358,
+                                    lineNumber: 361,
                                     columnNumber: 17
                                 }, this))
                         }, void 0, false, {
                             fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                            lineNumber: 354,
+                            lineNumber: 357,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                    lineNumber: 330,
+                    lineNumber: 333,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                lineNumber: 329,
+                lineNumber: 332,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Box$2f$Box$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Box$3e$__["Box"], {
@@ -1411,7 +1842,7 @@ const AdminTable = ({ columns, data, total = 100, rowsPerPage = 5, icon1 = true,
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                        lineNumber: 429,
+                        lineNumber: 447,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Pagination$2f$Pagination$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Pagination$3e$__["Pagination"], {
@@ -1431,13 +1862,13 @@ const AdminTable = ({ columns, data, total = 100, rowsPerPage = 5, icon1 = true,
                         }
                     }, void 0, false, {
                         fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                        lineNumber: 433,
+                        lineNumber: 451,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                lineNumber: 423,
+                lineNumber: 441,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$modals$2f$Modal$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
@@ -1449,7 +1880,7 @@ const AdminTable = ({ columns, data, total = 100, rowsPerPage = 5, icon1 = true,
                         children: "Approve withdrawl?"
                     }, void 0, false, {
                         fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                        lineNumber: 454,
+                        lineNumber: 472,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1457,7 +1888,7 @@ const AdminTable = ({ columns, data, total = 100, rowsPerPage = 5, icon1 = true,
                         children: "Do you want to approve withdrawal of $10 of User John Doe?"
                     }, void 0, false, {
                         fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                        lineNumber: 455,
+                        lineNumber: 473,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1472,18 +1903,18 @@ const AdminTable = ({ columns, data, total = 100, rowsPerPage = 5, icon1 = true,
                             children: "Confirm"
                         }, void 0, false, {
                             fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                            lineNumber: 459,
+                            lineNumber: 477,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                        lineNumber: 458,
+                        lineNumber: 476,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                lineNumber: 450,
+                lineNumber: 468,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$modals$2f$Modal$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
@@ -1495,7 +1926,7 @@ const AdminTable = ({ columns, data, total = 100, rowsPerPage = 5, icon1 = true,
                         children: "Suspend withdrawal?"
                     }, void 0, false, {
                         fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                        lineNumber: 475,
+                        lineNumber: 490,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1503,7 +1934,7 @@ const AdminTable = ({ columns, data, total = 100, rowsPerPage = 5, icon1 = true,
                         children: "Do you want to Suspend withdrawal of $10 of User John Doe?"
                     }, void 0, false, {
                         fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                        lineNumber: 476,
+                        lineNumber: 491,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1518,18 +1949,18 @@ const AdminTable = ({ columns, data, total = 100, rowsPerPage = 5, icon1 = true,
                             children: "Suspended"
                         }, void 0, false, {
                             fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                            lineNumber: 480,
+                            lineNumber: 495,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                        lineNumber: 479,
+                        lineNumber: 494,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                lineNumber: 471,
+                lineNumber: 489,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$modals$2f$Modal$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
@@ -1541,7 +1972,7 @@ const AdminTable = ({ columns, data, total = 100, rowsPerPage = 5, icon1 = true,
                         children: "Delete Machine?"
                     }, void 0, false, {
                         fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                        lineNumber: 496,
+                        lineNumber: 508,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1549,7 +1980,7 @@ const AdminTable = ({ columns, data, total = 100, rowsPerPage = 5, icon1 = true,
                         children: "Do you want to Delete the Machine?"
                     }, void 0, false, {
                         fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                        lineNumber: 497,
+                        lineNumber: 509,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1561,27 +1992,31 @@ const AdminTable = ({ columns, data, total = 100, rowsPerPage = 5, icon1 = true,
                                 marginTop: "22px",
                                 marginLeft: "auto"
                             },
+                            onClick: async ()=>{
+                                await handleDeleteMachine(DeleteID);
+                                setIsDeleteModalOpen(false);
+                            },
                             children: "Delete"
                         }, void 0, false, {
                             fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                            lineNumber: 501,
+                            lineNumber: 513,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                        lineNumber: 500,
+                        lineNumber: 512,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                lineNumber: 492,
+                lineNumber: 507,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-        lineNumber: 122,
+        lineNumber: 125,
         columnNumber: 5
     }, this);
 };
@@ -1609,12 +2044,12 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f28$pages$292f28
 ;
 ;
 function MachineManagemnt() {
-    const { machines } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f28$pages$292f28$user$292f$admin$2f$machineManagement$2f$hooks$2f$index$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"])();
+    const { machines, handelSetEditValues } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f28$pages$292f28$user$292f$admin$2f$machineManagement$2f$hooks$2f$index$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"])();
     console.log(machines);
     const columns = [
         {
-            id: "name",
-            label: "User"
+            id: "title",
+            label: "Title"
         },
         {
             id: "rentalDays",
@@ -1674,10 +2109,13 @@ function MachineManagemnt() {
                     children: [
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$ui$2f$tables$2f$AdminTable$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
                             buttonText: "Add machine",
+                            editProduct: true,
                             showHeader: true,
                             columns: columns,
                             data: machines,
-                            onClick: ()=>setOpen(true)
+                            onClick: ()=>{
+                                setOpen(true);
+                            }
                         }, void 0, false, {
                             fileName: "[project]/src/app/(pages)/(user)/admin/machineManagement/page.tsx",
                             lineNumber: 52,
@@ -1688,7 +2126,7 @@ function MachineManagemnt() {
                             onClose: ()=>setOpen(false)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(pages)/(user)/admin/machineManagement/page.tsx",
-                            lineNumber: 59,
+                            lineNumber: 60,
                             columnNumber: 11
                         }, this)
                     ]

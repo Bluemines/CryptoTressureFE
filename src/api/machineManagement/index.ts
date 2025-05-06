@@ -14,7 +14,8 @@ export const getMachinesApi = () => ({
 });
 
 export const DeleteMachineByID = {
-    mutationFn: (id: any) => {
+    mutationFn: (id: string) => {
+        console.log("id: ",id)
         return mutationFn(`products/${id}`, 'DELETE');
     },
 };
