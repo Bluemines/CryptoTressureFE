@@ -63,63 +63,63 @@ const Login = () => {
         Please sign in to your account and start the adventure
       </div>
 
-      <div className='space-y-4'>
-        <div className='space-y-1'>
+      <div className="space-y-4">
+        <div className="space-y-1">
           <FormInput
-            name='email'
+            name="email"
             control={control}
-            label='Email or Username'
+            label="Email or Username"
             errors={errors}
             rules={{ required: "Email is required" }}
           />
           <FormInput
-            name='password'
+            name="password"
             control={control}
-            label='Password'
-            type='password'
+            label="Password"
+            type="password"
             errors={errors}
             rules={{ required: "Password is required" }}
           />
           <Button
-            variant='text'
-            className='block text-[#7367F0]'
+            variant="text"
+            className="block text-[#7367F0]"
             onClick={() => setIsForgotPasswordModalOpen(true)}
           >
             Forgot Password?
           </Button>
         </div>
 
-        <div className='flex items-center gap-2'>
-          <Checkbox className='!p-0' />{" "}
-          <span className='text-muted'>Remember Me</span>
+        <div className="flex items-center gap-2">
+          <Checkbox className="!p-0" />{" "}
+          <span className="text-muted">Remember Me</span>
         </div>
 
         <Button
-          variant='contained'
+          variant="contained"
           fullWidth
           onClick={handleSubmit(handleLogin)}
         >
           Sign in
         </Button>
 
-        <div className='text-sm text-center block mt-2'>
+        <div className="text-sm text-center block mt-2">
           New on our platform?{" "}
-          <Link className='text-primary' href='/register'>
+          <Link className="text-primary" href="/register">
             Create an account
           </Link>
         </div>
 
         <Divider>Or</Divider>
 
-        <div className='flex items-center justify-center gap-2 mt-4'>
-          <div className='h-[38px] w-[38px] bg-[#1d2b48] grid place-items-center rounded'>
-            <img src='/icons/fb.png' alt='' />
+        <div className="flex items-center justify-center gap-2 mt-4">
+          <div className="h-[38px] w-[38px] bg-[#1d2b48] grid place-items-center rounded">
+            <img src="/icons/fb.png" alt="" />
           </div>
-          <div className='h-[38px] w-[38px] bg-[#0d3148] grid place-items-center rounded'>
-            <img src='/icons/twitter.png' alt='' />
+          <div className="h-[38px] w-[38px] bg-[#0d3148] grid place-items-center rounded">
+            <img src="/icons/twitter.png" alt="" />
           </div>
-          <div className='h-[38px] w-[38px] bg-[#3f1917] grid place-items-center rounded'>
-            <img src='/icons/google.png' alt='' />
+          <div className="h-[38px] w-[38px] bg-[#3f1917] grid place-items-center rounded">
+            <img src="/icons/google.png" alt="" />
           </div>
         </div>
       </div>
@@ -230,7 +230,7 @@ const Login = () => {
         </div>
       </Modal>
     </div>
-  )
-}
+  );
+};
 
-export default Login
+export default Login;
