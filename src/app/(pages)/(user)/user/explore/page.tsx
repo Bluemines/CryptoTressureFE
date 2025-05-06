@@ -2,9 +2,12 @@
 
 import { NFTCard } from "@/app/components/cards/NFTCard";
 import { useRouter } from "next/navigation";
+import usePopProducts from "./hooks";
 
 export default function Explore() {
   const router = useRouter();
+  const { products } = usePopProducts();
+  console.log(products);
   const nftData = [
     {
       image: "https://images.unsplash.com/photo-1531297484001-80022131f5a1",
