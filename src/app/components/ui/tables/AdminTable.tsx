@@ -85,6 +85,8 @@ const AdminTable = ({
     useState(false)
   const [isSuspendedModalOpen, setIsSuspendedModalOpen] =
     useState(false)
+  const [isDeleteModalOpen, setIsDeleteModalOpen] =
+    useState(false)
 
   const handlePageChange = (_: any, value: number) => {
     setPage(value)
@@ -104,12 +106,14 @@ const AdminTable = ({
   const id = open ? "status-popover" : undefined
 
   const handleOption = (status: string) => {
-    console.log("Selected:", status)
     if (status === "Approved") {
       setIsApproveWithdrawModalOpen(true)
     }
     if (status === "Suspended") {
       setIsSuspendedModalOpen(true)
+    }
+    if (status === "Delete") {
+      setIsDeleteModalOpen(true)
     }
     handleClose()
   }
@@ -396,6 +400,9 @@ const AdminTable = ({
                             <MenuItem onClick={() => handleOption("Suspended")}>
                               Suspended
                             </MenuItem>
+                            <MenuItem onClick={() => handleOption("Delete")}>
+                              Delete
+                            </MenuItem>
                           </Popover>
                         </>
                       )}
@@ -479,6 +486,27 @@ const AdminTable = ({
             }}
           >
             Suspended
+          </Button>
+        </div>
+      </Modal>
+      <Modal
+        open={isDeleteModalOpen}
+        setOpen={setIsDeleteModalOpen}
+      >
+        <div className='text-lg font-medium'>Delete Machine?</div>
+        <div className='text-[#A9A9A9] mt-4'>
+          Do you want to Delete the Machine?
+        </div>
+        <div className='flex'>
+          <Button
+            sx={{
+              backgroundColor: "#F04438",
+              color: "#fff",
+              marginTop: "22px",
+              marginLeft: "auto",
+            }}
+          >
+            Delete
           </Button>
         </div>
       </Modal>
