@@ -1,6 +1,6 @@
 "use client"
 
-import { Button, Checkbox, Snackbar, TextField } from "@mui/material"
+import { Button, Checkbox, Snackbar } from "@mui/material"
 import { Divider } from "antd"
 import Link from "next/link"
 import { useEffect, useState } from "react"
@@ -10,9 +10,9 @@ import useLogin, {
   useForgetPassword,
   useResetPassword,
 } from "../(auth)/login/hooks"
-import OTP from "antd/es/input/OTP"
 import React from "react"
 import { Controller } from "react-hook-form"
+import OTP from "antd/es/input/OTP"
 
 const Login = () => {
   const [IsForgotPasswordModalOpen, setIsForgotPasswordModalOpen] =
@@ -20,9 +20,6 @@ const Login = () => {
   const [isResetPasswordModalOpen, setIsResetPasswordModalOpen] =
     useState<boolean>(false)
   const [is2FAModalOpen, setIs2FAModalOpen] = useState<boolean>(false)
-
-  const [otpValue, setOtpValue] = useState("")
-
   const { control, handleSubmit, errors, handleLogin, open, setOpen, message } =
     useLogin()
   const {
@@ -32,6 +29,7 @@ const Login = () => {
     handleForgetPassword,
     message: forgetPassMessage,
     forgetSuccess,
+    watch: emailWatch,
   } = useForgetPassword()
   const {
     control: resetPassControl,
@@ -40,30 +38,15 @@ const Login = () => {
     handleResetPassword,
     message: resetPassMessage,
     resetSuccess,
-  } = useResetPassword()
-
+    watch
+  } = useResetPassword(emailWatch('email'))
   useEffect(() => {
     if (forgetSuccess) {
       setIsForgotPasswordModalOpen(false)
       setIs2FAModalOpen(true)
     }
   }, [forgetSuccess])
-
-  const [resetPassForm, setResetPassForm] = useState({
-    newPassword: "",
-    confirmPassword: "",
-  })
-  const handlePassChange = (e: any) => {
-    setForm({ ...form, [e.target.name]: e.target.value })
-  }
-
-  const [form, setForm] = useState({
-    email: "",
-  })
-
-  const handleChange = (e: any) => {
-    setForm({ ...form, [e.target.name]: e.target.value })
-  }
+  
   return (
     <div className='w-full max-w-md'>
       <div className='text-[#737373] font-medium text-2xl'>LOGO</div>
@@ -177,7 +160,7 @@ const Login = () => {
           <div className='text-[#737373] text-sm'>
             We sent a verification code to your Email. Enter the code from the
             eamil in the field below.
-            <div>*****d20@gmail.com</div>
+            <div>{emailWatch('email')}</div>
           </div>
 
           <div className='w-full'>
@@ -199,7 +182,7 @@ const Login = () => {
             variant='contained'
             fullWidth
             onClick={() => {
-              if (otpValue.length > 5) {
+              if (watch('code').length >= 6) {
                 setIsResetPasswordModalOpen(true)
               }
             }}
@@ -220,7 +203,7 @@ const Login = () => {
         <div className='space-y-4'>
           <div className='text-[#737373] text-2xl text-center'>LOGO</div>
           <div className='font-medium text-xl'>Reset Password 🔒</div>
-          <div className='text-[#737373] text-sm'>for john.doe@email.com</div>
+          <div className='text-[#737373] text-sm'>{emailWatch('email')}</div>
           <FormInput
             name='newPassword'
             control={resetPassControl}
