@@ -5,6 +5,7 @@ import { useMutation } from "@tanstack/react-query";
 import { ConfirmEmailApi, RegisterApi } from "@/api/authentication";
 import { ISignupBody } from "@/api/authentication/types";
 import { RegisterFormType } from "../types";
+import toast from "react-hot-toast";
 
 export default function useRegisterHook() {
   const {
@@ -31,6 +32,9 @@ export default function useRegisterHook() {
     error,
   } = useMutation({
     mutationFn: RegisterApi.mutationFn,
+    onSuccess: () => {
+      toast.success('Register Successful!')
+    }
   });
   const {
     mutateAsync: getCode,

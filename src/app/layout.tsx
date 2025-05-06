@@ -9,6 +9,8 @@ import theme from "./lib/theme";
 import "react-quill-new/dist/quill.snow.css";
 import { QueryClientProvider } from "@tanstack/react-query";
 import queryClient from "./utils/queryClient";
+import { Toaster } from 'react-hot-toast';
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -46,7 +48,9 @@ export default function RootLayout({
               }}
             >
               <ThemeProvider theme={theme}>
-                <AppRouterCacheProvider>{children}</AppRouterCacheProvider>
+                <AppRouterCacheProvider>{children}
+                <Toaster />
+                </AppRouterCacheProvider>
               </ThemeProvider>
             </ConfigProvider>
           </ClientOnly>

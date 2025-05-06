@@ -27,7 +27,7 @@
   "static/chunks/node_modules_@ant-design_1f60e740._.js",
   "static/chunks/node_modules_@emotion_805438a7._.js",
   "static/chunks/node_modules_@rc-component_22792232._.js",
-  "static/chunks/node_modules_9dd06fba._.js",
+  "static/chunks/node_modules_65bb8fde._.js",
   "static/chunks/src_app_093f38df._.js"
 ],
     source: "dynamic"
