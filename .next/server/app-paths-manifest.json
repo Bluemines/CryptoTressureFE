@@ -1,0 +1,5 @@
+{
+  "/(auth)/login/page": "app/(auth)/login/page.js",
+  "/(pages)/(user)/admin/machineManagement/page": "app/(pages)/(user)/admin/machineManagement/page.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js"
+}

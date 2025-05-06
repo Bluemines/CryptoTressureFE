@@ -1,0 +1,199 @@
+{
+  "version": 3,
+  "pages404": true,
+  "caseSensitive": false,
+  "basePath": "",
+  "redirects": [
+    {
+      "source": "/:path+/",
+      "destination": "/:path+",
+      "internal": true,
+      "statusCode": 308,
+      "regex": "^(?:/((?:[^/]+?)(?:/(?:[^/]+?))*))/$"
+    }
+  ],
+  "headers": [],
+  "dynamicRoutes": [],
+  "staticRoutes": [
+    {
+      "page": "/",
+      "regex": "^/(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/(?:/)?$"
+    },
+    {
+      "page": "/_not-found",
+      "regex": "^/_not\\-found(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/_not\\-found(?:/)?$"
+    },
+    {
+      "page": "/admin/agreement-management",
+      "regex": "^/admin/agreement\\-management(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/agreement\\-management(?:/)?$"
+    },
+    {
+      "page": "/admin/dashboard",
+      "regex": "^/admin/dashboard(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/dashboard(?:/)?$"
+    },
+    {
+      "page": "/admin/machineManagement",
+      "regex": "^/admin/machineManagement(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/machineManagement(?:/)?$"
+    },
+    {
+      "page": "/admin/referral-system-management",
+      "regex": "^/admin/referral\\-system\\-management(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/referral\\-system\\-management(?:/)?$"
+    },
+    {
+      "page": "/admin/referral-system-management/commission-levels",
+      "regex": "^/admin/referral\\-system\\-management/commission\\-levels(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/referral\\-system\\-management/commission\\-levels(?:/)?$"
+    },
+    {
+      "page": "/admin/rewards-distribution",
+      "regex": "^/admin/rewards\\-distribution(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/rewards\\-distribution(?:/)?$"
+    },
+    {
+      "page": "/admin/settings",
+      "regex": "^/admin/settings(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/settings(?:/)?$"
+    },
+    {
+      "page": "/admin/usersManagement",
+      "regex": "^/admin/usersManagement(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/usersManagement(?:/)?$"
+    },
+    {
+      "page": "/admin/usersManagement/details",
+      "regex": "^/admin/usersManagement/details(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/usersManagement/details(?:/)?$"
+    },
+    {
+      "page": "/admin/wallet-management",
+      "regex": "^/admin/wallet\\-management(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/wallet\\-management(?:/)?$"
+    },
+    {
+      "page": "/admin/wallet-management/add-new-wallet",
+      "regex": "^/admin/wallet\\-management/add\\-new\\-wallet(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/wallet\\-management/add\\-new\\-wallet(?:/)?$"
+    },
+    {
+      "page": "/favicon.ico",
+      "regex": "^/favicon\\.ico(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/favicon\\.ico(?:/)?$"
+    },
+    {
+      "page": "/login",
+      "regex": "^/login(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/login(?:/)?$"
+    },
+    {
+      "page": "/register",
+      "regex": "^/register(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/register(?:/)?$"
+    },
+    {
+      "page": "/user/collection",
+      "regex": "^/user/collection(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/user/collection(?:/)?$"
+    },
+    {
+      "page": "/user/commission",
+      "regex": "^/user/commission(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/user/commission(?:/)?$"
+    },
+    {
+      "page": "/user/dashboard",
+      "regex": "^/user/dashboard(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/user/dashboard(?:/)?$"
+    },
+    {
+      "page": "/user/deposit",
+      "regex": "^/user/deposit(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/user/deposit(?:/)?$"
+    },
+    {
+      "page": "/user/explore",
+      "regex": "^/user/explore(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/user/explore(?:/)?$"
+    },
+    {
+      "page": "/user/explore/NFTdetails",
+      "regex": "^/user/explore/NFTdetails(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/user/explore/NFTdetails(?:/)?$"
+    },
+    {
+      "page": "/user/referral",
+      "regex": "^/user/referral(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/user/referral(?:/)?$"
+    },
+    {
+      "page": "/user/settings",
+      "regex": "^/user/settings(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/user/settings(?:/)?$"
+    },
+    {
+      "page": "/user/wallet",
+      "regex": "^/user/wallet(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/user/wallet(?:/)?$"
+    },
+    {
+      "page": "/user/wallet/add-new-wallet",
+      "regex": "^/user/wallet/add\\-new\\-wallet(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/user/wallet/add\\-new\\-wallet(?:/)?$"
+    },
+    {
+      "page": "/user/withdraw",
+      "regex": "^/user/withdraw(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/user/withdraw(?:/)?$"
+    }
+  ],
+  "dataRoutes": [],
+  "rsc": {
+    "header": "RSC",
+    "varyHeader": "RSC, Next-Router-State-Tree, Next-Router-Prefetch, Next-Router-Segment-Prefetch",
+    "prefetchHeader": "Next-Router-Prefetch",
+    "didPostponeHeader": "x-nextjs-postponed",
+    "contentTypeHeader": "text/x-component",
+    "suffix": ".rsc",
+    "prefetchSuffix": ".prefetch.rsc",
+    "prefetchSegmentHeader": "Next-Router-Segment-Prefetch",
+    "prefetchSegmentSuffix": ".segment.rsc",
+    "prefetchSegmentDirSuffix": ".segments"
+  },
+  "rewriteHeaders": {
+    "pathHeader": "x-nextjs-rewritten-path",
+    "queryHeader": "x-nextjs-rewritten-query"
+  },
+  "rewrites": []
+}

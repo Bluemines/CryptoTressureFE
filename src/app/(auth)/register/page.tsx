@@ -6,7 +6,7 @@ import Link from "next/link";
 import useRegisterHook from "./hooks";
 
 const Register = () => {
-  const { control, errors } = useRegisterHook();
+  const { control, errors,handleSubmit,onSubmit,submitCode } = useRegisterHook();
   return (
     <div className="h-dvh flex">
       <div className="w-[50%] lg:w-[50%] overflow-hidden hidden md:block">
@@ -26,16 +26,6 @@ const Register = () => {
 
           <div className="space-y-4">
             <div className="space-y-1">
-              {/* <label htmlFor='username' className='block mt-4'>
-                Username
-              </label>
-              <Input
-                fullWidth
-                disableUnderline
-                type='text'
-                placeholder='Enter your Username'
-                className='bg-[#262626] px-4 py-2 rounded-md'
-              /> */}
               <FormInput
                 name="username"
                 control={control}
@@ -43,41 +33,37 @@ const Register = () => {
                 label="Username"
               />
             </div>
-            <div className="space-y-1">
-              <label htmlFor="phoneNo" className="block mt-4">
-                Phone Number
-              </label>
-              <Input
-                fullWidth
-                disableUnderline
-                type="text"
-                placeholder="Enter your Username"
-                className="bg-[#262626] px-4 py-2 rounded-md"
+            {/* <div className="space-y-1">
+            <FormInput
+                name="phone"
+                control={control}
+                errors={errors}
+                label="Username"
               />
-            </div>
+            </div> */}
             <div className="space-y-1">
-              <label htmlFor="email" className="block mt-4">
-                Email
-              </label>
-              <Input
-                fullWidth
-                disableUnderline
-                type="email"
-                placeholder="Enter your email"
-                className="bg-[#262626] px-4 py-2 rounded-md"
+              <FormInput
+                name="email"
+                control={control}
+                errors={errors}
+                label="Enter Email"
               />
               <div className="flex gap-2">
                 <div className="flex-1">
-                  <Input
-                    fullWidth
-                    disableUnderline
-                    type="email"
-                    placeholder="Verify Email"
-                    className="bg-[#262626] px-4 py-2 rounded-md"
+                  <FormInput
+                    name="code"
+                    control={control}
+                    errors={errors}
+                    label="Enter Code"
                   />
                 </div>
                 <div className="flex">
-                  <Button fullWidth variant="outlined">
+                  <Button
+                    fullWidth
+                    variant="outlined"
+                    sx={{ height: "70%", mt: "15%" }}
+                    onClick={submitCode}
+                  >
                     Get Code
                   </Button>
                 </div>
@@ -85,39 +71,29 @@ const Register = () => {
             </div>
 
             <div className="space-y-1">
-              <label htmlFor="password" className="block mt-4">
-                Password
-              </label>
-              <Input
-                fullWidth
-                disableUnderline
+              <FormInput
+                name="password"
+                control={control}
+                errors={errors}
+                label="Enter Password"
                 type="password"
-                placeholder="********"
-                className="bg-[#262626] px-4 py-2 rounded-md"
               />
             </div>
             <div className="space-y-1">
-              <label htmlFor="confirmPassword" className="block mt-4">
-                Confirm Password
-              </label>
-              <Input
-                fullWidth
-                disableUnderline
+              <FormInput
+                name="confirmPassword"
+                control={control}
+                errors={errors}
+                label="Confirm Password"
                 type="password"
-                placeholder="********"
-                className="bg-[#262626] px-4 py-2 rounded-md"
               />
             </div>
             <div className="space-y-1">
-              <label htmlFor="confirmPassword" className="block mt-4">
-                Referral Code
-              </label>
-              <Input
-                fullWidth
-                disableUnderline
-                type="text"
-                placeholder="********"
-                className="bg-[#262626] px-4 py-2 rounded-md"
+              <FormInput
+                name="referralCode"
+                control={control}
+                errors={errors}
+                label="Referral Code"
               />
             </div>
 
@@ -129,7 +105,7 @@ const Register = () => {
               </span>
             </div>
 
-            <Button variant="contained" fullWidth>
+            <Button variant="contained" fullWidth onClick={handleSubmit(onSubmit)}>
               Sign up
             </Button>
 
@@ -140,9 +116,9 @@ const Register = () => {
               </Link>
             </div>
 
-            <Divider>Or</Divider>
+            {/* <Divider>Or</Divider> */}
 
-            <div className="flex items-center justify-center gap-2 mt-4">
+            {/* <div className="flex items-center justify-center gap-2 mt-4">
               <div className="h-[38px] w-[38px] bg-[#1d2b48] grid place-items-center rounded">
                 <img src="/icons/fb.png" alt="" />
               </div>
@@ -152,7 +128,7 @@ const Register = () => {
               <div className="h-[38px] w-[38px] bg-[#3f1917] grid place-items-center rounded">
                 <img src="/icons/google.png" alt="" />
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

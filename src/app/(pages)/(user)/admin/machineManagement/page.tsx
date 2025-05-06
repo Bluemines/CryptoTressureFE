@@ -4,11 +4,14 @@ import AddMachineDrawer from "@/app/components/drawers/AddMachineDrawer";
 import AdminTable from "@/app/components/ui/tables/AdminTable";
 import { Typography } from "@mui/material";
 import { useState } from "react";
+import useMachineManagement from "./hooks";
 
 export default function MachineManagemnt() {
+  const { machines } = useMachineManagement();
+  console.log(machines)
   const columns = [
     { id: "name", label: "User" },
-    { id: "rentDays", label: "Rent Days" },
+    { id: "rentalDays", label: "Rent Days" },
     { id: "price", label: "Price" },
   ];
 
@@ -16,25 +19,25 @@ export default function MachineManagemnt() {
     {
       id: 1,
       name: "John Bushmill",
-      rentDays: 2,
+      rentalDays: 2,
       price: 200,
     },
     {
       id: 2,
       name: "John Bushmill",
-      rentDays: 2,
+      rentalDays: 2,
       price: 200,
     },
     {
       id: 3,
       name: "John Bushmill",
-      rentDays: 2,
+      rentalDays: 2,
       price: 200,
     },
     {
       id: 4,
       name: "John Bushmill",
-      rentDays: 2,
+      rentalDays: 2,
       price: 200,
     },
   ];
@@ -50,7 +53,7 @@ export default function MachineManagemnt() {
             buttonText="Add machine"
             showHeader={true}
             columns={columns}
-            data={data}
+            data={machines}
             onClick={() => setOpen(true)}
           />
           <AddMachineDrawer open={open} onClose={() => setOpen(false)} />
