@@ -15,17 +15,28 @@ interface MachineItem {
   deletedAt: string | null;
 }
 
-interface Machine {
+interface MachineStore {
   machines: MachineItem[];
-  setMachines: (newMachines: MachineItem) => void;
-  deleteMachine: (id: number) => void;
+  setAllMachines: (machines: MachineItem[]) => void;
+  addMachine: (machine: MachineItem) => void;
+  deleteMachineById: (id: number) => void;
 }
-export const useMachineStore = create<Machine>((set) => ({
+
+export const useMachineStore = create<MachineStore>((set) => ({
   machines: [],
-  setMachines: (newMachine) =>
-    set((state) => ({ machines: [...state.machines, newMachine] })),
-  deleteMachine: (id) =>
+
+  setAllMachines: (machines) =>
+    set(() => ({
+      machines: machines,
+    })),
+
+  addMachine: (machine) =>
     set((state) => ({
-      machines: state.machines.filter((mac) => mac.id !== id),
+      machines: [...state.machines, machine],
+    })),
+
+  deleteMachineById: (id) =>
+    set((state) => ({
+      machines: state.machines.filter((machine) => machine.id !== id),
     })),
 }));
