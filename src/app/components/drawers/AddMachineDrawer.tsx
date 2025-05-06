@@ -12,6 +12,9 @@ import {
   FormControl,
 } from "@mui/material";
 import { useState } from "react";
+import FormInput from "../ui/Inputs/FormInput";
+import useMachineManagement from "@/app/(pages)/(user)/admin/machineManagement/hooks";
+import Toast from "../Toast";
 
 const levels = ["Low", "Medium", "High"]; // Example levels
 
@@ -22,18 +25,18 @@ export default function AddMachineDrawer({
   open: boolean;
   onClose: () => void;
 }) {
-  const [form, setForm] = useState({
-    title: "",
-    price: "",
-    income: "",
-    fee: "",
-    days: "",
-    level: "",
-  });
-
-  const handleChange = (e: any) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
+  const {
+    control,
+    errors,
+    selectedImage,
+    handleImageSelect,
+    handleSubmit,
+    handleAddMachine,
+    isValid,
+    message,
+    openToast,
+    setOpenToast,
+  } = useMachineManagement();
 
   return (
     <Drawer
@@ -49,11 +52,12 @@ export default function AddMachineDrawer({
         },
       }}
     >
+      <Toast open={openToast} message={message} setOpen={setOpenToast} />
       <Typography variant="h6" fontWeight={600} gutterBottom>
         Add Machine
       </Typography>
 
-      <TextField
+      {/* <TextField
         name="title"
         label="Title"
         variant="outlined"
@@ -63,6 +67,21 @@ export default function AddMachineDrawer({
         margin="normal"
         InputLabelProps={{ style: { color: "#aaa" } }}
         InputProps={{ style: { color: "#fff" } }}
+      /> */}
+      <FormInput
+        name="title"
+        label="Title"
+        control={control}
+        errors={errors}
+        rules={{ required: "Title is required" }}
+      />
+      <FormInput
+        name="description"
+        label="Descriptions"
+        control={control}
+        errors={errors}
+        multiline
+        rows={4}
       />
 
       <Button
@@ -76,60 +95,29 @@ export default function AddMachineDrawer({
           textTransform: "none",
         }}
       >
-        Choose Image
-        <input type="file" hidden />
+        {selectedImage ? selectedImage.name : "Choose Image"}
+        <input type="file" hidden onChange={handleImageSelect} />
       </Button>
 
-      <TextField
-        name="price"
-        label="Price"
-        variant="outlined"
-        fullWidth
-        value={form.price}
-        onChange={handleChange}
-        margin="normal"
-        InputLabelProps={{ style: { color: "#aaa" } }}
-        InputProps={{ style: { color: "#fff" } }}
+      <FormInput name="price" label="Price" control={control} errors={errors} />
+
+      <FormInput
+        name="dailyIncome"
+        label="Daily Income"
+        control={control}
+        errors={errors}
       />
 
-      <TextField
-        name="income"
-        label="Daily Income (%)"
-        variant="outlined"
-        fullWidth
-        value={form.income}
-        onChange={handleChange}
-        margin="normal"
-        InputLabelProps={{ style: { color: "#aaa" } }}
-        className="bg-[#212121]"
-        InputProps={{ style: { color: "#fff" } }}
+      <FormInput name="fee" label="Fee" control={control} errors={errors} />
+
+      <FormInput
+        name="rentalDays"
+        label="Rental Days"
+        control={control}
+        errors={errors}
       />
 
-      <TextField
-        name="fee"
-        label="Fee"
-        variant="outlined"
-        fullWidth
-        value={form.fee}
-        onChange={handleChange}
-        margin="normal"
-        InputLabelProps={{ style: { color: "#aaa" } }}
-        InputProps={{ style: { color: "#fff" } }}
-      />
-
-      <TextField
-        name="days"
-        label="Number of Days for Rent"
-        variant="outlined"
-        fullWidth
-        value={form.days}
-        onChange={handleChange}
-        margin="normal"
-        InputLabelProps={{ style: { color: "#aaa" } }}
-        InputProps={{ style: { color: "#fff" } }}
-      />
-
-      <FormControl fullWidth margin="normal">
+      {/* <FormControl fullWidth margin="normal">
         <InputLabel sx={{ color: "#aaa" }}>Level</InputLabel>
         <Select
           name="level"
@@ -144,18 +132,19 @@ export default function AddMachineDrawer({
             </MenuItem>
           ))}
         </Select>
-      </FormControl>
+      </FormControl> */}
 
       <Box display="flex" justifyContent="space-between" mt={4} gap={2}>
         <Button
           variant="contained"
           fullWidth
           sx={{ bgcolor: "#7367F0", textTransform: "none" }}
+          onClick={handleSubmit(handleAddMachine)}
+          disabled={!isValid}
         >
           Add
         </Button>
         <Button
-          //   variant="outlined"
           fullWidth
           sx={{ color: "#a64445", textTransform: "none", bgcolor: "#3a2b2b" }}
           onClick={onClose}
