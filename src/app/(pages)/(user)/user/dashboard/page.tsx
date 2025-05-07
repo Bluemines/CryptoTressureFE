@@ -1,15 +1,29 @@
-"use client";
-
-import { NFTCard } from "@/app/components/cards/NFTCard";
-import { StatsCard } from "@/app/components/cards/StatsCard";
+"use client"
+import { useGetMyMachines, useGetPopularProducts } from "@/api/user/useUser"
+import { NFTCard } from "@/app/components/cards/NFTCard"
+import { StatsCard } from "@/app/components/cards/StatsCard"
+import CardLoader from "@/loaders/CardLoader"
+import { authStore } from "@/store/authStore"
 
 const page = () => {
+  const { user } = authStore()
+  const { data, isLoading } = useGetPopularProducts();
+  const {
+    data: myMachinesData,
+    isLoading: isMachinesLoading,
+  } = useGetMyMachines(4);
+
+
+  console.log("user: ", user)
+
+  console.log("my machines data: ", myMachinesData)
+
   const statsData = [
     { value: "24K", label: "Current Deposit", color: "bg-[#7C3AED]" },
     { value: "82K", label: "Current Balance", color: "bg-[#22C55E]" },
     { value: "200", label: "Total Withdraw", color: "bg-[#EAB308]" },
     { value: "89", label: "Total Referral Bonus", color: "bg-[#F97316]" },
-  ];
+  ]
 
   const nftData = [
     {
@@ -48,12 +62,12 @@ const page = () => {
       days: 10,
       level: "Lv1-Lv3",
     },
-  ];
+  ]
   return (
-    <div className="min-h-screen bg-black p-4 md:p-8">
-      <div className="max-w-7xl mx-auto space-y-8">
+    <div className='min-h-screen bg-black p-4 md:p-8'>
+      <div className='max-w-7xl mx-auto space-y-8'>
         {/* Stats Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4'>
           {statsData.map((stat, index) => (
             <StatsCard
               key={index}
@@ -64,28 +78,56 @@ const page = () => {
           ))}
         </div>
 
-        {/* Popular NFTs */}
+        {/* Popular Machines */}
         <div>
-          <h2 className="text-2xl font-bold text-white mb-4">Popular NFTS</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {nftData.map((nft, index) => (
-              <NFTCard key={index} {...nft} action="Buy" />
-            ))}
+          <h2 className='text-2xl font-bold text-white mb-4'>
+            Popular Machines
+          </h2>
+          <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4'>
+            {isLoading
+              ? Array.from({ length: 4 }).map((_, idx) => (
+                  <CardLoader key={idx} />
+                ))
+              : data?.map((nft: any, index: number) => (
+                  <NFTCard
+                    key={index}
+                    image={nft.image}
+                    title={nft.title}
+                    price={+nft.price}
+                    dailyIncome={+nft.dailyIncome}
+                    fee={+nft.fee}
+                    days={nft.rentalDays}
+                    level='Lv1-Lv3'
+                    action='Buy'
+                  />
+                ))}
           </div>
         </div>
 
-        {/* My NFTs */}
+        {/* My Machines */}
         <div>
-          <h2 className="text-2xl font-bold text-white mb-4">My NFTS</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {nftData.map((nft, index) => (
-              <NFTCard key={index} {...nft} action="Sell" />
-            ))}
+          <h2 className='text-2xl font-bold text-white mb-4'>My Machines</h2>
+          <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4'>
+            {isMachinesLoading
+              ? Array.from({ length: 4 }).map((_, idx) => <CardLoader key={idx} />)
+              : myMachinesData?.map((nft: any, index: number) => (
+                  <NFTCard
+                    key={index}
+                    image={nft.image}
+                    title={nft.title}
+                    price={+nft.price}
+                    dailyIncome={+nft.dailyIncome}
+                    fee={+nft.fee}
+                    days={nft.rentalDays}
+                    level='Lv1-Lv3'
+                    action='Sell'
+                  />
+                ))}
           </div>
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default page;
+export default page

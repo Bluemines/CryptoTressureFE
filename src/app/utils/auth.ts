@@ -17,6 +17,12 @@ export const auth = {
   accessToken: async () => {
     return localStorage.getItem("accessToken");
   },
+  setToken: async (token: string) => {
+    return localStorage.setItem("accessToken", token);
+  },
+  setRole: async (role: string) => {
+    return localStorage.setItem("role", role);
+  },
   refreshToken: async () => {
     return localStorage.getItem("refreshToken");
   },

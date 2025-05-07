@@ -1,10 +1,15 @@
 "use client"
+import { useGetWallets } from "@/api/admin/useAdmin"
 import { StatsCard } from "@/app/components/cards/StatsCard"
 import PrimaryButton from "@/app/components/ui/PrimaryButton"
 import AdminTable from "@/app/components/ui/tables/AdminTable"
 import { useRouter } from "next/navigation"
+import { formatDistanceToNow } from "date-fns"
 
 const page = () => {
+
+  const { data: walletsData } = useGetWallets()
+  console.log("wallets data: ", walletsData)
 
   const router = useRouter()
 
@@ -36,6 +41,15 @@ const page = () => {
     { id: "paymentMethod", label: "Payment Method" },
     { id: "status", label: "Status" },
   ]
+
+  const formattedPendingWithdrawals = walletsData?.items?.map((item: any) => ({
+    id: item.id,
+    user: item.user.username,
+    amount: `$${item.balance}`,
+    date: formatDistanceToNow(new Date(item.createdAt), { addSuffix: true }),
+    paymentMethod: "Easypaisa",
+    status: "Pending",
+  })) || []
 
   const data = [
     {
@@ -126,7 +140,7 @@ const page = () => {
         ))}
       </div>
       <div className='font-semibold text-xl my-3'>Pending Withdrawal</div>
-      <AdminTable data={data} columns={columns} actions={true} showHeader={true} icon2={false} showButton={false} />
+      <AdminTable data={formattedPendingWithdrawals} columns={columns} actions={true} showHeader={true} icon2={false} showButton={false} />
       <div className='font-semibold text-xl my-3'>Wallet History</div>
       <AdminTable data={walletHistoryData} columns={walletHistoryColumns} actions={false} showHeader={true} showButton={false} />
     </div>

@@ -49,7 +49,7 @@ export default function RootLayout({
             >
               <ThemeProvider theme={theme}>
                 <AppRouterCacheProvider>{children}
-                <Toaster />
+                <Toaster position="top-right" />
                 </AppRouterCacheProvider>
               </ThemeProvider>
             </ConfigProvider>

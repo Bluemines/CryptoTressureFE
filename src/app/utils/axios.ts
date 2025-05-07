@@ -2,7 +2,7 @@ import { base_url } from "../constants/keys";
 import auth from "./auth";
 import axios from "axios";
 
-const apiClient = axios.create({
+export const apiClient = axios.create({
   baseURL: base_url,
   headers: {
     "Content-Type": "application/json",

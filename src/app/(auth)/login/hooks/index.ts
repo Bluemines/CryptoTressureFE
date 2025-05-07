@@ -2,6 +2,8 @@
 
 import { SubmitHandler, useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
+import Cookies from "js-cookie"
+
 import {
   forgetPasswordSchema,
   loginSchema,
@@ -16,15 +18,23 @@ import {
 } from "@/api/authentication"
 import { useState } from "react"
 import { AxiosError } from "axios"
+import toast from "react-hot-toast"
+import { useRouter } from "next/navigation"
+import auth from "@/app/utils/auth"
+
+const roles = {
+  ADMIN: '/admin/dashboard',
+  USER: '/user/dashboard',
+}
 
 export default function useLogin() {
+  const router = useRouter()
   const [open, setOpen] = useState(false)
   const [message, setMessage] = useState("")
-  console.log(message)
   const {
     control,
     handleSubmit,
-
+    register,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(loginSchema),
@@ -33,8 +43,20 @@ export default function useLogin() {
       password: "",
     },
   })
-  const { mutateAsync: loginUser } = useMutation({
+  const { mutateAsync: loginUser, isPending } = useMutation({
     mutationFn: loginApi.mutationFn,
+    onSuccess: (data) => {
+      auth.setToken(data.data.access_token)
+      const role = data.data.role
+      Cookies.set('role', role)
+      auth.setRole(role)
+      const redirectPath = roles[role as keyof typeof roles] || '/'
+      router.push(redirectPath)
+    },
+    onError: (error) => {
+      const err = error as AxiosError<{ message: string }>
+      toast.error(err.response?.data?.message || 'Something went wrong')
+    }
   })
   const handleLogin: SubmitHandler<IAddLoginFormValues> = async (data) => {
     try {
@@ -54,7 +76,7 @@ export default function useLogin() {
       }
     }
   }
-  return { control, handleSubmit, errors, handleLogin, open, setOpen, message }
+  return { control, handleSubmit, errors, handleLogin, open, setOpen, message, isPending }
 }
 
 export function useForgetPassword() {
@@ -77,6 +99,10 @@ export function useForgetPassword() {
     isSuccess: forgetSuccess,
   } = useMutation({
     mutationFn: ForgetPasswordApi.mutationFn,
+    onSuccess: () => {
+      toast.success('Otp Sent to Email!')
+      localStorage.setItem('forgetPassEmail', watch('email'))
+    }
   })
   const handleForgetPassword: SubmitHandler<IForgetPassword> = async (data) => {
     try {
@@ -120,7 +146,7 @@ export function useResetPassword(emailFromForget: string) {
   } = useForm({
     resolver: yupResolver(resetPasswordSchema),
     defaultValues: {
-      email: "",
+      email: localStorage.getItem('forgetPassEmail') || '',
       code: "",
       newPassword: "",
       confirmPassword: "",
@@ -133,6 +159,10 @@ export function useResetPassword(emailFromForget: string) {
     isSuccess: resetSuccess,
   } = useMutation({
     mutationFn: resetPasswordApi.mutationFn,
+    onSuccess: () => {
+      toast.success('Reset Successfull!')
+    },
+    onError: (error) => console.log(error)
   })
   const handleResetPassword: SubmitHandler<IForgetPassword> = async (data) => {
     try {
