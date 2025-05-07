@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { FormSubmitHandler, useForm } from "react-hook-form";
+import { FormSubmitHandler, SubmitHandler, useForm } from "react-hook-form";
 import { AddMachineFormType } from "../types";
 import { addMachineSchema } from "../schema";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -10,6 +10,22 @@ import {
   getMachinesApi,
 } from "@/api/machineManagement";
 import { useMachineStore } from "@/store/machinesStore";
+
+export interface Machine {
+  id: number;
+  title: string;
+  description: string;
+  price: string;
+  dailyIncome: string;
+  fee: string;
+  rentalDays: number;
+  roiPercent: number;
+  image: string;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: string | null;
+  userId: number;
+}
 
 export default function useMachineManagement() {
   const {
@@ -47,9 +63,10 @@ export default function useMachineManagement() {
   });
   const [message, setMessage] = useState("");
   const [openToast, setOpenToast] = useState(false);
-  const handleAddMachine: FormSubmitHandler<AddMachineFormType> = async (
+  const handleAddMachine: SubmitHandler<AddMachineFormType> = async (
     data
   ) => {
+    console.log("data:", data);
     if (!selectedImage) {
       setOpenToast(true);
       setMessage("Please uplaod an Image");
@@ -88,6 +105,8 @@ export default function useMachineManagement() {
       setMessage(err.message);
     }
   };
+  const allValues = watch();
+  console.log("all values: ", allValues);
   const { machines, setAllMachines, deleteMachineById } = useMachineStore();
   const {
     data: allMacchines,
@@ -128,22 +147,14 @@ export default function useMachineManagement() {
     return machines.find((machine) => machine.id === Number(id)) || null;
   };
   const [currentMachineId, setCurrentMachineId] = useState("");
+  console.log(currentMachineId);
+  const [currentMachine, setCurrentMachine] = useState<Machine | undefined>();
   const handelSetEditValues = (id: string) => {
+    localStorage.removeItem("id");
     const machine = getMachineById(id);
-    setCurrentMachineId(String(machine?.id));
-    console.log("machine: ", machine);
-    reset({
-      title: machine?.title,
-      description: machine?.description,
-      price: machine?.price,
-      dailyIncome: machine?.dailyIncome,
-      image: machine?.image,
-      fee: machine?.fee,
-      rentalDays: machine?.rentalDays,
-    });
+
+    localStorage.setItem("id", String(machine?.id));
   };
-  const values = getValues();
-  console.log("values: ", values);
 
   const selectedImage = watch("image");
   return {
@@ -160,7 +171,9 @@ export default function useMachineManagement() {
     machines,
     handleDeleteMachine,
     handelSetEditValues,
-    currentMachineId
+    currentMachineId,
+    reset,
+    currentMachine,
   };
 }
 // import React, { useEffect, useState } from "react";

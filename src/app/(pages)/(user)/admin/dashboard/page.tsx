@@ -5,7 +5,9 @@ import StatisticsChart from "@/app/components/charts/StatsChart";
 import React from "react";
 import AdminTable from "../../../../components/ui/tables/AdminTable";
 import { Card } from "@mui/material";
+import useUserManagement from "../usersManagement/hooks";
 export default function Dashboard() {
+  const { users } = useUserManagement();
   const statsData = [
     {
       value: "4,235",
@@ -57,9 +59,11 @@ export default function Dashboard() {
     },
   ];
   const columns = [
-    { id: "name", label: "User" },
+    { id: "username", label: "User" },
     { id: "email", label: "Email" },
-    { id: "date", label: "Date" },
+    { id: "level", label: "Level" },
+    { id: "createdAt", label: "Date" },
+    { id: "balance", label: "Balance" },
     { id: "status", label: "Status" },
   ];
   const columns2 = [
@@ -164,7 +168,16 @@ export default function Dashboard() {
           </main>
         </Card>
         <main className="mt-20">
-          <AdminTable columns={columns} data={data} title="Recent Users" />
+          {users.length > 0 && (
+            <AdminTable
+              columns={columns}
+              data={users}
+              icon1={false}
+              navUser={true}
+              title="Recent Users"
+              // onClick={() => router.push("/admin/usersManagement/details")}
+            />
+          )}
         </main>
         <main className="mt-20">
           <AdminTable

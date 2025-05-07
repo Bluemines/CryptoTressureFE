@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-interface MachineItem {
+export interface MachineItem {
   id: number;
   title: string;
   description: string;
