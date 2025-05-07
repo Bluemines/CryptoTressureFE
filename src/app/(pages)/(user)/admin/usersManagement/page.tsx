@@ -5,19 +5,20 @@ import React from "react";
 import AdminTable from "../../../../components/ui/tables/AdminTable";
 import { Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
+import useUserManagement from "./hooks";
 
 export default function UsersManagement() {
-  const router = useRouter()
+  const router = useRouter();
   const columns = [
-    { id: "name", label: "User" },
+    { id: "username", label: "User" },
     { id: "email", label: "Email" },
     { id: "level", label: "Level" },
-    { id: "date", label: "Date" },
-    { id: "walletBalance", label: "Wallet Balance" },
-    { id: "referedBy", label: "Refered By" },
+    { id: "createdAt", label: "Date" },
+    { id: "balance", label: "Balance" },
     { id: "status", label: "Status" },
   ];
-
+  const { users } = useUserManagement();
+  console.log("users: ", users);
   const data = [
     {
       id: 1,
@@ -93,12 +94,22 @@ export default function UsersManagement() {
             />
           ))}
         </div>
-        <Typography sx={{fontWeight:'bold',color:"white",fontSize:24}}>Users Management</Typography>
+        <Typography sx={{ fontWeight: "bold", color: "white", fontSize: 24 }}>
+          Users Management
+        </Typography>
         <main
           // style={{   minHeight: "100vh" }}
           className="mt-10"
         >
-          <AdminTable columns={columns} data={data} icon1={false} onClick={()=>router.push("/admin/usersManagement/details")} />
+          {users.length > 0 && (
+            <AdminTable
+              columns={columns}
+              data={users}
+              icon1={false}
+              navUser={true}
+              // onClick={() => router.push("/admin/usersManagement/details")}
+            />
+          )}
         </main>
       </div>
     </div>
