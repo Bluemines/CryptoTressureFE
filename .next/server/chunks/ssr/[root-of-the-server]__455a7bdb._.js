@@ -232,6 +232,9 @@ const auth = {
     accessToken: async ()=>{
         return localStorage.getItem("accessToken");
     },
+    setToken: async (token)=>{
+        return localStorage.setItem("accessToken", token);
+    },
     refreshToken: async ()=>{
         return localStorage.getItem("refreshToken");
     },
@@ -361,6 +364,7 @@ module.exports = mod;
 var { g: global, __dirname } = __turbopack_context__;
 {
 __turbopack_context__.s({
+    "apiClient": (()=>apiClient),
     "mutationFn": (()=>mutationFn),
     "queryFn": (()=>queryFn)
 });

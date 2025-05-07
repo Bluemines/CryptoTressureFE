@@ -595,6 +595,7 @@ const AdminTable = ({ columns, data, total = 100, rowsPerPage = 5, icon1 = true,
     const [timeTab, setTimeTab] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])("All Time");
     const [isApproveWithdrawModalOpen, setIsApproveWithdrawModalOpen] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
     const [isSuspendedModalOpen, setIsSuspendedModalOpen] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
     const handlePageChange = (_, value)=>{
         setPage(value);
     };
@@ -608,12 +609,14 @@ const AdminTable = ({ columns, data, total = 100, rowsPerPage = 5, icon1 = true,
     const open = Boolean(anchorEl);
     const id = open ? "status-popover" : undefined;
     const handleOption = (status)=>{
-        console.log("Selected:", status);
         if (status === "Approved") {
             setIsApproveWithdrawModalOpen(true);
         }
         if (status === "Suspended") {
             setIsSuspendedModalOpen(true);
+        }
+        if (status === "Delete") {
+            setIsDeleteModalOpen(true);
         }
         handleClose();
     };
@@ -632,7 +635,7 @@ const AdminTable = ({ columns, data, total = 100, rowsPerPage = 5, icon1 = true,
                 children: title
             }, void 0, false, {
                 fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                lineNumber: 119,
+                lineNumber: 123,
                 columnNumber: 7
             }, this),
             showHeader ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Box$2f$Box$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Box$3e$__["Box"], {
@@ -667,7 +670,7 @@ const AdminTable = ({ columns, data, total = 100, rowsPerPage = 5, icon1 = true,
                             }
                         }, void 0, false, {
                             fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                            lineNumber: 195,
+                            lineNumber: 199,
                             columnNumber: 15
                         }, this),
                         showButton && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Button$2f$Button$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Button$3e$__["Button"], {
@@ -679,7 +682,7 @@ const AdminTable = ({ columns, data, total = 100, rowsPerPage = 5, icon1 = true,
                                 children: "＋"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                                lineNumber: 215,
+                                lineNumber: 219,
                                 columnNumber: 30
                             }, void 0),
                             sx: {
@@ -697,7 +700,7 @@ const AdminTable = ({ columns, data, total = 100, rowsPerPage = 5, icon1 = true,
                             children: buttonText
                         }, void 0, false, {
                             fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                            lineNumber: 213,
+                            lineNumber: 217,
                             columnNumber: 17
                         }, this)
                     ]
@@ -705,7 +708,7 @@ const AdminTable = ({ columns, data, total = 100, rowsPerPage = 5, icon1 = true,
                     children: [
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Box$2f$Box$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Box$3e$__["Box"], {}, void 0, false, {
                             fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                            lineNumber: 236,
+                            lineNumber: 240,
                             columnNumber: 15
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Button$2f$Button$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Button$3e$__["Button"], {
@@ -717,7 +720,7 @@ const AdminTable = ({ columns, data, total = 100, rowsPerPage = 5, icon1 = true,
                                 children: "＋"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                                lineNumber: 239,
+                                lineNumber: 243,
                                 columnNumber: 28
                             }, void 0),
                             sx: {
@@ -736,14 +739,14 @@ const AdminTable = ({ columns, data, total = 100, rowsPerPage = 5, icon1 = true,
                             children: buttonText
                         }, void 0, false, {
                             fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                            lineNumber: 237,
+                            lineNumber: 241,
                             columnNumber: 15
                         }, this)
                     ]
                 }, void 0, true)
             }, void 0, false, {
                 fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                lineNumber: 185,
+                lineNumber: 189,
                 columnNumber: 9
             }, this) : // Tabs Block
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Box$2f$Box$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Box$3e$__["Box"], {
@@ -783,12 +786,12 @@ const AdminTable = ({ columns, data, total = 100, rowsPerPage = 5, icon1 = true,
                                 }
                             }, tab, false, {
                                 fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                                lineNumber: 278,
+                                lineNumber: 282,
                                 columnNumber: 15
                             }, this))
                     }, void 0, false, {
                         fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                        lineNumber: 268,
+                        lineNumber: 272,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Tabs$2f$Tabs$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Tabs$3e$__["Tabs"], {
@@ -820,18 +823,18 @@ const AdminTable = ({ columns, data, total = 100, rowsPerPage = 5, icon1 = true,
                                 }
                             }, tab, false, {
                                 fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                                lineNumber: 305,
+                                lineNumber: 309,
                                 columnNumber: 17
                             }, this))
                     }, void 0, false, {
                         fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                        lineNumber: 294,
+                        lineNumber: 298,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                lineNumber: 262,
+                lineNumber: 266,
                 columnNumber: 9
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$TableContainer$2f$TableContainer$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__TableContainer$3e$__["TableContainer"], {
@@ -853,7 +856,7 @@ const AdminTable = ({ columns, data, total = 100, rowsPerPage = 5, icon1 = true,
                                             children: col.label
                                         }, col.id, false, {
                                             fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                                            lineNumber: 330,
+                                            lineNumber: 334,
                                             columnNumber: 17
                                         }, this)),
                                     actions && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$TableCell$2f$TableCell$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__TableCell$3e$__["TableCell"], {
@@ -864,18 +867,18 @@ const AdminTable = ({ columns, data, total = 100, rowsPerPage = 5, icon1 = true,
                                         children: "Action"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                                        lineNumber: 342,
+                                        lineNumber: 346,
                                         columnNumber: 17
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                                lineNumber: 328,
+                                lineNumber: 332,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                            lineNumber: 327,
+                            lineNumber: 331,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$TableBody$2f$TableBody$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__TableBody$3e$__["TableBody"], {
@@ -899,12 +902,12 @@ const AdminTable = ({ columns, data, total = 100, rowsPerPage = 5, icon1 = true,
                                                     }
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                                                    lineNumber: 361,
+                                                    lineNumber: 365,
                                                     columnNumber: 25
                                                 }, this) : row[col.id]
                                             }, col.id, false, {
                                                 fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                                                lineNumber: 359,
+                                                lineNumber: 363,
                                                 columnNumber: 21
                                             }, this)),
                                         actions && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$TableCell$2f$TableCell$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__TableCell$3e$__["TableCell"], {
@@ -919,12 +922,12 @@ const AdminTable = ({ columns, data, total = 100, rowsPerPage = 5, icon1 = true,
                                                                 }
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                                                                lineNumber: 380,
+                                                                lineNumber: 384,
                                                                 columnNumber: 29
                                                             }, this)
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                                                            lineNumber: 379,
+                                                            lineNumber: 383,
                                                             columnNumber: 27
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Popover$2f$Popover$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Popover$3e$__["Popover"], {
@@ -942,7 +945,7 @@ const AdminTable = ({ columns, data, total = 100, rowsPerPage = 5, icon1 = true,
                                                                     children: "Approved"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                                                                    lineNumber: 393,
+                                                                    lineNumber: 397,
                                                                     columnNumber: 29
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$MenuItem$2f$MenuItem$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__MenuItem$3e$__["MenuItem"], {
@@ -950,13 +953,21 @@ const AdminTable = ({ columns, data, total = 100, rowsPerPage = 5, icon1 = true,
                                                                     children: "Suspended"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                                                                    lineNumber: 396,
+                                                                    lineNumber: 400,
+                                                                    columnNumber: 29
+                                                                }, this),
+                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$MenuItem$2f$MenuItem$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__MenuItem$3e$__["MenuItem"], {
+                                                                    onClick: ()=>handleOption("Delete"),
+                                                                    children: "Delete"
+                                                                }, void 0, false, {
+                                                                    fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
+                                                                    lineNumber: 403,
                                                                     columnNumber: 29
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                                                            lineNumber: 383,
+                                                            lineNumber: 387,
                                                             columnNumber: 27
                                                         }, this)
                                                     ]
@@ -969,40 +980,40 @@ const AdminTable = ({ columns, data, total = 100, rowsPerPage = 5, icon1 = true,
                                                         }
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                                                        lineNumber: 404,
+                                                        lineNumber: 411,
                                                         columnNumber: 27
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                                                    lineNumber: 403,
+                                                    lineNumber: 410,
                                                     columnNumber: 25
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                                            lineNumber: 376,
+                                            lineNumber: 380,
                                             columnNumber: 21
                                         }, this)
                                     ]
                                 }, row.id, true, {
                                     fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                                    lineNumber: 354,
+                                    lineNumber: 358,
                                     columnNumber: 17
                                 }, this))
                         }, void 0, false, {
                             fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                            lineNumber: 350,
+                            lineNumber: 354,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                    lineNumber: 326,
+                    lineNumber: 330,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                lineNumber: 325,
+                lineNumber: 329,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Box$2f$Box$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Box$3e$__["Box"], {
@@ -1024,7 +1035,7 @@ const AdminTable = ({ columns, data, total = 100, rowsPerPage = 5, icon1 = true,
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                        lineNumber: 422,
+                        lineNumber: 429,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Pagination$2f$Pagination$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Pagination$3e$__["Pagination"], {
@@ -1044,13 +1055,13 @@ const AdminTable = ({ columns, data, total = 100, rowsPerPage = 5, icon1 = true,
                         }
                     }, void 0, false, {
                         fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                        lineNumber: 426,
+                        lineNumber: 433,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                lineNumber: 416,
+                lineNumber: 423,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$modals$2f$Modal$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
@@ -1062,7 +1073,7 @@ const AdminTable = ({ columns, data, total = 100, rowsPerPage = 5, icon1 = true,
                         children: "Approve withdrawl?"
                     }, void 0, false, {
                         fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                        lineNumber: 447,
+                        lineNumber: 454,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1070,7 +1081,7 @@ const AdminTable = ({ columns, data, total = 100, rowsPerPage = 5, icon1 = true,
                         children: "Do you want to approve withdrawal of $10 of User John Doe?"
                     }, void 0, false, {
                         fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                        lineNumber: 448,
+                        lineNumber: 455,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1085,18 +1096,18 @@ const AdminTable = ({ columns, data, total = 100, rowsPerPage = 5, icon1 = true,
                             children: "Confirm"
                         }, void 0, false, {
                             fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                            lineNumber: 452,
+                            lineNumber: 459,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                        lineNumber: 451,
+                        lineNumber: 458,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                lineNumber: 443,
+                lineNumber: 450,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$modals$2f$Modal$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
@@ -1108,7 +1119,7 @@ const AdminTable = ({ columns, data, total = 100, rowsPerPage = 5, icon1 = true,
                         children: "Suspend withdrawal?"
                     }, void 0, false, {
                         fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                        lineNumber: 468,
+                        lineNumber: 475,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1116,7 +1127,7 @@ const AdminTable = ({ columns, data, total = 100, rowsPerPage = 5, icon1 = true,
                         children: "Do you want to Suspend withdrawal of $10 of User John Doe?"
                     }, void 0, false, {
                         fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                        lineNumber: 469,
+                        lineNumber: 476,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1131,28 +1142,74 @@ const AdminTable = ({ columns, data, total = 100, rowsPerPage = 5, icon1 = true,
                             children: "Suspended"
                         }, void 0, false, {
                             fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                            lineNumber: 473,
+                            lineNumber: 480,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                        lineNumber: 472,
+                        lineNumber: 479,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-                lineNumber: 464,
+                lineNumber: 471,
+                columnNumber: 7
+            }, this),
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$modals$2f$Modal$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
+                open: isDeleteModalOpen,
+                setOpen: setIsDeleteModalOpen,
+                children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "text-lg font-medium",
+                        children: "Delete Machine?"
+                    }, void 0, false, {
+                        fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
+                        lineNumber: 496,
+                        columnNumber: 9
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "text-[#A9A9A9] mt-4",
+                        children: "Do you want to Delete the Machine?"
+                    }, void 0, false, {
+                        fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
+                        lineNumber: 497,
+                        columnNumber: 9
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "flex",
+                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Button$2f$Button$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Button$3e$__["Button"], {
+                            sx: {
+                                backgroundColor: "#F04438",
+                                color: "#fff",
+                                marginTop: "22px",
+                                marginLeft: "auto"
+                            },
+                            children: "Delete"
+                        }, void 0, false, {
+                            fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
+                            lineNumber: 501,
+                            columnNumber: 11
+                        }, this)
+                    }, void 0, false, {
+                        fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
+                        lineNumber: 500,
+                        columnNumber: 9
+                    }, this)
+                ]
+            }, void 0, true, {
+                fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
+                lineNumber: 492,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/components/ui/tables/AdminTable.tsx",
-        lineNumber: 118,
+        lineNumber: 122,
         columnNumber: 5
     }, this);
 };
-_s(AdminTable, "vW11SBkO1tkoYUlVvk3it4y9QSY=");
+_s(AdminTable, "2AxqUf+QsvchWBmw3VYTcxDv/1A=");
 _c = AdminTable;
 const __TURBOPACK__default__export__ = AdminTable;
 var _c;

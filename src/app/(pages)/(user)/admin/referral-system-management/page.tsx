@@ -48,7 +48,7 @@ const ReferalManagement = () => {
   return (
     <div>
       <div className='font-semibold text-xl my-3'>Referral System Management</div>
-      <AdminTable onClick={()=>router.push("referral-system-management/CommissionLevels")} showHeader buttonText="Manage Commission Level" data={data} columns={columns} actions={false} />
+      <AdminTable onClick={()=>router.push("referral-system-management/commission-levels")} showHeader buttonText="Manage Commission Level" data={data} columns={columns} actions={false} />
     </div>
   )
 }

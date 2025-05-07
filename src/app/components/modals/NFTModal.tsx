@@ -1,26 +1,35 @@
 "use client";
 
+import { useBuyProduct } from "@/api/user/useUser";
+import { base_image_url } from "@/app/constants/keys";
 import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
 
 interface SellNFTModalProps {
+  id: number
   open: boolean;
   onOpenChange: (open: boolean) => void;
   title: string;
   image: any;
   type: string;
+  price: string
+  fee: string
 }
 
 export default function NFTModal({
+  id,
   open,
   onOpenChange,
   title,
   image,
   type,
+  price,
+  fee
 }: SellNFTModalProps) {
-  const [price, setPrice] = useState<string>("");
+  // const [price, setPrice] = useState<string>("");
   const modalRef = useRef<HTMLDivElement>(null);
-  const total = Number(price) + 1; // Adding $1 fee
+  const total = Number(price) + Number(fee);
+  const { mutate: buyProduct, isPending } = useBuyProduct()
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -43,7 +52,14 @@ export default function NFTModal({
 
   const handleSell = () => {
     console.log(`Selling NFT for $${price}`);
-    onOpenChange(false);
+    buyProduct({ id },{
+      onSuccess: () => {
+        onOpenChange(false);
+      },
+      onError: () => {
+        onOpenChange(false);
+      }
+    })
   };
 
   if (!open) return null;
@@ -81,8 +97,8 @@ export default function NFTModal({
         <div className="space-y-6">
           {/* Image */}
           <div className="rounded-lg overflow-hidden">
-            <Image
-              src={image}
+            <img
+              src={`${base_image_url}${image}`}
               alt={title}
               className="w-full h-48 object-cover"
             />
@@ -97,7 +113,7 @@ export default function NFTModal({
                 <input
                   type="number"
                   value={price}
-                  onChange={(e) => setPrice(e.target.value)}
+                  // onChange={(e) => setPrice(e.target.value)}
                   placeholder="Enter your price"
                   className="w-full h-10 px-3 py-2 bg-[rgba(32,32,36,0.5)] border border-purple-500 rounded-md text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors"
                 />
@@ -112,10 +128,10 @@ export default function NFTModal({
               {/* Sell Button */}
               <button
                 onClick={handleSell}
-                disabled={!price}
+                disabled={isPending || !price}
                 className="w-full h-10 px-4 py-2 bg-purple-600 hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-md font-medium transition-colors"
               >
-                Sell for ${Number(price).toFixed(2)}
+                Sell for ${price}
               </button>
             </div>
           )}
@@ -127,7 +143,7 @@ export default function NFTModal({
                     Price
                   </label>
                   <div className="block text-sm font-medium text-white mb-1">
-                    $10
+                    ${price}
                   </div>
                 </div>
                 <div className="flex flex-row justify-between border-b border-gray-500 pb-2">
@@ -135,7 +151,7 @@ export default function NFTModal({
                     Service Fee
                   </label>
                   <div className="block text-sm font-medium text-white mb-1">
-                    $1
+                    ${fee}
                   </div>
                 </div>
                 <div className="flex flex-row justify-between mt-2">
@@ -143,15 +159,15 @@ export default function NFTModal({
                     Total
                   </label>
                   <div className="block text-sm font-medium text-white mb-1">
-                    $11
+                    ${total}
                   </div>
                 </div>
                 <button
                   onClick={handleSell}
-                  // disabled={!price}
+                  disabled={isPending || !price}
                   className="w-full h-10 px-4 py-2 bg-purple-600 hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-md font-medium transition-colors"
                 >
-                  Buy for ${Number(price).toFixed(2)}
+                  Buy for ${price}
                 </button>
               </div>
             </div>

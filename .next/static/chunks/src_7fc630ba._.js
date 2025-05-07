@@ -248,6 +248,9 @@ const auth = {
     accessToken: async ()=>{
         return localStorage.getItem("accessToken");
     },
+    setToken: async (token)=>{
+        return localStorage.setItem("accessToken", token);
+    },
     refreshToken: async ()=>{
         return localStorage.getItem("refreshToken");
     },
@@ -276,6 +279,7 @@ if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelper
 var { g: global, __dirname, k: __turbopack_refresh__, m: module } = __turbopack_context__;
 {
 __turbopack_context__.s({
+    "apiClient": (()=>apiClient),
     "mutationFn": (()=>mutationFn),
     "queryFn": (()=>queryFn)
 });
@@ -541,7 +545,7 @@ function useMachineManagement() {
         machines
     };
 }
-_s(useMachineManagement, "DnUG64kVH1ciSTBU/whscgqtmk4=", false, function() {
+_s(useMachineManagement, "rQm84uiTNnLJvU7oxiSd3dII1ig=", false, function() {
     return [
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$hook$2d$form$2f$dist$2f$index$2e$esm$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useForm"],
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$tanstack$2f$react$2d$query$2f$build$2f$modern$2f$useMutation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useMutation"],
@@ -590,7 +594,7 @@ const Toast = ({ open, message, setOpen })=>{
         columnNumber: 5
     }, this);
 };
-_s(Toast, "V+EP5h/2e54WPM3C/yCxa3+BIo4=");
+_s(Toast, "6X5Ae2I4H2J4lF/87N7Pavs17AI=");
 _c = Toast;
 const __TURBOPACK__default__export__ = Toast;
 var _c;
@@ -805,7 +809,7 @@ function AddMachineDrawer({ open, onClose }) {
         columnNumber: 5
     }, this);
 }
-_s(AddMachineDrawer, "QxTBm37H2D/V1c0Hp9Y9kpqI2v8=", false, function() {
+_s(AddMachineDrawer, "jkX6EAd/iVoSyN9uqEoKTzS14Ms=", false, function() {
     return [
         __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f28$pages$292f28$user$292f$admin$2f$machineManagement$2f$hooks$2f$index$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"]
     ];

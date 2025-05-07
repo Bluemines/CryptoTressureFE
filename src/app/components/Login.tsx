@@ -13,6 +13,9 @@ import useLogin, {
 import React from "react"
 import { Controller } from "react-hook-form"
 import OTP from "antd/es/input/OTP"
+import { useForgetPasswordd } from "../(auth)/login/api/useAuth"
+import toast from "react-hot-toast"
+import { AxiosError } from "axios"
 
 const Login = () => {
   const [IsForgotPasswordModalOpen, setIsForgotPasswordModalOpen] =
@@ -20,33 +23,68 @@ const Login = () => {
   const [isResetPasswordModalOpen, setIsResetPasswordModalOpen] =
     useState<boolean>(false)
   const [is2FAModalOpen, setIs2FAModalOpen] = useState<boolean>(false)
-  const { control, handleSubmit, errors, handleLogin, open, setOpen, message } =
-    useLogin()
+  const {
+    control,
+    handleSubmit,
+    errors,
+    handleLogin,
+    open,
+    setOpen,
+    message,
+    isPending,
+  } = useLogin()
   const {
     control: forgetPassControl,
     handleSubmit: handleForgetPass,
     errors: forgetPassErrors,
     handleForgetPassword,
-    message: forgetPassMessage,
     forgetSuccess,
     watch: emailWatch,
   } = useForgetPassword()
   const {
     control: resetPassControl,
-    handleSubmit: handleResetPassSubmit,
     errors: resetPassErrors,
-    handleResetPassword,
-    message: resetPassMessage,
-    resetSuccess,
-    watch
-  } = useResetPassword(emailWatch('email'))
+    watch,
+  } = useResetPassword(emailWatch("email"))
+
+  const { mutate: fgp } = useForgetPasswordd()
+  const onSubmit = () => {
+    fgp(
+      {
+        email: watch("email"),
+        code: watch("code"),
+        newPassword: watch("newPassword"),
+        confirmPassword: watch("confirmPassword"),
+      },
+      {
+        onSuccess: () => {
+          toast.success("Password reset Successfull")
+          setIsForgotPasswordModalOpen(false)
+          setIsResetPasswordModalOpen(false)
+          setIs2FAModalOpen(false)
+        },
+        onError: (error) => {
+          const err = error as AxiosError<{ message: string }>
+          toast.error(err.response?.data?.message || "Something went wrong")
+        },
+      }
+    )
+  }
+
+  const handleCloseAllModals = () => {
+    setIsForgotPasswordModalOpen(false)
+    setIsResetPasswordModalOpen(false)
+    setIs2FAModalOpen(false)
+  }
+
+
   useEffect(() => {
     if (forgetSuccess) {
       setIsForgotPasswordModalOpen(false)
       setIs2FAModalOpen(true)
     }
   }, [forgetSuccess])
-  
+
   return (
     <div className='w-full max-w-md'>
       <div className='text-[#737373] font-medium text-2xl'>LOGO</div>
@@ -63,63 +101,64 @@ const Login = () => {
         Please sign in to your account and start the adventure
       </div>
 
-      <div className="space-y-4">
-        <div className="space-y-1">
+      <div className='space-y-4'>
+        <div className='space-y-1'>
           <FormInput
-            name="email"
+            name='email'
             control={control}
-            label="Email or Username"
+            label='Email or Username'
             errors={errors}
             rules={{ required: "Email is required" }}
           />
           <FormInput
-            name="password"
+            name='password'
             control={control}
-            label="Password"
-            type="password"
+            label='Password'
+            type='password'
             errors={errors}
             rules={{ required: "Password is required" }}
           />
           <Button
-            variant="text"
-            className="block text-[#7367F0]"
+            variant='text'
+            className='block text-[#7367F0]'
             onClick={() => setIsForgotPasswordModalOpen(true)}
           >
             Forgot Password?
           </Button>
         </div>
 
-        <div className="flex items-center gap-2">
-          <Checkbox className="!p-0" />{" "}
-          <span className="text-muted">Remember Me</span>
+        <div className='flex items-center gap-2'>
+          <Checkbox className='!p-0' />{" "}
+          <span className='text-muted'>Remember Me</span>
         </div>
 
         <Button
-          variant="contained"
+          variant='contained'
           fullWidth
           onClick={handleSubmit(handleLogin)}
+          disabled={isPending}
         >
           Sign in
         </Button>
 
-        <div className="text-sm text-center block mt-2">
+        <div className='text-sm text-center block mt-2'>
           New on our platform?{" "}
-          <Link className="text-primary" href="/register">
+          <Link className='text-primary' href='/register'>
             Create an account
           </Link>
         </div>
 
         <Divider>Or</Divider>
 
-        <div className="flex items-center justify-center gap-2 mt-4">
-          <div className="h-[38px] w-[38px] bg-[#1d2b48] grid place-items-center rounded">
-            <img src="/icons/fb.png" alt="" />
+        <div className='flex items-center justify-center gap-2 mt-4'>
+          <div className='h-[38px] w-[38px] bg-[#1d2b48] grid place-items-center rounded'>
+            <img src='/icons/fb.png' alt='' />
           </div>
-          <div className="h-[38px] w-[38px] bg-[#0d3148] grid place-items-center rounded">
-            <img src="/icons/twitter.png" alt="" />
+          <div className='h-[38px] w-[38px] bg-[#0d3148] grid place-items-center rounded'>
+            <img src='/icons/twitter.png' alt='' />
           </div>
-          <div className="h-[38px] w-[38px] bg-[#3f1917] grid place-items-center rounded">
-            <img src="/icons/google.png" alt="" />
+          <div className='h-[38px] w-[38px] bg-[#3f1917] grid place-items-center rounded'>
+            <img src='/icons/google.png' alt='' />
           </div>
         </div>
       </div>
@@ -147,7 +186,7 @@ const Login = () => {
           >
             Send Reset Link
           </Button>
-          <Button variant='text' fullWidth>
+          <Button variant='text' fullWidth onClick={handleCloseAllModals}>
             Back to log in
           </Button>
         </div>
@@ -160,7 +199,7 @@ const Login = () => {
           <div className='text-[#737373] text-sm'>
             We sent a verification code to your Email. Enter the code from the
             eamil in the field below.
-            <div>{emailWatch('email')}</div>
+            <div>{emailWatch("email")}</div>
           </div>
 
           <div className='w-full'>
@@ -182,7 +221,7 @@ const Login = () => {
             variant='contained'
             fullWidth
             onClick={() => {
-              if (watch('code').length >= 6) {
+              if (watch("code").length >= 6) {
                 setIsResetPasswordModalOpen(true)
               }
             }}
@@ -203,7 +242,7 @@ const Login = () => {
         <div className='space-y-4'>
           <div className='text-[#737373] text-2xl text-center'>LOGO</div>
           <div className='font-medium text-xl'>Reset Password 🔒</div>
-          <div className='text-[#737373] text-sm'>{emailWatch('email')}</div>
+          <div className='text-[#737373] text-sm'>{emailWatch("email")}</div>
           <FormInput
             name='newPassword'
             control={resetPassControl}
@@ -217,20 +256,16 @@ const Login = () => {
             errors={resetPassErrors}
           />
 
-          <Button
-            variant='contained'
-            fullWidth
-            onClick={handleResetPassSubmit(handleResetPassword)}
-          >
+          <Button variant='contained' fullWidth onClick={onSubmit}>
             Set New Password
           </Button>
-          <Button variant='text' fullWidth>
+          <Button variant='text' fullWidth onClick={handleCloseAllModals}>
             Back to log in
           </Button>
         </div>
       </Modal>
     </div>
-  );
-};
+  )
+}
 
-export default Login;
+export default Login

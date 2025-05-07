@@ -1,7 +1,7 @@
 "use client";
 
 import FormInput from "@/app/components/ui/Inputs/FormInput";
-import { Button, Checkbox, Divider, Input } from "@mui/material";
+import { Button, Checkbox } from "@mui/material";
 import Link from "next/link";
 import useRegisterHook from "./hooks";
 
@@ -31,6 +31,14 @@ const Register = () => {
                 control={control}
                 errors={errors}
                 label="Username"
+              />
+            </div>
+            <div className="space-y-1">
+              <FormInput
+                name="phone"
+                control={control}
+                errors={errors}
+                label="Phone Number"
               />
             </div>
             {/* <div className="space-y-1">
