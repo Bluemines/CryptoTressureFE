@@ -17,8 +17,8 @@ interface WalletStore {
   deleteWalletById: (id: number) => void;
 }
 
-// The original nested wallet from API
-interface Wallet {
+
+export interface Wallet {
   id: number;
   balance: string;
   reserved: string;

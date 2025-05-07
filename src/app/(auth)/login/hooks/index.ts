@@ -13,7 +13,6 @@ import auth from "@/app/utils/auth";
 export default function useLogin() {
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
-  console.log(message);
   const {
     control,
     handleSubmit,

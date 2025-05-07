@@ -22,6 +22,7 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { useState } from "react";
 import Modal from "../../modals/Modal";
 import useMachineManagement from "@/app/(pages)/(user)/admin/machineManagement/hooks";
+import { useRouter } from "next/navigation";
 
 interface Column {
   id: string;
@@ -32,24 +33,6 @@ interface Row {
   id: string | number;
   [key: string]: any;
 }
-
-interface CustomUserTableProps {
-  columns: Column[];
-  data: Row[];
-  total?: number;
-  rowsPerPage?: number;
-  icon1?: boolean;
-  icon2?: boolean;
-  title?: string;
-  onClick?: () => void;
-  actions?: boolean;
-  showHeader?: boolean;
-  buttonText?: string;
-  showSearch?: boolean;
-  showButton?: boolean;
-  editProduct?: boolean;
-}
-
 const statusColors: Record<string, string> = {
   Approved: "#28C76F",
   Pending: "#E46A11",
@@ -64,6 +47,24 @@ const statusBgColors: Record<string, string> = {
   Success: "#28C76F33",
   Failed: "#F0443833",
 };
+interface CustomUserTableProps {
+  columns: Column[];
+  data: Row[];
+  total?: number;
+  rowsPerPage?: number;
+  icon1?: boolean;
+  icon2?: boolean;
+  title?: string;
+  onClick?: () => void;
+  onClick2?: () => void;
+  actions?: boolean;
+  showHeader?: boolean;
+  buttonText?: string;
+  showSearch?: boolean;
+  showButton?: boolean;
+  editProduct?: boolean;
+  navUser?: boolean;
+}
 
 const AdminTable = ({
   columns,
@@ -80,7 +81,10 @@ const AdminTable = ({
   showSearch = true,
   showButton = true,
   editProduct = false,
+  onClick2,
+  navUser,
 }: CustomUserTableProps) => {
+  const router = useRouter();
   const { handleDeleteMachine, handelSetEditValues } = useMachineManagement();
   const [page, setPage] = useState(1);
   const [DeleteID, setDeleteID] = useState("");
@@ -383,9 +387,7 @@ const AdminTable = ({
                     <TableCell>
                       {icon1 && (
                         <>
-                          <IconButton
-                            onClick={handleClick}
-                          >
+                          <IconButton onClick={handleClick}>
                             <MoreVertIcon sx={{ color: "#A78BFA" }} />
                           </IconButton>
 
@@ -416,16 +418,39 @@ const AdminTable = ({
                           </Popover>
                         </>
                       )}
+                      {/* {icon2 && (
+                        <IconButton
+                          onClick={() => {
+                            if (editProduct) {
+                              handelSetEditValues(String(row.id));
+                              onClick2();
+                            } else if (navUser) {
+                              router.push(
+                                `/admin/usersManagement/details?id=${row.id}`
+                              );
+                            } else {
+                              onClick2();
+                            }
+                          }}
+                        >
+                          <EditIcon sx={{ color: "#A78BFA" }} />
+                        </IconButton>
+                      )} */}
                       {icon2 && (
-                        <IconButton onClick={()=>{
-                          if (editProduct) {
-                            handelSetEditValues(String(row.id));
-                            onClick()
-                          }
-                          else{
-                            onClick()
-                          }
-                        }}>
+                        <IconButton
+                          onClick={() => {
+                            if (editProduct) {
+                              handelSetEditValues(String(row.id));
+                              onClick2 && onClick2(); // Check if onClick2 is defined before calling it
+                            } else if (navUser) {
+                              router.push(
+                                `/admin/usersManagement/details?id=${row.id}`
+                              );
+                            } else {
+                              onClick2 && onClick2(); // Check if onClick2 is defined before calling it
+                            }
+                          }}
+                        >
                           <EditIcon sx={{ color: "#A78BFA" }} />
                         </IconButton>
                       )}

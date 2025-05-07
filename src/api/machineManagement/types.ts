@@ -1,4 +1,9 @@
 export interface AddMachineType {
-    body:FormData
-  }
-  
+  body: FormData;
+}
+
+export interface EditMachineType {
+  id: string;
+  body: FormData;
+}
+

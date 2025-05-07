@@ -1,7 +1,16 @@
 import { getWalletsApi } from "@/api/wallet";
-import { useWalletStore } from "@/store/walletStore";
+import { useWalletStore, Wallet } from "@/store/walletStore";
 import { useQuery } from "@tanstack/react-query";
 import React, { useEffect } from "react";
+
+interface ApiResponse {
+  data: {
+    items: Wallet[]; // Add items array inside data
+    // Add other properties if needed
+  };
+  status: string;
+  message: string;
+}
 
 export default function useWallet() {
   const {
@@ -10,7 +19,7 @@ export default function useWallet() {
     refetch,
     isError: onError,
     isSuccess: onSuccess,
-  } = useQuery(getWalletsApi());
+  } = useQuery<ApiResponse, Error>(getWalletsApi());
   console.log(wallets);
   const { setAllWallet, wallet } = useWalletStore();
   const handleSetWallet = () => {

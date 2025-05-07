@@ -163,25 +163,24 @@
 // }
 "use client";
 
-import {
-  Box,
-  Drawer,
-  Typography,
-  Button,
-} from "@mui/material";
+import { Box, Drawer, Typography, Button } from "@mui/material";
 import { useEffect } from "react";
 import FormInput from "../ui/Inputs/FormInput";
-import useMachineManagement from "@/app/(pages)/(user)/admin/machineManagement/hooks";
+import useMachineManagement, {
+  Machine,
+} from "@/app/(pages)/(user)/admin/machineManagement/hooks";
 import Toast from "../Toast";
 
 export default function AddMachineDrawer({
   open,
   onClose,
-  editMachineId
+  editMachineId,
+  machine,
 }: {
   open: boolean;
   onClose: () => void;
   editMachineId?: string;
+  machine?: Machine;
 }) {
   const {
     control,
@@ -195,17 +194,28 @@ export default function AddMachineDrawer({
     openToast,
     setOpenToast,
     handelSetEditValues,
+    currentMachineId,
+    reset,
     // isEditMode,
     // handleCancelEdit
   } = useMachineManagement();
 
   // Set edit values when drawer opens with an editMachineId
   useEffect(() => {
-    if (open && editMachineId) {
-      // Directly call handelSetEditValues without setTimeout
-      handelSetEditValues(editMachineId);
+    // Directly call handelSetEditValues without setTimeout
+    console.log(machine);
+    if (machine) {
+      reset({
+        title: machine?.title,
+        description: machine?.description,
+        price: machine?.price,
+        dailyIncome: machine?.dailyIncome,
+        image: machine?.image as any,
+        fee: machine?.fee,
+        rentalDays: machine?.rentalDays,
+      });
     }
-  }, [open, editMachineId, handelSetEditValues]);
+  }, [open, currentMachineId, machine]);
 
   // Handle closing the drawer
   const handleClose = () => {
@@ -239,7 +249,7 @@ export default function AddMachineDrawer({
         errors={errors}
         rules={{ required: "Title is required" }}
       />
-      
+
       <FormInput
         name="description"
         label="Descriptions"
@@ -247,7 +257,6 @@ export default function AddMachineDrawer({
         errors={errors}
         multiline
         rows={4}
-        
       />
 
       <Button
@@ -265,12 +274,7 @@ export default function AddMachineDrawer({
         <input type="file" hidden onChange={handleImageSelect} />
       </Button>
 
-      <FormInput 
-        name="price" 
-        label="Price" 
-        control={control} 
-        errors={errors} 
-      />
+      <FormInput name="price" label="Price" control={control} errors={errors} />
 
       <FormInput
         name="dailyIncome"
@@ -279,12 +283,7 @@ export default function AddMachineDrawer({
         errors={errors}
       />
 
-      <FormInput 
-        name="fee" 
-        label="Fee" 
-        control={control} 
-        errors={errors} 
-      />
+      <FormInput name="fee" label="Fee" control={control} errors={errors} />
 
       <FormInput
         name="rentalDays"
@@ -302,6 +301,7 @@ export default function AddMachineDrawer({
           onClick={handleSubmit(handleAddMachine)}
           disabled={!isValid}
         >
+          Add
           {/* {isEditMode ? "Update" : "Add"} */}
         </Button>
         <Button
