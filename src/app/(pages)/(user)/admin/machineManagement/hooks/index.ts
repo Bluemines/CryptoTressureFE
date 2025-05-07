@@ -88,6 +88,7 @@ export default function useMachineManagement() {
       setMessage(err.message);
     }
   };
+  console.log("hello")
   const { machines, setAllMachines, deleteMachineById } = useMachineStore();
   const {
     data: allMacchines,
