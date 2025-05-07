@@ -78,8 +78,17 @@ import {
   Typography,
 } from "@mui/material";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
+import { useSearchParams } from "next/navigation";
+import useSingleUser from "../hooks/useSingleUser";
+import { useState } from "react";
+import Modal from "@/app/components/modals/Modal";
+import { suspendUserApi } from "@/api/adminUsers";
+import Toast from "@/app/components/Toast";
 
-export default function page() {
+export default function UserDetails() {
+  const [isSuspendedModalOpen, setIsSuspendedModalOpen] = useState(false);
+  const { user, suspendUser, showToast, setShowToast, message } =
+    useSingleUser();
   const columns = [
     { id: "amount", label: "Amount" },
     { id: "date", label: "Date" },
@@ -116,6 +125,7 @@ export default function page() {
   return (
     <div className="min-h-screen bg-black p-4 md:p-8">
       <div className="max-w-7xl mx-auto space-y-8">
+        <Toast open={showToast} message={message} setOpen={setShowToast} />
         <Grid container spacing={4}>
           <Grid size={4}>
             <Card
@@ -131,10 +141,12 @@ export default function page() {
                   src="https://randomuser.me/api/portraits/women/1.jpg"
                   sx={{ width: 80, height: 80 }}
                 />
-                <Typography variant="h6">John Doe</Typography>
+                <Typography variant="h6">{user?.username}</Typography>
                 <Box display="flex" alignItems="center" gap={1}>
                   <CheckBoxIcon sx={{ color: "#7B61FF" }} />
-                  <Typography variant="body2">$100 Wallet Balance</Typography>
+                  <Typography variant="body2">
+                    ${user?.balance} Wallet Balance
+                  </Typography>
                 </Box>
                 <Divider sx={{ backgroundColor: "#333", width: "100%" }} />
                 <Box textAlign="left" className="w-full space-y-2">
@@ -145,42 +157,43 @@ export default function page() {
                   </div>
                   <div className="mt-4">
                     <Typography variant="body2">
-                      <strong>Username:</strong> John Doe
+                      <strong>Username:</strong> {user?.username}
                     </Typography>
                   </div>
 
                   <div className="mt-4">
                     <Typography variant="body2">
-                      <strong>Email:</strong> John Doe
+                      <strong>Email:</strong> {user?.email}
                     </Typography>
                   </div>
 
                   <div className="mt-4">
                     <Typography variant="body2" className="flex flex-row gap-2">
-                      <strong>Status:</strong>{" "}
-                      <div className="bg-[#274635] p-1 rounded-xl text-[#26c76e] font-semibold">
-                        Active
+                      <strong className="mt-1.5">Status:</strong>{" "}
+                      <div className="bg-[#274635] p-2 rounded-xl text-[#26c76e] font-semibold">
+                        {user?.status}
                       </div>
                     </Typography>
                   </div>
 
                   <div className="mt-4">
                     <Typography variant="body2" className="flex flex-row gap-2">
-                      <strong>Level:</strong>{" "}
-                      <div className="bg-[#274635] p-1 rounded-xl text-[#26c76e] font-semibold">
-                        Level 1
+                      <strong className="mt-1">Level:</strong>{" "}
+                      <div className="bg-[#274635] p-1 rounded-xl text-[#26c76e] font-semibold w-10 text-center">
+                        {user?.level}
                       </div>
                     </Typography>
                   </div>
                   <div className="mt-4">
                     <Typography variant="body2">
-                      <strong>Contact:</strong> +32423423423
+                      {/* <strong>Contact:</strong> +32423423423 */}
                     </Typography>
                   </div>
                 </Box>
                 <Button
                   variant="contained"
                   sx={{ backgroundColor: "#442d2e", mt: 2, color: "#ea5355" }}
+                  onClick={() => setIsSuspendedModalOpen(true)}
                 >
                   Suspend User
                 </Button>
@@ -195,6 +208,25 @@ export default function page() {
           </Grid>
         </Grid>
       </div>
+      <Modal open={isSuspendedModalOpen} setOpen={setIsSuspendedModalOpen}>
+        <div className="text-lg font-medium">Suspend withdrawal?</div>
+        <div className="text-[#A9A9A9] mt-4">
+          Do you want to Suspend user {user?.username}
+        </div>
+        <div className="flex">
+          <Button
+            sx={{
+              backgroundColor: "#F04438",
+              color: "#fff",
+              marginTop: "22px",
+              marginLeft: "auto",
+            }}
+            onClick={() => suspendUser(Number(user?.id))}
+          >
+            Suspended
+          </Button>
+        </div>
+      </Modal>
     </div>
   );
 }

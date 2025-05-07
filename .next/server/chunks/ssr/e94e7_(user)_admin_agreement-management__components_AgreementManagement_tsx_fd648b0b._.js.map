@@ -1,6 +1,0 @@
-{
-  "version": 3,
-  "sources": [],
-  "sections": [
-    {"offset": {"line": 7, "column": 0}, "map": {"version":3,"sources":["file:///Users/abdulrauf/Downloads/Treasure-nft-clone/src/app/%28pages%29/%28user%29/admin/agreement-management/_components/AgreementManagement.tsx"],"sourcesContent":["\"use client\"\n\nimport React, { useState } from \"react\"\nimport ReactQuill from \"react-quill-new\"\n// import \"react-quill/dist/quill.snow.css\"\n\nconst AgreementManagement = () => {\n  const [value, setValue] = useState(\"\")\n\n  return (\n    <div className=\"h-[70vh] bg-[#262626] text-white p-4\">\n      <ReactQuill\n        theme=\"snow\"\n        value={value}\n        onChange={setValue}\n        className=\"h-[90%]\"\n      />\n    </div>\n  )\n}\n\nexport default AgreementManagement\n"],"names":[],"mappings":";;;;AAEA;AACA;AAAA;AAHA;;;;AAIA,2CAA2C;AAE3C,MAAM,sBAAsB;IAC1B,MAAM,CAAC,OAAO,SAAS,GAAG,CAAA,GAAA,qMAAA,CAAA,WAAQ,AAAD,EAAE;IAEnC,qBACE,8OAAC;QAAI,WAAU;kBACb,cAAA,8OAAC,qKAAA,CAAA,UAAU;YACT,OAAM;YACN,OAAO;YACP,UAAU;YACV,WAAU;;;;;;;;;;;AAIlB;uCAEe","debugId":null}}]
-}

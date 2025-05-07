@@ -1,10 +1,4 @@
 {
-  "/(auth)/login/page": "app/(auth)/login/page.js",
-  "/(pages)/(user)/admin/machineManagement/page": "app/(pages)/(user)/admin/machineManagement/page.js",
-  "/(pages)/(user)/admin/referral-system-management/page": "app/(pages)/(user)/admin/referral-system-management/page.js",
-  "/(pages)/(user)/user/dashboard/page": "app/(pages)/(user)/user/dashboard/page.js",
-  "/(pages)/(user)/user/explore/NFTdetails/page": "app/(pages)/(user)/user/explore/NFTdetails/page.js",
-  "/(pages)/(user)/user/explore/page": "app/(pages)/(user)/user/explore/page.js",
-  "/_not-found/page": "app/_not-found/page.js",
+  "/(pages)/(user)/admin/dashboard/page": "app/(pages)/(user)/admin/dashboard/page.js",
   "/favicon.ico/route": "app/favicon.ico/route.js"
 }
