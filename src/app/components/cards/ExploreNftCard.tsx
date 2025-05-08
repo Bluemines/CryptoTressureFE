@@ -1,8 +1,4 @@
-import Image from "next/image";
 import React from "react";
-// import { Card } from "@/components/ui/card";
-// import { Button } from "@/components/ui/button";
-import img from "../../assets/Images/exploreImg.png"
 import { base_image_url } from "@/app/constants/keys";
 interface NFTCardProps {
   title: string;
