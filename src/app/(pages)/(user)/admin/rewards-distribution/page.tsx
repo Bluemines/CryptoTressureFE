@@ -1,22 +1,11 @@
-"use client"
-import {
-  TextField,
-  Button,
-} from "@mui/material"
-import { useState } from "react"
-import DistributeRewardsDrawer from "@/app/components/drawers/DistributeRewardsDrawer"
-import TableDisplay from "@/app/components/ui/tables/TableDisplay"
-import { authStore } from "@/store/authStore"
-
-type RewardRow = {
-  id: number
-  name: string
-  email: string
-  level: number
-  date: string
-  rewardAmount: string
-  status: "Success" | "Failed"
-}
+"use client";
+import { TextField, Button } from "@mui/material";
+import { useState } from "react";
+import DistributeRewardsDrawer from "@/app/components/drawers/DistributeRewardsDrawer";
+import TableDisplay from "@/app/components/ui/tables/TableDisplay";
+import { authStore } from "@/store/authStore";
+import AdminTable from "@/app/components/ui/tables/AdminTable";
+import useRewards from "./hooks";
 
 export type Column<T> = {
   id: keyof T;
@@ -24,24 +13,17 @@ export type Column<T> = {
   isStatus?: boolean;
 };
 
-const Page = () => {
-  const [search, setSearch] = useState("")
-  const [open, setOpen] = useState(false)
-
-  const { user } = authStore()
-  console.log('user: ', user)
-
+const page = () => {
   const columns = [
-    { id: "name", label: "User" },
-    { id: "email", label: "Email" },
-    { id: "level", label: "Level" },
-    { id: "date", label: "Date" },
-    { id: "rewardAmount", label: "Reward Amount" },
-    { id: "status", label: "Status", isStatus: true },
-  ] satisfies Column<RewardRow>[]
-  
-
-  const data: RewardRow[] = [
+    { id: "userName", label: "User" },
+    { id: "userEmail", label: "Email" },
+    { id: "createdAt", label: "Date" },
+    { id: "reward", label: "Reward Amount" },
+    { id: "status", label: "Status" },
+  ];
+  const { rewards } = useRewards();
+  const [open, setOpen] = useState(false);
+  const data = [
     {
       id: 1,
       name: "John Bushmill",
@@ -69,43 +51,31 @@ const Page = () => {
       rewardAmount: "$200",
       status: "Success",
     },
-  ]
+  ];
 
-
-  const filteredData = data.filter((row) =>
-    row.name.toLowerCase().includes(search.toLowerCase())
-  )
+  // const filteredData = data.filter((row) =>
+  //   row.name.toLowerCase().includes(search.toLowerCase())
+  // )
 
   return (
-    <div className="min-h-screen text-white">
-      <div className="font-semibold text-xl py-3">Rewards Distribution</div>
-      <div className="flex justify-between items-center py-4 bg-[#1f1f1f] px-4">
-        <TextField
-          label="Search user"
-          variant="outlined"
-          size="small"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          sx={{
-            label: { color: "#aaa" },
-            input: { color: "#eee" },
-            "& .MuiOutlinedInput-root": {
-              "& fieldset": { borderColor: "#555" },
-              "&:hover fieldset": { borderColor: "#888" },
-              "&.Mui-focused fieldset": { borderColor: "#A78BFA" },
-            },
-          }}
+    <div>
+      <div className="font-semibold text-xl my-3">Rewards Distribution</div>
+      {rewards.length > 0 ? (
+        <AdminTable
+          showHeader={true}
+          buttonText="Distribute Awards Manually"
+          data={rewards}
+          columns={columns}
+          actions={false}
         />
-        <Button variant="contained" sx={{ fontWeight: 600 }} onClick={() => setOpen(true)}>
-          Distribute Awards Manually
-        </Button>
-      </div>
-
-      <TableDisplay columns={columns} data={filteredData} />
-
+      ) : (
+        <div className="text-xl text-white font-bold text-center">
+          Loading...
+        </div>
+      )}
       <DistributeRewardsDrawer open={open} onClose={() => setOpen(false)} />
     </div>
-  )
-}
+  );
+};
 
-export default Page
+export default page;
