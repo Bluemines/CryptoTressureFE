@@ -6,53 +6,55 @@ import React from "react";
 import AdminTable from "../../../../components/ui/tables/AdminTable";
 import { Card } from "@mui/material";
 import useUserManagement from "../usersManagement/hooks";
+import useAdminDashboard from "./hooks";
 export default function Dashboard() {
   const { users } = useUserManagement();
+  const { stats, withDrawls } = useAdminDashboard();
   const statsData = [
     {
-      value: "4,235",
+      value: stats ? stats.totalUsers : "Loading...",
       label: "Total Users",
       color: "bg-[#7C3AED]",
       //   image: Image,
     },
     {
-      value: "3,312",
+      value: stats ? stats.verifiedUsers : "Loading...",
       label: "Verified Users",
       color: "bg-[#50BB25]",
       //   image: Image,
     },
     {
-      value: "20",
+      value: stats ? stats.suspendedUsers : "Loading...",
       label: "Suspended Users",
       color: "bg-[#EC1E2D]",
       //   image: Image,
     },
     {
-      value: "80",
+      value: stats ? stats.activeMachines : "Loading...",
       label: "Active Machines",
       color: "bg-[#FF8800]",
       //   image: Image,
     },
     {
-      value: "$2000",
+      value: stats ? stats.rewardsDistributed : "Loading...",
       label: "Rewards Distributed",
       color: "bg-[#393252]",
       //   image: Image,
     },
     {
-      value: "4,235",
+      value: stats ? stats.platformBalance : "Loading...",
       label: "Platform Balance",
       color: "bg-[#33482a]",
       //   image: Image,
     },
     {
-      value: "4,235",
+      value: stats ? stats.totalRevenue : "Loading...",
       label: "Total Revenue",
       color: "bg-[#274650]",
       //   image: Image,
     },
     {
-      value: "4,235",
+      value: stats ? stats.pendingWithdrawals : "Loading...",
       label: "Pending Withdrawls",
       color: "bg-[#543e22]",
       //   image: Image,
@@ -74,37 +76,7 @@ export default function Dashboard() {
     { id: "status", label: "Status" },
   ];
 
-  const data = [
-    {
-      id: 1,
-      name: "John Bushmill",
-      email: "Johnb@mail.com",
-      date: "1 min ago",
-      status: "Pending",
-    },
-    {
-      id: 2,
-      name: "Mohammad Karim",
-      email: "Johnb@mail.com",
-      date: "5 hour ago",
-      status: "Approved",
-    },
-    {
-      id: 3,
-      name: "Josh Adam",
-      email: "Johnb@mail.com",
-      date: "2 day ago",
-      status: "Approved",
-    },
-    {
-      id: 4,
-      name: "Sin Tae",
-      email: "Johnb@mail.com",
-      date: "5 Jan 2023",
-      status: "Suspend",
-    },
-    // Add more entries...
-  ];
+
   const data2 = [
     {
       id: 1,
@@ -168,7 +140,7 @@ export default function Dashboard() {
           </main>
         </Card>
         <main className="mt-20">
-          {users.length > 0 && (
+          {users.length > 0 ? (
             <AdminTable
               columns={columns}
               data={users}
@@ -177,15 +149,25 @@ export default function Dashboard() {
               title="Recent Users"
               // onClick={() => router.push("/admin/usersManagement/details")}
             />
+          ) : (
+            <div className="text-white text-xl text-center font-bold">
+              No Users registered yet
+            </div>
           )}
         </main>
-        <main className="mt-20">
-          <AdminTable
-            columns={columns2}
-            data={data2}
-            title="Recent Transactions"
-          />
-        </main>
+        {withDrawls.length > 0 ? (
+          <main className="mt-20">
+            <AdminTable
+              columns={columns2}
+              data={data2}
+              title="Recent Withdrawls"
+            />
+          </main>
+        ) : (
+          <div className="text-white text-xl text-center font-bold">
+            No withdrawls yet
+          </div>
+        )}
       </div>
     </div>
   );

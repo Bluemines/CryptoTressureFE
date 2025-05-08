@@ -1,7 +1,7 @@
 import Image from "next/image";
 import img from "../../assets/SVGs/Artwork.svg"
 interface StatsCardProps {
-  value: string;
+  value: string|number;
   label: string;
   color: string;
   image?: string;
