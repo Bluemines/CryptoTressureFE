@@ -28,14 +28,9 @@ const roles = {
 }
 
 export default function useLogin() {
-<<<<<<< HEAD
   const router = useRouter()
   const [open, setOpen] = useState(false)
   const [message, setMessage] = useState("")
-=======
-  const [open, setOpen] = useState(false);
-  const [message, setMessage] = useState("");
->>>>>>> main
   const {
     control,
     handleSubmit,

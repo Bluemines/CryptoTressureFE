@@ -2,6 +2,7 @@
 import { useGetReferralHistory, useGetReferralLink } from "@/api/user/useUser";
 import DataTable from "@/app/components/DataTable/DataTable";
 import { Button } from "@mui/material";
+import { format } from "date-fns";
 import { TableColumn } from "react-data-table-component";
 import toast from "react-hot-toast";
 
@@ -10,34 +11,21 @@ type Data = {
   userName: string;
   email: string;
   date: string;
+  commissionAmount: number
 };
 const page = () => {
 
   const { data: referralHistory, isLoading } = useGetReferralHistory()
   const { data: referralLink, isLoading: isRefLinkLoading } = useGetReferralLink()
 
-  console.log(referralLink)
-
-  const data = [
-    {
-      id: 1,
-      userName: "John Doe",
-      email: "xyz@example.com",
-      date: "04/22/2016",
-    },
-    {
-      id: 2,
-      userName: "John Doe",
-      email: "xyz@example.com",
-      date: "04/22/2016",
-    },
-    {
-      id: 3,
-      userName: "John Doe",
-      email: "xyz@example.com",
-      date: "04/22/2016",
-    },
-  ];
+  const transformedData: Data[] = referralHistory?.map((ref: any) => ({
+    id: ref.id,
+    userName: ref.username,
+    email: ref.email,
+    date: format(new Date(ref.joinedDate), "yyyy-MM-dd HH:mm"),
+    status: ref.status,
+    commissionAmount: ref.earnedCommissions
+  }));
 
   const columns:TableColumn<Data>[] = [
     {
@@ -53,6 +41,11 @@ const page = () => {
     {
       name: "Account Created Date",
       selector: (row) => row.date,
+      sortable: true,
+    },
+    {
+      name: "Commission Amount",
+      selector: (row) => row.commissionAmount,
       sortable: true,
     },
   ];
@@ -86,7 +79,7 @@ const page = () => {
         </div>
       </div>
       <div className="text-[#C0C0C0] text-xl">Referral History</div>
-      <DataTable data={data} columns={columns} themeStyle="black" />
+      <DataTable data={transformedData} columns={columns} themeStyle="black" />
     </div>
   );
 };
