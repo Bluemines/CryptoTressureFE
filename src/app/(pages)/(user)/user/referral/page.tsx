@@ -1,4 +1,5 @@
 "use client";
+import { useGetReferralHistory } from "@/api/user/useUser";
 import DataTable from "@/app/components/DataTable/DataTable";
 import { Button } from "@mui/material";
 import { TableColumn } from "react-data-table-component";
@@ -10,6 +11,11 @@ type Data = {
   date: string;
 };
 const page = () => {
+
+  const { data: referralHistory, isLoading } = useGetReferralHistory()
+
+  console.log(referralHistory)
+
   const data = [
     {
       id: 1,

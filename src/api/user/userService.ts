@@ -15,6 +15,11 @@ export const getProductById = async (id: number) => {
   return data.data
 }
 
+export const referralHistory = async () => {
+  const { data } = await apiClient.get(`referral/history`)
+  return data
+}
+
 export const buyProduct = async (id: number) => {
   const { data } = await apiClient.post(`products/${id}/buy`)
   return data.data

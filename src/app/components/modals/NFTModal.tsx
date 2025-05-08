@@ -100,7 +100,7 @@ export default function NFTModal({
             <img
               src={`${base_image_url}${image}`}
               alt={title}
-              className="w-full h-48 object-cover"
+              className="w-full h-48 object-fit"
             />
           </div>
           {type === "sell" && (
@@ -113,6 +113,7 @@ export default function NFTModal({
                 <input
                   type="number"
                   value={price}
+                  disabled={true}
                   // onChange={(e) => setPrice(e.target.value)}
                   placeholder="Enter your price"
                   className="w-full h-10 px-3 py-2 bg-[rgba(32,32,36,0.5)] border border-purple-500 rounded-md text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors"
@@ -128,10 +129,10 @@ export default function NFTModal({
               {/* Sell Button */}
               <button
                 onClick={handleSell}
-                disabled={isPending || !price}
+                disabled={true}
                 className="w-full h-10 px-4 py-2 bg-purple-600 hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-md font-medium transition-colors"
               >
-                Sell for ${price}
+                Rented
               </button>
             </div>
           )}
