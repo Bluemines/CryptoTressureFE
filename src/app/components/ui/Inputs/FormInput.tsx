@@ -70,10 +70,10 @@
 // export default FormInput;
 import React, { useState } from "react";
 import { Controller, Control, FieldErrors } from "react-hook-form";
-import { TextField, IconButton, InputAdornment } from "@mui/material";
+import { TextField, IconButton, InputAdornment, TextFieldProps } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
-interface FormInputProps {
+interface FormInputProps extends Omit<TextFieldProps, "name" | "label"> {
   name: string;
   control: Control<any>;
   label: string;
@@ -93,6 +93,7 @@ const FormInput: React.FC<FormInputProps> = ({
   multiline = false,
   rows = 4,
   rules,
+  ...props
 }) => {
   const [showPassword, setShowPassword] = useState(false);
   const isPassword = type === "password";
@@ -148,6 +149,7 @@ const FormInput: React.FC<FormInputProps> = ({
               },
             },
           }}
+          {...props}
         />
       )}
     />
