@@ -1,9 +1,0 @@
-{
-  "/(auth)/register/page": "app/(auth)/register/page.js",
-  "/(pages)/(user)/user/collection/page": "app/(pages)/(user)/user/collection/page.js",
-  "/(pages)/(user)/user/dashboard/page": "app/(pages)/(user)/user/dashboard/page.js",
-  "/(pages)/(user)/user/explore/NFTdetails/page": "app/(pages)/(user)/user/explore/NFTdetails/page.js",
-  "/(pages)/(user)/user/explore/page": "app/(pages)/(user)/user/explore/page.js",
-  "/(pages)/(user)/user/referral/page": "app/(pages)/(user)/user/referral/page.js",
-  "/favicon.ico/route": "app/favicon.ico/route.js"
-}

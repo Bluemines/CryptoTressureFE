@@ -1,7 +1,0 @@
-{
-  "headers": {
-    "x-nextjs-stale-time": "4294967294",
-    "x-nextjs-prerender": "1",
-    "x-next-cache-tags": "_N_T_/layout,_N_T_/(pages)/layout,_N_T_/(pages)/(user)/layout,_N_T_/(pages)/(user)/user/layout,_N_T_/(pages)/(user)/user/wallet/layout,_N_T_/(pages)/(user)/user/wallet/add-new-wallet/layout,_N_T_/(pages)/(user)/user/wallet/add-new-wallet/page,_N_T_/user/wallet/add-new-wallet"
-  }
-}
