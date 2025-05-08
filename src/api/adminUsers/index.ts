@@ -8,7 +8,7 @@ interface AllUserApiResponse {
     // Add other properties if needed
   };
   status: string;
-  message: string;
+  message: string; 
 }
 export const getAllAdminUsersApi = () => ({
   queryKey: ["user-admins"],
