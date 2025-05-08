@@ -4,9 +4,14 @@ import FormInput from "@/app/components/ui/Inputs/FormInput";
 import { Button, Checkbox } from "@mui/material";
 import Link from "next/link";
 import useRegisterHook from "./hooks";
+import { useSearchParams } from "next/navigation";
 
 const Register = () => {
-  const { control, errors,handleSubmit,onSubmit,submitCode } = useRegisterHook();
+
+  const searchParams = useSearchParams()
+  const ref = searchParams.get("ref")
+
+  const { control, errors,handleSubmit,onSubmit,submitCode } = useRegisterHook(ref || '');
   return (
     <div className="h-dvh flex">
       <div className="w-[50%] lg:w-[50%] overflow-hidden hidden md:block">
@@ -101,6 +106,7 @@ const Register = () => {
                 name="referralCode"
                 control={control}
                 errors={errors}
+                disabled={ref ? true : false}
                 label="Referral Code"
               />
             </div>

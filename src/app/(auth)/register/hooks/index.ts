@@ -9,7 +9,7 @@ import toast from "react-hot-toast"
 import { useRouter } from "next/navigation"
 import { AxiosError } from "axios"
 
-export default function useRegisterHook() {
+export default function useRegisterHook(ref?: string) {
   const router = useRouter()
   const {
     control,
@@ -24,7 +24,7 @@ export default function useRegisterHook() {
       code: "",
       password: "",
       confirmPassword: "",
-      referralCode: "",
+      referralCode: ref || "",
       phone: ''
     },
   })
