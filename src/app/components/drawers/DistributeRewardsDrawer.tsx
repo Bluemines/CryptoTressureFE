@@ -1,6 +1,8 @@
 "use client";
 
 import { useGetProducts } from "@/api/admin/useAdmin";
+import useRewards from "@/app/(pages)/(user)/admin/rewards-distribution/hooks";
+import useUserManagement from "@/app/(pages)/(user)/admin/usersManagement/hooks";
 import {
   Box,
   Drawer,
@@ -14,12 +16,16 @@ import {
   SelectChangeEvent,
 } from "@mui/material";
 import { useState } from "react";
+import FormInput from "../ui/Inputs/FormInput";
 
 type Product = {
   id: number;
   title: string;
 };
-
+type User = {
+  id: number;
+  title: string;
+};
 
 export default function DistributeRewardsDrawer({
   open,
@@ -28,26 +34,18 @@ export default function DistributeRewardsDrawer({
   open: boolean;
   onClose: () => void;
 }) {
-  
-  const { data } = useGetProducts()
+  const {
+    control,
+    errors,
+    handleAddReward,
+    handleSubmit,
+    handleSelectChange,
+    form,
+    isValid,
+  } = useRewards();
+  const { data } = useGetProducts();
+  const { users } = useUserManagement();
   const items: Product[] = data?.items ?? [];
-  
-
-  const [form, setForm] = useState({
-    user: "",
-    selectMachine: "",
-    rewardAmount: 0,
-  });
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleSelectChange = (e: SelectChangeEvent) => {
-    const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
-  };
 
   return (
     <Drawer
@@ -78,12 +76,16 @@ export default function DistributeRewardsDrawer({
             color: "#fff",
             ".MuiOutlinedInput-notchedOutline": { borderColor: "#666" },
             "&:hover .MuiOutlinedInput-notchedOutline": { borderColor: "#999" },
-            "&.Mui-focused .MuiOutlinedInput-notchedOutline": { borderColor: "#A78BFA" },
+            "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+              borderColor: "#A78BFA",
+            },
           }}
         >
-          <MenuItem value="John Bushmill">John Bushmill</MenuItem>
-          <MenuItem value="Jane Doe">Jane Doe</MenuItem>
-          <MenuItem value="Alice Smith">Alice Smith</MenuItem>
+          {users.map((item) => (
+            <MenuItem key={item.id} value={item.id}>
+              {item.username}
+            </MenuItem>
+          ))}
         </Select>
       </FormControl>
 
@@ -98,26 +100,23 @@ export default function DistributeRewardsDrawer({
             color: "#fff",
             ".MuiOutlinedInput-notchedOutline": { borderColor: "#666" },
             "&:hover .MuiOutlinedInput-notchedOutline": { borderColor: "#999" },
-            "&.Mui-focused .MuiOutlinedInput-notchedOutline": { borderColor: "#A78BFA" },
+            "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+              borderColor: "#A78BFA",
+            },
           }}
         >
-          {items?.map(((item, index: number) => (
-            <MenuItem key={index} value={item.title}>{item.title}</MenuItem>
-          )))}
+          {items?.map((item, index: number) => (
+            <MenuItem key={item.id} value={item.id}>
+              {item.title}
+            </MenuItem>
+          ))}
         </Select>
       </FormControl>
-
-      <TextField
-        name="rewardAmount"
-        label="Reward Amount"
-        type="number"
-        variant="outlined"
-        fullWidth
-        value={form.rewardAmount}
-        onChange={handleInputChange}
-        margin="normal"
-        InputLabelProps={{ style: { color: "#aaa" } }}
-        InputProps={{ style: { color: "#fff" } }}
+      <FormInput
+        name="reward"
+        control={control}
+        errors={errors}
+        label="Reward"
       />
 
       <Box display="flex" justifyContent="space-between" mt={4} gap={2}>
@@ -125,6 +124,8 @@ export default function DistributeRewardsDrawer({
           variant="contained"
           fullWidth
           sx={{ bgcolor: "#7367F0", textTransform: "none" }}
+          disabled={!isValid}
+          onClick={handleSubmit(handleAddReward)}
         >
           Send
         </Button>
