@@ -1,4 +1,5 @@
 {
+
   "pages": {
     "/(auth)/login/page": [
       "static/chunks/node_modules_next_dist_1a6ee436._.js",
@@ -288,4 +289,7 @@
       "static/chunks/_93808211._.js"
     ]
   }
+
+
+
 }

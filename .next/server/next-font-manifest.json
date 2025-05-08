@@ -1,4 +1,5 @@
 {
+
   "app": {
     "[project]/src/app/(auth)/login/page": [
       "static/media/gyByhwUxId8gMEwcGFWNOITd-s.p.da1ebef7.woff2",
@@ -26,6 +27,7 @@
     ]
   },
   "appUsingSizeAdjust": true,
+
   "pages": {},
   "pagesUsingSizeAdjust": false
 }
