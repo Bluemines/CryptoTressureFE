@@ -1,22 +1,27 @@
 "use client";
 
 import FormInput from "@/app/components/ui/Inputs/FormInput";
-import { Button, Checkbox, Divider, Input } from "@mui/material";
+import { Button, Checkbox } from "@mui/material";
 import Link from "next/link";
 import useRegisterHook from "./hooks";
+import { useSearchParams } from "next/navigation";
 
 const Register = () => {
-  const { control, errors,handleSubmit,onSubmit,submitCode } = useRegisterHook();
+
+  const searchParams = useSearchParams()
+  const ref = searchParams.get("ref")
+
+  const { control, errors,handleSubmit,onSubmit,submitCode } = useRegisterHook(ref || '');
   return (
     <div className="h-dvh flex">
-      <div className="w-[50%] lg:w-[50%] overflow-hidden">
+      <div className="w-[50%] lg:w-[50%] overflow-hidden hidden md:block">
         <img
           src="/images/register-hero.png"
           alt=""
           className="h-[1016px] w-full"
         />
       </div>
-      <div className="w-[50%] grid place-items-center overflow-y-auto p-8 py-16">
+      <div className="md:w-[50%] w-full grid place-items-center overflow-y-auto p-8 py-16">
         <div className="w-full max-w-md">
           <div className="text-[#737373] font-medium text-2xl">LOGO</div>
           <div className="text-3xl mt-4">Welcome to NFT!</div>
@@ -31,6 +36,14 @@ const Register = () => {
                 control={control}
                 errors={errors}
                 label="Username"
+              />
+            </div>
+            <div className="space-y-1">
+              <FormInput
+                name="phone"
+                control={control}
+                errors={errors}
+                label="Phone Number"
               />
             </div>
             {/* <div className="space-y-1">
@@ -93,6 +106,7 @@ const Register = () => {
                 name="referralCode"
                 control={control}
                 errors={errors}
+                disabled={ref ? true : false}
                 label="Referral Code"
               />
             </div>

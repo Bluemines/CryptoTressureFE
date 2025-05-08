@@ -1,5 +1,6 @@
 "use client";
 
+import { base_image_url } from "@/app/constants/keys";
 import { ArrowRight } from "lucide-react";
 import React from "react";
 
@@ -67,7 +68,7 @@ export function NFTCard({
   return (
     <Card className="bg-[#1A1F2C] border-none overflow-hidden">
       <div className="relative aspect-square">
-        <img src={image} alt={title} className="object-cover w-full h-full" />
+        <img src={`${base_image_url}${image}`} alt={title} className="object-fit w-full h-full" />
       </div>
       <CardContent className="p-4">
         <h3 className="text-xl font-semibold text-white mb-4">{title}</h3>
@@ -96,7 +97,7 @@ export function NFTCard({
           </div>
         </div>
         <Button
-          className={`w-full ${
+          className={`w-full py-2 ${
             action === "Buy"
               ? "bg-[#7C3AED] hover:bg-[#6D28D9]"
               : "bg-[#6366F1] hover:bg-[#4F46E5]"
