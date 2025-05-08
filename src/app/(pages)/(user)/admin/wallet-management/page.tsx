@@ -1,3 +1,4 @@
+
 "use client";
 import { StatsCard } from "@/app/components/cards/StatsCard";
 import PrimaryButton from "@/app/components/ui/PrimaryButton";
@@ -7,6 +8,7 @@ import useWallet from "./hooks";
 
 const page = () => {
   const router = useRouter();
+
 
   const statsData = [
     {
@@ -37,34 +39,8 @@ const page = () => {
     { id: "status", label: "Status" },
   ];
 
-  const data = [
-    {
-      id: 1,
-      user: "John Bushmill",
-      amount: "$50",
-      date: "1 min ago",
-      paymentMethod: "Easypaisa",
-      status: "Pending",
-    },
-    {
-      id: 2,
-      user: "John Bushmill",
-      amount: "$50",
-      date: "1 min ago",
-      paymentMethod: "Easypaisa",
-      status: "Pending",
-    },
-    {
-      id: 3,
-      user: "John Bushmill",
-      amount: "$50",
-      date: "1 min ago",
-      paymentMethod: "Easypaisa",
-      status: "Pending",
-    },
-    // Add more entries...
-  ];
 
+  
   const walletHistoryColumns = [
     { id: "username", label: "User" },
     { id: "balance", label: "Balance" },
@@ -72,30 +48,7 @@ const page = () => {
     { id: "lastActivity", label: "Last Activity" },
   ];
   const { wallet } = useWallet();
-  console.log("wallers: ", wallet);
-  const walletHistoryData = [
-    {
-      id: 1,
-      user: "John Bushmill",
-      balance: "$1000",
-      totalWithdrawn: "$50",
-      lastActivity: "Withdraw $10",
-    },
-    {
-      id: 2,
-      user: "John Bushmill",
-      balance: "$1000",
-      totalWithdrawn: "$50",
-      lastActivity: "Withdraw $10",
-    },
-    {
-      id: 3,
-      user: "John Bushmill",
-      balance: "$1000",
-      totalWithdrawn: "$50",
-      lastActivity: "Withdraw $10",
-    },
-  ];
+ 
   return (
     <div>
       <div className="flex items-center justify-between mt-4">
@@ -128,6 +81,7 @@ const page = () => {
           />
         ))}
       </div>
+
       <div className="font-semibold text-xl my-3">Pending Withdrawal</div>
       {wallet.length > 0 && (
         <AdminTable
@@ -149,6 +103,7 @@ const page = () => {
           showButton={false}
         />
       )}
+
     </div>
   );
 };

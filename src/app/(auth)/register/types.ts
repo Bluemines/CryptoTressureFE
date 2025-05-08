@@ -5,5 +5,6 @@ export interface RegisterFormType {
     password: string;
     confirmPassword: string;
     referralCode?: string;
+    phone?: string
   }
   

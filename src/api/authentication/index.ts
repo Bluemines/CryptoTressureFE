@@ -18,3 +18,15 @@ export const ConfirmEmailApi = {
     },
 };
 
+export const ForgetPasswordApi = {
+    mutationFn: (body: ISendEmailBody) => {
+        return mutationFn('auth/request-password-reset', 'POST', body);
+    },
+};
+
+export const resetPasswordApi = {
+    mutationFn: (body: ISendEmailBody) => {
+        return mutationFn('auth/reset-password', 'POST', body);
+    },
+};
+
