@@ -20,6 +20,11 @@ export const referralHistory = async () => {
   return data
 }
 
+export const referralLink = async () => {
+  const { data } = await apiClient.get(`referral/link`)
+  return data.data
+}
+
 export const buyProduct = async (id: number) => {
   const { data } = await apiClient.post(`products/${id}/buy`)
   return data.data
