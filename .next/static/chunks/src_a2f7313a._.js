@@ -215,10 +215,12 @@ if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelper
 var { g: global, __dirname, k: __turbopack_refresh__, m: module } = __turbopack_context__;
 {
 __turbopack_context__.s({
+    "base_image_url": (()=>base_image_url),
     "base_url": (()=>base_url)
 });
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)");
 const base_url = ("TURBOPACK compile-time value", "https://api.bluemines.xyz/");
+const base_image_url = ("TURBOPACK compile-time value", "https://api.bluemines.xyz");
 if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelpers !== null) {
     __turbopack_context__.k.registerExports(module, globalThis.$RefreshHelpers$);
 }
@@ -253,6 +255,9 @@ const auth = {
     },
     setToken: async (token)=>{
         return localStorage.setItem("accessToken", token);
+    },
+    setRole: async (role)=>{
+        return localStorage.setItem("role", role);
     },
     refreshToken: async ()=>{
         return localStorage.getItem("refreshToken");

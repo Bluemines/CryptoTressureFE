@@ -203,9 +203,11 @@ const registerSchema = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_
 var { g: global, __dirname } = __turbopack_context__;
 {
 __turbopack_context__.s({
+    "base_image_url": (()=>base_image_url),
     "base_url": (()=>base_url)
 });
 const base_url = ("TURBOPACK compile-time value", "https://api.bluemines.xyz/");
+const base_image_url = ("TURBOPACK compile-time value", "https://api.bluemines.xyz");
 }}),
 "[project]/src/app/utils/auth.ts [app-ssr] (ecmascript)": ((__turbopack_context__) => {
 "use strict";
@@ -237,6 +239,9 @@ const auth = {
     },
     setToken: async (token)=>{
         return localStorage.setItem("accessToken", token);
+    },
+    setRole: async (role)=>{
+        return localStorage.setItem("role", role);
     },
     refreshToken: async ()=>{
         return localStorage.getItem("refreshToken");

@@ -6,6 +6,7 @@ import {
   getPopularProducts,
   getProductById,
   referralHistory,
+  referralLink,
 } from "./userService"
 import toast from "react-hot-toast"
 import { AxiosError } from "axios"
@@ -37,6 +38,13 @@ export const useGetReferralHistory = () => {
   return useQuery<any, IAxiosError>({
     queryKey: ["referral_history"],
     queryFn: referralHistory,
+  })
+}
+
+export const useGetReferralLink = () => {
+  return useQuery<any, IAxiosError>({
+    queryKey: ["referral_link"],
+    queryFn: referralLink,
   })
 }
 
