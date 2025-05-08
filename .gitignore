@@ -16,7 +16,6 @@
 # next.js
 
 /out/
-.next
 # production
 
 
@@ -42,3 +41,5 @@ next-env.d.ts
 
 # lock file
 package-lock.json
+
+/.next
