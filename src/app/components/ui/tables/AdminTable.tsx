@@ -43,7 +43,7 @@ const statusColors: Record<string, string> = {
 const statusBgColors: Record<string, string> = {
   Approved: "#274635",
   Pending: "#4c3422",
-  Suspend: "#4f2c2a",
+  Suspended: "#4f2c2a",
   Success: "#28C76F33",
   Failed: "#F0443833",
 };
