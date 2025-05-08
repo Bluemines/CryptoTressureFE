@@ -2,13 +2,32 @@
 
 import { NFTCard } from "@/app/components/cards/NFTCard";
 import { StatsCard } from "@/app/components/cards/StatsCard";
+import useUserDashboard from "./hooks";
 
 const page = () => {
+  const { stats, formatCurrency } = useUserDashboard();
+
   const statsData = [
-    { value: "24K", label: "Current Deposit", color: "bg-[#7C3AED]" },
-    { value: "82K", label: "Current Balance", color: "bg-[#22C55E]" },
-    { value: "200", label: "Total Withdraw", color: "bg-[#EAB308]" },
-    { value: "89", label: "Total Referral Bonus", color: "bg-[#F97316]" },
+    {
+      value: stats ? formatCurrency(stats.currentDeposit) : "Loading...",
+      label: "Current Deposit",
+      color: "bg-[#7C3AED]",
+    },
+    {
+      value: stats ? formatCurrency(stats.currentBalance) : "Loading...",
+      label: "Current Balance",
+      color: "bg-[#22C55E]",
+    },
+    {
+      value: stats ? formatCurrency(stats.totalWithdraw) : "Loading...",
+      label: "Total Withdraw",
+      color: "bg-[#EAB308]",
+    },
+    {
+      value: stats ? formatCurrency(stats.totalReferralBonus) : "Loading...",
+      label: "Total Referral Bonus",
+      color: "bg-[#F97316]",
+    },
   ];
 
   const nftData = [

@@ -18,41 +18,7 @@ export default function UsersManagement() {
     { id: "status", label: "Status" },
   ];
   const { users } = useUserManagement();
-  console.log("users: ", users);
-  const data = [
-    {
-      id: 1,
-      name: "John Bushmill",
-      email: "Johnb@mail.com",
-      level: 2,
-      date: "1 min ago",
-      walletBalance: "1 min ago",
-      referedBy: "User",
-      status: "Pending",
-    },
-    {
-      id: 2,
-      name: "John Bushmill",
-      email: "Johnb@mail.com",
-      level: 2,
-      date: "1 min ago",
-      walletBalance: "1 min ago",
-      referedBy: "User",
-      status: "Approved",
-    },
-    {
-      id: 3,
-      name: "John Bushmill",
-      email: "Johnb@mail.com",
-      level: 2,
-      date: "1 min ago",
-      walletBalance: "1 min ago",
-      referedBy: "User",
-      status: "Suspend",
-    },
 
-    // Add more entries...
-  ];
   const statsData = [
     {
       value: "4,235",
