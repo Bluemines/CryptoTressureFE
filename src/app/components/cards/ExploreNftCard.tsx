@@ -116,7 +116,7 @@ const ExploreNFTCard: React.FC<NFTCardProps> = ({
         <img
           src={`${base_image_url}${image}`}
           alt={title}
-          className={`w-full object-cover ${
+          className={`w-full object-fit ${
             isHero ? "h-[400px] lg:h-full" : "h-48"
           }`}
         />

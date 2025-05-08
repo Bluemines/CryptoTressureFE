@@ -4,73 +4,23 @@ import ExploreNFTCard from "@/app/components/cards/ExploreNftCard"
 import { NFTCard } from "@/app/components/cards/NFTCard"
 import NFTModal from "@/app/components/modals/NFTModal"
 import { useState } from "react"
-import Image from "../../../../../assets/Images/exploreImg.png"
-import { useSearchParams } from "next/navigation"
+// import Image from "../../../../../assets/Images/exploreImg.png"
+import { useRouter, useSearchParams } from "next/navigation"
 import { useGetPopularProducts, useGetProductById } from "@/api/user/useUser"
 import SkeletonExploreNFTCard from "@/loaders/SkeletonExploreNFTCard"
 import CardLoader from "@/loaders/CardLoader"
 
 export default function NFTdetails() {
   const searchParams = useSearchParams()
-  const userIdParam = searchParams.get("user_id")
-  const userId = userIdParam ? 1 : undefined
+  const productId = searchParams.get("id")
+  const userId = productId ? Number(productId) : undefined
+
+  const router = useRouter()
 
   const { data: popularNFTsData } = useGetPopularProducts()
 
   const { data, isLoading } = useGetProductById(userId)
 
-  console.log(data)
-
-  const heroNFT = {
-    title: "NFT Name",
-    image: "/lovable-uploads/7180623f-7d17-46b5-98bf-e265afdfac15.png",
-    price: 10,
-    dailyIncome: 2,
-    fee: 1,
-    days: 10,
-    level: "Lv1-Lv3",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-  }
-
-  const popularNFTs = [
-    {
-      title: "Distant Galaxy",
-      image: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5",
-      price: 1000,
-      dailyIncome: 2,
-      fee: 1,
-      days: 10,
-      level: "Lv1-Lv3",
-    },
-    {
-      title: "Distant Galaxy",
-      image: "/lovable-uploads/7180623f-7d17-46b5-98bf-e265afdfac15.png",
-      price: 1000,
-      dailyIncome: 2,
-      fee: 1,
-      days: 10,
-      level: "Lv1-Lv3",
-    },
-    {
-      title: "Distant Galaxy",
-      image: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e",
-      price: 1000,
-      dailyIncome: 2,
-      fee: 1,
-      days: 10,
-      level: "Lv1-Lv3",
-    },
-    {
-      title: "Distant Galaxy",
-      image: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5",
-      price: 1000,
-      dailyIncome: 2,
-      fee: 1,
-      days: 10,
-      level: "Lv1-Lv3",
-    },
-  ]
   const [isModalOpen, setIsModalOpen] = useState(false)
   return (
     <div className='min-h-screen bg-[#0A0A0B] text-white p-4 md:p-8'>
@@ -112,7 +62,7 @@ export default function NFTdetails() {
                     days={nft.rentalDays}
                     level='Lv1-Lv3'
                     action='Buy'
-                    onClick={() => setIsModalOpen(true)}
+                    onClick={() => router.push(`/user/explore/NFTdetails?id=${nft?.id}`)}
                   />
                 ))}
           </div>
