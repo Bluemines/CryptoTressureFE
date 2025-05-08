@@ -1,17 +1,16 @@
-"use client"
+"use client";
 import AdminTable from "@/app/components/ui/tables/AdminTable";
+import useRewards from "./hooks";
 
 const page = () => {
-
   const columns = [
-    { id: "name", label: "User" },
-    { id: "email", label: "Email" },
-    { id: "level", label: "Level" },
-    { id: "date", label: "Date" },
-    { id: "rewardAmount", label: "Reward Amount" },
+    { id: "userName", label: "User" },
+    { id: "userEmail", label: "Email" },
+    { id: "createdAt", label: "Date" },
+    { id: "reward", label: "Reward Amount" },
     { id: "status", label: "Status" },
   ];
-
+  const { rewards } = useRewards();
   const data = [
     {
       id: 1,
@@ -46,10 +45,22 @@ const page = () => {
 
   return (
     <div>
-      <div className='font-semibold text-xl my-3'>Rewards Distribution</div>
-      <AdminTable data={data} columns={columns} actions={false} />
+      <div className="font-semibold text-xl my-3">Rewards Distribution</div>
+      {rewards.length > 0 ? (
+        <AdminTable
+          showHeader={true}
+          buttonText="Distribute Awards Manually"
+          data={rewards}
+          columns={columns}
+          actions={false}
+        />
+      ) : (
+        <div className="text-xl text-white font-bold text-center">
+          Loading...
+        </div>
+      )}
     </div>
-  )
-}
+  );
+};
 
-export default page
+export default page;
