@@ -35,7 +35,7 @@ const [selectedNFT, setSelectedNFT] = useState<any>(null);
                   fee={+nft.fee}
                   days={nft.rentalDays}
                   level='Lv1-Lv3'
-                  action='Sell'
+                  action='Rented'
                   onClick={() => {
                     setSelectedNFT(nft);
                     setIsModalOpen(true);

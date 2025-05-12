@@ -12,7 +12,7 @@ interface NFTCardProps {
   fee: number;
   days: number;
   level: string;
-  action: "Buy" | "Sell";
+  action: "Buy" | "Sell" | "Rented";
   onClick?: () => void;
 }
 
@@ -98,7 +98,7 @@ export function NFTCard({
         </div>
         <Button
           className={`w-full py-2 ${
-            action === "Buy"
+            action === "Buy" || "Rented"
               ? "bg-[#7C3AED] hover:bg-[#6D28D9]"
               : "bg-[#6366F1] hover:bg-[#4F46E5]"
           }`}
