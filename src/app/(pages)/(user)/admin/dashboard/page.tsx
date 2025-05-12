@@ -116,7 +116,7 @@ export default function Dashboard() {
     // Add more entries...
   ];
   return (
-    <div className="min-h-screen bg-black p-4 md:p-8">
+    <div className="min-h-screen bg-black py-4 md:p-8">
       <div className="max-w-7xl mx-auto space-y-8">
         {/* Stats Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
