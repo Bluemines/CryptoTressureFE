@@ -59,6 +59,7 @@ export default function useRegisterHook(ref?: string) {
     const email = getValues("email")
     if (!email) {
       // Optional: Show a toast/snackbar that email is required
+      toast("Please Enter email")
       return
     }
 
