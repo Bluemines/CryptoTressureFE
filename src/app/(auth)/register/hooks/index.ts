@@ -8,6 +8,7 @@ import { RegisterFormType } from "../types"
 import toast from "react-hot-toast"
 import { useRouter } from "next/navigation"
 import { AxiosError } from "axios"
+import { useState } from "react"
 
 export default function useRegisterHook(ref?: string) {
   const router = useRouter()
@@ -55,19 +56,26 @@ export default function useRegisterHook(ref?: string) {
     mutationFn: ConfirmEmailApi.mutationFn,
   })
 
+  const [disabled, setDisabled] = useState(false)
   const submitCode = async () => {
     const email = getValues("email")
     if (!email) {
       // Optional: Show a toast/snackbar that email is required
       return
     }
-
     try {
       const response = await getCode({ email })
       console.log(response)
+      toast.success('Code sent to the mail!')
+      setDisabled(true)
+
+      setTimeout(() => {
+      setDisabled(false);
+    }, 30000);
       // Optional: handle success, e.g. show toast/snackbar
     } catch (error) {
       console.log("error sending email: ", error)
+      setDisabled(false)
       // Optional: handle error, e.g. show toast/snackbar
     }
   }
@@ -80,11 +88,12 @@ export default function useRegisterHook(ref?: string) {
       code: rest.code,
       username: rest.username,
       referralCode: rest.referralCode,
+      phone: rest.phone
     }
 
     const response = await registerUser(payload)
     console.log(response)
   }
 
-  return { control, errors, handleSubmit, onSubmit, error, submitCode }
+  return { control, errors, handleSubmit, onSubmit, error, submitCode, disabled }
 }

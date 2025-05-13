@@ -11,7 +11,7 @@ const Register = () => {
   const searchParams = useSearchParams()
   const ref = searchParams.get("ref")
 
-  const { control, errors,handleSubmit,onSubmit,submitCode } = useRegisterHook(ref || '');
+  const { control, errors,handleSubmit,onSubmit,submitCode, disabled } = useRegisterHook(ref || '');
   return (
     <div className="h-dvh flex">
       <div className="w-[50%] lg:w-[50%] overflow-hidden hidden md:block">
@@ -76,6 +76,7 @@ const Register = () => {
                     variant="outlined"
                     sx={{ height: "70%", mt: "15%" }}
                     onClick={submitCode}
+                    disabled={disabled}
                   >
                     Get Code
                   </Button>
