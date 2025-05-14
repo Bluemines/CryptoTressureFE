@@ -92,6 +92,7 @@ const Register = () => {
                     fullWidth
                     variant='outlined'
                     sx={{ height: "70%", mt: "15%" }}
+                    className={`${disabled && '!text-white'}`}
                     onClick={submitCode}
                     disabled={disabled}
                   >
