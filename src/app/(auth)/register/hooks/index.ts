@@ -8,7 +8,10 @@ import { RegisterFormType } from "../types"
 import toast from "react-hot-toast"
 import { useRouter } from "next/navigation"
 import { AxiosError } from "axios"
-import { useState } from "react"
+import { useEffect, useState } from "react"
+
+const DISABLE_DURATION = 10 * 60 * 1000 // 10 minutes in ms
+const STORAGE_KEY = "last_code_sent_at"
 
 export default function useRegisterHook(ref?: string) {
   const router = useRouter()
@@ -56,7 +59,33 @@ export default function useRegisterHook(ref?: string) {
     mutationFn: ConfirmEmailApi.mutationFn,
   })
 
-  const [disabled, setDisabled] = useState(false)
+const [disabled, setDisabled] = useState(false)
+  const [timeLeft, setTimeLeft] = useState<number>(0)
+
+  useEffect(() => {
+  const lastSent = localStorage.getItem(STORAGE_KEY)
+
+  if (lastSent) {
+    const interval = setInterval(() => {
+      const now = Date.now()
+      const diff = now - Number(lastSent)
+      const remaining = DISABLE_DURATION - diff
+
+      if (remaining > 0) {
+        setDisabled(true)
+        setTimeLeft(remaining)
+      } else {
+        setDisabled(false)
+        setTimeLeft(0)
+        localStorage.removeItem(STORAGE_KEY)
+        clearInterval(interval)
+      }
+    }, 1000)
+
+    return () => clearInterval(interval)
+  }
+}, [])
+
   const submitCode = async () => {
     const email = getValues("email")
     if (!email) {
@@ -67,12 +96,15 @@ export default function useRegisterHook(ref?: string) {
       const response = await getCode({ email })
       console.log(response)
       toast.success('Code sent to the mail!')
+      localStorage.setItem(STORAGE_KEY, Date.now().toString())
       setDisabled(true)
 
-      setTimeout(() => {
-      setDisabled(false);
-    }, 30000);
-      // Optional: handle success, e.g. show toast/snackbar
+      const timeout = setTimeout(() => {
+        setDisabled(false)
+        localStorage.removeItem(STORAGE_KEY)
+      }, DISABLE_DURATION)
+
+      return () => clearTimeout(timeout)
     } catch (error) {
       console.log("error sending email: ", error)
       setDisabled(false)
@@ -92,8 +124,8 @@ export default function useRegisterHook(ref?: string) {
     }
 
     const response = await registerUser(payload)
-    console.log(response)
+    // console.log(response)
   }
 
-  return { control, errors, handleSubmit, onSubmit, error, submitCode, disabled }
+  return { control, errors, handleSubmit, onSubmit, error, submitCode, disabled, timeLeft }
 }
