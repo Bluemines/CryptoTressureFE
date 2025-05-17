@@ -25,10 +25,9 @@ export default function CommissionLevels() {
         columns={columns}
         actions={false}
         titlePage="commission"
-        onClick2={() => setOpenEdit(true)}
+        // onClick2={() => setOpenEdit(true)}
       />
       <AddLevelDrawer open={open} onClose={() => setOpen(false)} />
-      <AddLevelDrawer open={openEdit} onClose={() => setOpenEdit(false)} />
     </div>
   );
 }
