@@ -14,13 +14,8 @@ export default function EditMachineDrawer({
   onClose: () => void;
 }) {
   const {
-    product,
     control,
     handleSubmit,
-    setValue,
-    getValues,
-    watch,
-    reset,
     errors,
     selectedImage,
     handleImageSelect,

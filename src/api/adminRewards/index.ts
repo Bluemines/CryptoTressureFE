@@ -14,8 +14,7 @@ export interface AdminDashboardStats {
 }
 interface AllRewardsApiResponse {
     data: {
-      items: RawRewardItem[]; // Add items array inside data
-      // Add other properties if needed
+      items: RawRewardItem[]; 
     };
     status: string;
     message: string; 

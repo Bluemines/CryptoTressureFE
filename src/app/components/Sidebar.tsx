@@ -38,7 +38,7 @@ const routeMap = {
   referral: "/user/referral",
   commission: "/user/commission",
   settings: "/user/settings",
-  about: "/about",
+  about: "/user/aboutUs",
   team: "/team",
   faqs: "/faqs",
   contact: "/contact",

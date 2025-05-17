@@ -2,35 +2,16 @@
 import AddLevelDrawer from "@/app/components/drawers/AddLevelDrawer";
 import AdminTable from "@/app/components/ui/tables/AdminTable";
 import React, { useState } from "react";
+import useLevels from "../hooks";
 
 export default function CommissionLevels() {
   const columns = [
-    { id: "name", label: "Level Name" },
-    { id: "amount", label: "Amount" },
+    { id: "level", label: "Level Name" },
     { id: "points", label: "Requried Points" },
   ];
-
-  const data = [
-    {
-      id: 1,
-      name: "Level 1",
-      amount: "$100",
-      points: 2,
-    },
-    {
-      id: 2,
-      name: "Level 2",
-      amount: "$100",
-      points: 2,
-    },
-    {
-      id: 3,
-      name: "Level 3",
-      amount: "$100",
-      points: 2,
-    },
-  ];
+  const { levels } = useLevels();
   const [open, setOpen] = useState(false);
+  const [openEdit, setOpenEdit] = useState(false);
 
   return (
     <div>
@@ -40,11 +21,14 @@ export default function CommissionLevels() {
         onClick={() => setOpen(true)}
         showHeader
         buttonText="Add new Level"
-        data={data}
+        data={levels}
         columns={columns}
-        actions={false}
+        actions={true}
+        titlePage="commission"
+        onClick2={() => setOpenEdit(true)}
       />
       <AddLevelDrawer open={open} onClose={() => setOpen(false)} />
+      <AddLevelDrawer open={openEdit} onClose={() => setOpenEdit(false)} />
     </div>
   );
 }

@@ -28,6 +28,14 @@ export interface Machine {
 }
 
 export default function useMachineManagement() {
+  const { machines, setAllMachines, deleteMachineById } = useMachineStore();
+  const {
+    data: allMacchines,
+    isLoading,
+    refetch,
+    isError: onError,
+    isSuccess: onSuccess,
+  } = useQuery(getMachinesApi());
   const {
     control,
     handleSubmit,
@@ -58,14 +66,13 @@ export default function useMachineManagement() {
     isSuccess,
     isError,
     error,
+    isPending,
   } = useMutation({
     mutationFn: addMachineApi.mutationFn,
   });
   const [message, setMessage] = useState("");
   const [openToast, setOpenToast] = useState(false);
-  const handleAddMachine: SubmitHandler<AddMachineFormType> = async (
-    data
-  ) => {
+  const handleAddMachine: SubmitHandler<AddMachineFormType> = async (data) => {
     console.log("data:", data);
     if (!selectedImage) {
       setOpenToast(true);
@@ -92,6 +99,7 @@ export default function useMachineManagement() {
       const response = await addMachine({ body: formData });
       console.log(response);
       if (response.success === true) {
+        await refetch();
         setOpenToast(true);
         setMessage("Product Added Successfully");
       }
@@ -107,14 +115,7 @@ export default function useMachineManagement() {
   };
   const allValues = watch();
   console.log("all values: ", allValues);
-  const { machines, setAllMachines, deleteMachineById } = useMachineStore();
-  const {
-    data: allMacchines,
-    isLoading,
-    refetch,
-    isError: onError,
-    isSuccess: onSuccess,
-  } = useQuery(getMachinesApi());
+
   const getMachines = () => {
     if (onSuccess) {
       if (allMacchines?.data?.items) {
@@ -131,12 +132,20 @@ export default function useMachineManagement() {
       getMachines();
     }
   }, [allMacchines]);
-  const { mutateAsync: deleteMachine } = useMutation({
+  const { mutateAsync: deleteMachine, isPending: pending } = useMutation({
     mutationFn: DeleteMachineByID.mutationFn,
   });
   const handleDeleteMachine = async (id: string) => {
+    setMessage("");
     try {
       const response = await deleteMachine(id);
+      if (response.success === true) {
+        setOpenToast(true);
+        setMessage(response.message);
+      } else {
+        setOpenToast(true);
+        setMessage(response.message);
+      }
       deleteMachineById(Number(id));
       console.log("delete: ", response);
     } catch (error) {
@@ -147,7 +156,6 @@ export default function useMachineManagement() {
     return machines.find((machine) => machine.id === Number(id)) || null;
   };
   const [currentMachineId, setCurrentMachineId] = useState("");
-  console.log(currentMachineId);
   const [currentMachine, setCurrentMachine] = useState<Machine | undefined>();
   const handelSetEditValues = (id: string) => {
     localStorage.removeItem("id");
@@ -174,6 +182,8 @@ export default function useMachineManagement() {
     currentMachineId,
     reset,
     currentMachine,
+    isPending,
+    pending,
   };
 }
 // import React, { useEffect, useState } from "react";

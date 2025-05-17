@@ -15,8 +15,7 @@ const page = () => {
 
   const { data: referralHistory, isLoading } = useGetReferralHistory()
   const { data: referralLink, isLoading: isRefLinkLoading } = useGetReferralLink()
-
-  console.log(referralLink)
+  
 
   const data = [
     {
