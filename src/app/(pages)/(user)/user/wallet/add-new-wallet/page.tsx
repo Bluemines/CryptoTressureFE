@@ -16,7 +16,7 @@ const AddNewWallet = () => {
         sint. <br /> Velit officia consequat duis enim velit mollit.
       </div>
 
-      <div className='rounded p-4 border border-gray-500 my-4 w-1/4'>
+      <div className='rounded p-4 border border-gray-500 my-4 2-full md:w-1/4'>
         <img src='/easypaisa.png' alt='' />
 
         <div className='text-[#858584]'>

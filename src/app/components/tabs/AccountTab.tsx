@@ -52,7 +52,11 @@ const AccountTab = () => {
         profile: userData.profile || null,
       })
       setUser(userData)
-      setPreview(userData.profile ? `${base_image_url}${userData.profile}` : "/default-profile.png")
+      setPreview(
+        userData.profile
+          ? `${base_image_url}${userData.profile}`
+          : "/default-profile.png"
+      )
     }
   }, [userData, reset, setUser])
 
@@ -90,7 +94,7 @@ const AccountTab = () => {
     <div className='bg-[#1A1A1D] rounded-lg p-6 space-y-6'>
       <h2 className='text-xl font-semibold mb-4'>Profile Details</h2>
 
-      <div className='flex items-start gap-4'>
+      <div className='flex flex-col md:flex-row items-start gap-4'>
         <img
           alt='profile'
           src={preview || require("../../assets/Images/profile.png")}
@@ -137,7 +141,7 @@ const AccountTab = () => {
         onSubmit={handleSubmit(onSubmit)}
         className='grid grid-cols-1 md:grid-cols-2 gap-4'
       >
-        <div className='space-y-2'>
+        <div className='space-y-2 w-full'>
           <label className='text-sm text-gray-400'>User Name</label>
           <input
             {...register("username", { required: true })}
@@ -149,7 +153,7 @@ const AccountTab = () => {
           )}
         </div>
 
-        <div className='space-y-2'>
+        <div className='space-y-2 w-full'>
           <label className='text-sm text-gray-400'>Email</label>
           <input
             {...register("email")}
@@ -160,7 +164,7 @@ const AccountTab = () => {
           />
         </div>
 
-        <div className='space-y-2'>
+        <div className='space-y-2 w-full'>
           <label className='text-sm text-gray-400'>Phone Number</label>
           <input
             {...register("phone")}
@@ -169,11 +173,10 @@ const AccountTab = () => {
           />
         </div>
 
-        <div className='col-span-2'>
+        <div className='col-span-1 md:col-span-2'>
           <button
             type='submit'
             className='bg-[#7367f0] hover:bg-purple-700 w-24 h-9 text-white rounded-md transition-colors'
-            // disabled={!isDirty}
           >
             Update
           </button>

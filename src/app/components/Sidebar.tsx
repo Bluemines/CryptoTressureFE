@@ -1,5 +1,5 @@
 "use client"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { usePathname } from "next/navigation"
 import { Layout, Menu } from "antd"
 import {
@@ -54,12 +54,12 @@ const menuItems: MenuItem[] = [
   { key: "referral", icon: <ShareAltOutlined />, label: <Link href={routeMap.referral}>Referral</Link> },
   { key: "commission", icon: <DollarOutlined />, label: <Link href={routeMap.commission}>Referral Commission</Link> },
   { key: "settings", icon: <SettingOutlined />, label: <Link href={routeMap.settings}>Settings</Link> },
-  {
-    type: "group", label: "MORE", children: [
-      { key: "about", icon: <InfoCircleOutlined />, label: <Link href={routeMap.about}>About Us</Link> },
-      // { key: "team", icon: <TeamOutlined />, label: <Link href={routeMap.team}>Team</Link> },
-    ],
-  },
+  // {
+  //   type: "group", label: "MORE", children: [
+  //     { key: "about", icon: <InfoCircleOutlined />, label: <Link href={routeMap.about}>About Us</Link> },
+  //     { key: "team", icon: <TeamOutlined />, label: <Link href={routeMap.team}>Team</Link> },
+  //   ],
+  // },
   // {
   //   type: "group", label: "Links", children: [
   //     { key: "faqs", icon: <QuestionCircleOutlined />, label: <Link href={routeMap.faqs}>FAQs</Link> },
@@ -85,8 +85,26 @@ const Sidebar = () => {
     setCollapsed(true)
   }
 
+  useEffect(() => {
+      if (!collapsed) {
+        document.body.classList.add("overflow-hidden")
+      } else {
+        document.body.classList.remove("overflow-hidden")
+      }
+  
+      return () => {
+        document.body.classList.remove("overflow-hidden")
+      }
+    }, [collapsed])
+
   return (
     <>
+    {!collapsed && (
+        <div
+          className='fixed inset-0 bg-black/60 z-30 md:hidden'
+          onClick={() => setCollapsed(true)}
+        />
+      )}
       {/* Mobile Toggle Button */}
       <button
         className="md:hidden fixed top-6 left-6 z-50 bg-[#161616] text-white p-2 rounded"

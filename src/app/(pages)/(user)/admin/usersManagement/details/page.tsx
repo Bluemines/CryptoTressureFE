@@ -123,11 +123,11 @@ export default function UserDetails() {
   ];
 
   return (
-    <div className="min-h-screen bg-black p-4 md:p-8">
+    <div className="min-h-screen bg-black py-4 md:p-8">
       <div className="max-w-7xl mx-auto space-y-8">
         <Toast open={showToast} message={message} setOpen={setShowToast} />
         <Grid container spacing={4}>
-          <Grid size={4}>
+          <Grid size={{ xs: 12, md: 4 }}>
             <Card
               sx={{
                 backgroundColor: "#1E1E1E",
@@ -201,7 +201,7 @@ export default function UserDetails() {
             </Card>
           </Grid>
 
-          <Grid size={8}>
+          <Grid size={{ xs: 12, md: 4 }}>
             <Box className="">
               <AdminTable columns={columns} data={data} icon2={false} />
             </Box>

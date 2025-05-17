@@ -51,9 +51,9 @@ const page = () => {
  
   return (
     <div>
-      <div className="flex items-center justify-between mt-4">
-        <div className="text-xl">Wallet Management</div>
-        <div className="flex gap-2 items-center">
+      <div className="flex flex-col md:flex-row md:items-center justify-between mt-4">
+        <div className="text-xl mb-4 md:mb-0">Wallet Management</div>
+        <div className="flex flex-col md:flex-row gap-2 md:items-center">
           <div className="bg-[#2B2B2B] py-2 px-4 rounded">
             Easypaisa account *******1234 is connected
           </div>

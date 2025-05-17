@@ -101,7 +101,7 @@ const Login = () => {
         Please sign in to your account and start the adventure
       </div>
 
-      <div className='space-y-4'>
+      <form onSubmit={handleSubmit(handleLogin)} className='space-y-4'>
         <div className='space-y-1'>
           <FormInput
             name='email'
@@ -127,19 +127,21 @@ const Login = () => {
           </Button>
         </div>
 
-        <div className='flex items-center gap-2'>
+        {/* <div className='flex items-center gap-2'>
           <Checkbox className='!p-0' />{" "}
           <span className='text-muted'>Remember Me</span>
-        </div>
+        </div> */}
 
         <Button
           variant='contained'
           fullWidth
-          onClick={handleSubmit(handleLogin)}
+          type="submit"
+          // onClick={handleSubmit(handleLogin)}
           disabled={isPending}
         >
           Sign in
         </Button>
+        
 
         <div className='text-sm text-center block mt-2'>
           New on our platform?{" "}
@@ -161,7 +163,7 @@ const Login = () => {
             <img src='/icons/google.png' alt='' />
           </div>
         </div>
-      </div>
+      </form>
       {/* forget pass modal */}
       <Modal
         open={IsForgotPasswordModalOpen}
