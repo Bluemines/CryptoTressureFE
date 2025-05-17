@@ -1,7 +1,7 @@
 import { apiClient } from "@/app/utils/axios"
 
 export const getPopularProducts = async () => {
-  const { data } = await apiClient.get('products/popular')
+  const { data } = await apiClient.get('products/all')
   return data.data
 }
 

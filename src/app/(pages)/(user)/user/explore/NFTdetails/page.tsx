@@ -17,7 +17,8 @@ export default function NFTdetails() {
 
   const router = useRouter()
 
-  const { data: popularNFTsData } = useGetPopularProducts()
+  const { data: popularNFTsData, isLoading: isPopularProductsLoading } = useGetPopularProducts()
+  const popularProducts = popularNFTsData?.items
 
   const { data, isLoading } = useGetProductById(userId)
 
@@ -47,11 +48,11 @@ export default function NFTdetails() {
         <div>
           <h2 className='text-2xl font-bold mb-6'>Popular NFTS</h2>
           <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6'>
-          {isLoading
+          {isPopularProductsLoading
               ? Array.from({ length: 4 }).map((_, idx) => (
                   <CardLoader key={idx} />
                 ))
-              : popularNFTsData?.map((nft: any, index: number) => (
+              : popularProducts?.map((nft: any, index: number) => (
                   <NFTCard
                     key={index}
                     image={nft.image}

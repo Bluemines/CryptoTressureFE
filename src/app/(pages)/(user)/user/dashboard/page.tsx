@@ -11,6 +11,7 @@ import useUserDashboard from "./hooks";
 const page = () => {
   const { user } = authStore()
   const { data, isLoading } = useGetPopularProducts();
+  const popularProducts = data?.items
   const {
     data: myMachinesData,
     isLoading: isMachinesLoading,
@@ -69,7 +70,7 @@ const page = () => {
               ? Array.from({ length: 4 }).map((_, idx) => (
                   <CardLoader key={idx} />
                 ))
-              : data?.map((nft: any, index: number) => (
+              : popularProducts?.map((nft: any, index: number) => (
                   <NFTCard
                     key={index}
                     image={nft.image}

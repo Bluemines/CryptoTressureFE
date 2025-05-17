@@ -10,7 +10,7 @@ import usePopProducts from "./hooks";
 export default function Explore() {
 
   const { data, isLoading } = useGetPopularProducts();
-
+  const popularProducts = data?.items
   const router = useRouter();
 
   const { products } = usePopProducts();
@@ -26,7 +26,7 @@ export default function Explore() {
               ? Array.from({ length: 4 }).map((_, idx) => (
                   <CardLoader key={idx} />
                 ))
-              : data?.map((nft: any, index: number) => (
+              : popularProducts?.map((nft: any, index: number) => (
                   <NFTCard
                     key={index}
                     image={nft.image}

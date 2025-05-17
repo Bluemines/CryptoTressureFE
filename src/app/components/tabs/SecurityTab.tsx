@@ -27,7 +27,7 @@ const SecurityTab = () => {
 
       <div className="space-y-4">
         <div className="space-y-2">
-          <label className="text-sm text-gray-400">Current Password</label>
+          <label className="text-sm text-gray-400 block">Current Password</label>
           {/* <Input
             type="password"
             placeholder="Enter your current password"
@@ -38,7 +38,7 @@ const SecurityTab = () => {
             className="bg-[#1E1E22] border-gray-700"
           /> */}
           <input
-            type="number"
+            type="text"
             value={passwords.current}
             onChange={(e) =>
               setPasswords({ ...passwords, current: e.target.value })
@@ -50,7 +50,7 @@ const SecurityTab = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-2">
-            <label className="text-sm text-gray-400">New Password</label>
+            <label className="text-sm text-gray-400 block">New Password</label>
             {/* <Input
               type="password"
               placeholder="Enter your new password"
@@ -61,7 +61,7 @@ const SecurityTab = () => {
               className="bg-[#1E1E22] border-gray-700"
             /> */}
             <input
-              type="number"
+              type="text"
               value={passwords.new}
               onChange={(e) =>
                 setPasswords({ ...passwords, new: e.target.value })
@@ -71,7 +71,7 @@ const SecurityTab = () => {
             />
           </div>
           <div className="space-y-2">
-            <label className="text-sm text-gray-400">Confirm Password</label>
+            <label className="text-sm text-gray-400 block">Confirm Password</label>
             {/* <Input
               type="password"
               placeholder="Confirm your new password"
@@ -82,7 +82,7 @@ const SecurityTab = () => {
               className="bg-[#1E1E22] border-gray-700"
             /> */}
             <input
-              type="number"
+              type="text"
               value={passwords.confirm}
               onChange={(e) =>
                 setPasswords({ ...passwords, confirm: e.target.value })

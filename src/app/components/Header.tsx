@@ -63,14 +63,14 @@ const Header = () => {
   return (
     <header className='flex items-center gap-4 z-50'>
       <div className='relative w-full'>
-        <Input
+        {/* <Input
           placeholder='Search here'
           disableUnderline
           className='bg-[#161616] px-4 py-2 rounded-md w-full ps-10'
         />
         <div className='absolute left-4 top-[50%] -translate-y-[50%]'>
           <SearchOutlined className='!text-[#6f6b7d]' />
-        </div>
+        </div> */}
       </div>
 
       <Popover
