@@ -6,9 +6,11 @@ import AdminTable from "../../../../components/ui/tables/AdminTable";
 import { Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
 import useUserManagement from "./hooks";
+import useAdminDashboard from "../dashboard/hooks";
 
 export default function UsersManagement() {
   const router = useRouter();
+  const { stats } = useAdminDashboard();
   const columns = [
     { id: "username", label: "User" },
     { id: "email", label: "Email" },
@@ -21,29 +23,24 @@ export default function UsersManagement() {
 
   const statsData = [
     {
-      value: "4,235",
+      value: stats ? stats.totalUsers : "Loading...",
       label: "Total Users",
       color: "bg-[#7C3AED]",
       //   image: Image,
     },
     {
-      value: "3,312",
+      value: stats ? stats.verifiedUsers : "Loading...",
       label: "Verified Users",
       color: "bg-[#50BB25]",
       //   image: Image,
     },
     {
-      value: "20",
+      value: stats ? stats.suspendedUsers : "Loading...",
       label: "Suspended Users",
       color: "bg-[#EC1E2D]",
       //   image: Image,
     },
-    {
-      value: "80",
-      label: "Pending Users",
-      color: "bg-[#FF8800]",
-      //   image: Image,
-    },
+   
   ];
   return (
     <div className="min-h-screen bg-black p-4 md:p-8">

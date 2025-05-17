@@ -23,7 +23,7 @@ export default function CommissionLevels() {
         buttonText="Add new Level"
         data={levels}
         columns={columns}
-        actions={true}
+        actions={false}
         titlePage="commission"
         onClick2={() => setOpenEdit(true)}
       />
