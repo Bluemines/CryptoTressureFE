@@ -11,7 +11,7 @@ const layout = ({ children }: { children: React.ReactNode }) => {
         <div className=''>
           <AdminSidebar />
         </div>
-        <div className='flex-1 p-5'>
+        <div className='flex-1 p-5 overflow-x-hidden'>
           <Header />
           {children}
         </div>

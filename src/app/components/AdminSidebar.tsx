@@ -89,31 +89,31 @@ const menuItems: MenuItem[] = [
     icon: <DollarOutlined />,
     label: <Link href={routeMap.settings}>Settings</Link>,
   },
-  {
-    type: "group",
-    label: "Links",
-    children: [
-      {
-        key: "faqs",
-        icon: <InfoCircleOutlined />,
-        label: <Link href={routeMap.faqs}>FAQs</Link>,
-      },
-      {
-        key: "termsAndConditions",
-        icon: <TeamOutlined />,
-        label: (
-          <Link href={routeMap.termsAndConditions}>Terms and Conditions</Link>
-        ),
-      },
-      {
-        key: "contact",
-        icon: <TeamOutlined />,
-        label: (
-          <Link href={routeMap.contactInformation}>Contact Information</Link>
-        ),
-      },
-    ],
-  },
+  // {
+  //   type: "group",
+  //   label: "Links",
+  //   children: [
+  //     {
+  //       key: "faqs",
+  //       icon: <InfoCircleOutlined />,
+  //       label: <Link href={routeMap.faqs}>FAQs</Link>,
+  //     },
+  //     {
+  //       key: "termsAndConditions",
+  //       icon: <TeamOutlined />,
+  //       label: (
+  //         <Link href={routeMap.termsAndConditions}>Terms and Conditions</Link>
+  //       ),
+  //     },
+  //     {
+  //       key: "contact",
+  //       icon: <TeamOutlined />,
+  //       label: (
+  //         <Link href={routeMap.contactInformation}>Contact Information</Link>
+  //       ),
+  //     },
+  //   ],
+  // },
   {
     key: "logout",
     icon: <LogoutOutlined />,

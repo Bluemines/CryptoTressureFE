@@ -8,6 +8,7 @@ export interface ISignupBody {
   code: string;
   username: string;
   referralCode?: string;
+  phone: string | undefined;
 }
 export interface ISendEmailBody{
     email:string

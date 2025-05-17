@@ -57,15 +57,15 @@ const menuItems: MenuItem[] = [
   {
     type: "group", label: "MORE", children: [
       { key: "about", icon: <InfoCircleOutlined />, label: <Link href={routeMap.about}>About Us</Link> },
-      { key: "team", icon: <TeamOutlined />, label: <Link href={routeMap.team}>Team</Link> },
+      // { key: "team", icon: <TeamOutlined />, label: <Link href={routeMap.team}>Team</Link> },
     ],
   },
-  {
-    type: "group", label: "Links", children: [
-      { key: "faqs", icon: <QuestionCircleOutlined />, label: <Link href={routeMap.faqs}>FAQs</Link> },
-      { key: "contact", icon: <PhoneOutlined />, label: <Link href={routeMap.contact}>Contact Info</Link> },
-    ],
-  },
+  // {
+  //   type: "group", label: "Links", children: [
+  //     { key: "faqs", icon: <QuestionCircleOutlined />, label: <Link href={routeMap.faqs}>FAQs</Link> },
+  //     { key: "contact", icon: <PhoneOutlined />, label: <Link href={routeMap.contact}>Contact Info</Link> },
+  //   ],
+  // },
   { key: "logout", icon: <LogoutOutlined />, label: <span>Logout</span> },
 ]
 

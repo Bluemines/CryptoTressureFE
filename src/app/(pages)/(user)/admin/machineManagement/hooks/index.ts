@@ -115,7 +115,6 @@ export default function useMachineManagement() {
   };
   const allValues = watch();
   console.log("all values: ", allValues);
-
   const getMachines = () => {
     if (onSuccess) {
       if (allMacchines?.data?.items) {

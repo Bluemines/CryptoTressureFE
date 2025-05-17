@@ -619,7 +619,6 @@ const statusBgColors: Record<string, string> = {
   Success: "#28C76F33",
   Failed: "#F0443833",
 };
-
 interface CustomUserTableProps {
   columns: Column[];
   data: Row[];
@@ -1105,8 +1104,6 @@ const AdminTable = ({
           }}
         />
       </Box>
-
-      {/* Modals */}
       <Modal
         open={isApproveWithdrawModalOpen}
         setOpen={setIsApproveWithdrawModalOpen}
