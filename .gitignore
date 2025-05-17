@@ -42,3 +42,12 @@ next-env.d.ts
 
 # lock file
 package-lock.json.next/
+
+# lock file
+package-lock.json.next/
+
+# lock file
+package-lock.json
+
+.next
+/.next

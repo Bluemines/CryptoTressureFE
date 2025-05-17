@@ -68,6 +68,7 @@ const page = () => {
           columns={columns}
           actions={false}
           onClick={() => setOpen(true)}
+          titlePage="rewards"
         />
       ) : (
         <div className="text-xl text-white font-bold text-center">
