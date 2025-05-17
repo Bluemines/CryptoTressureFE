@@ -127,5 +127,5 @@ const [disabled, setDisabled] = useState(false)
     // console.log(response)
   }
 
-  return { control, errors, handleSubmit, onSubmit, error, submitCode, disabled, timeLeft }
+  return { control, errors, handleSubmit, onSubmit, error, submitCode, disabled }
 }

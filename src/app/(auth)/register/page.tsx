@@ -6,16 +6,6 @@ import Link from "next/link"
 import useRegisterHook from "./hooks"
 import { useSearchParams } from "next/navigation"
 
-const formatTime = (ms: number) => {
-  const totalSeconds = Math.floor(ms / 1000)
-  const minutes = Math.floor(totalSeconds / 60)
-  const seconds = totalSeconds % 60
-  return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(
-    2,
-    "0"
-  )}`
-}
-
 const Register = () => {
   const searchParams = useSearchParams()
   const ref = searchParams.get("ref")
@@ -27,7 +17,6 @@ const Register = () => {
     onSubmit,
     submitCode,
     disabled,
-    timeLeft,
   } = useRegisterHook(ref || "")
   return (
     <div className='h-dvh flex'>
@@ -92,11 +81,10 @@ const Register = () => {
                     fullWidth
                     variant='outlined'
                     sx={{ height: "70%", mt: "15%" }}
-                    className={`${disabled && '!text-white'}`}
                     onClick={submitCode}
                     disabled={disabled}
                   >
-                    {disabled ? `Wait ${formatTime(timeLeft)}` : "Get Code"}
+                    {disabled ? "Code send" : "Get Code"}
                   </Button>
                 </div>
               </div>
