@@ -38,6 +38,7 @@ export default function MachineManagemnt() {
               setOpen(true);
             }}
             onClick2={() => setOpen2(true)}
+            titlePage="machine"
           />
           <AddMachineDrawer
             machine={currentMachine}

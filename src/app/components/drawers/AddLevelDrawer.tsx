@@ -1,14 +1,16 @@
 "use client";
 
+import useLevels from "@/app/(pages)/(user)/admin/referral-system-management/hooks";
 import {
   Box,
   Drawer,
   Typography,
   TextField,
   Button,
+  CircularProgress,
 } from "@mui/material";
 import { useState } from "react";
-
+import FormInput from "../ui/Inputs/FormInput";
 
 export default function AddLevelDrawer({
   open,
@@ -25,9 +27,15 @@ export default function AddLevelDrawer({
     days: "",
     level: "",
   });
+  const { control, errors, handleSubmit, isValid, handleAddLevel, isPending } =
+    useLevels();
 
   const handleChange = (e: any) => {
     setForm({ ...form, [e.target.name]: e.target.value });
+  };
+  const handleClose = () => {
+    // handleCancelEdit();
+    onClose();
   };
 
   return (
@@ -48,64 +56,50 @@ export default function AddLevelDrawer({
         Add Level
       </Typography>
 
-      <TextField
-        name="title"
+      <FormInput
+        name="level"
         label="Level Number"
-        variant="outlined"
-        fullWidth
-        value={form.title}
-        onChange={handleChange}
-        margin="normal"
-        InputLabelProps={{ style: { color: "#aaa" } }}
-        InputProps={{ style: { color: "#fff" } }}
+        control={control}
+        errors={errors}
+        type="number"
       />
-
-
-      <TextField
-        name="amount"
-        label="Amount"
-        variant="outlined"
-        fullWidth
-        value={form.price}
-        onChange={handleChange}
-        margin="normal"
-        InputLabelProps={{ style: { color: "#aaa" } }}
-        InputProps={{ style: { color: "#fff" } }}
-      />
-
-      <TextField
+      <FormInput
         name="points"
         label="Points Required"
-        variant="outlined"
-        fullWidth
-        value={form.income}
-        onChange={handleChange}
-        margin="normal"
-        InputLabelProps={{ style: { color: "#aaa" } }}
-        className="bg-[#212121]"
-        InputProps={{ style: { color: "#fff" } }}
+        control={control}
+        errors={errors}
+        type="number"
       />
 
-     
-
-
-      <Box display="flex" justifyContent="space-between" mt={4} gap={2}>
-        <Button
-          variant="contained"
-          fullWidth
-          sx={{ bgcolor: "#7367F0", textTransform: "none" }}
-        >
-          Add
-        </Button>
-        <Button
-        //   variant="outlined"
-          fullWidth
-          sx={{ color: "#a64445", textTransform: "none",bgcolor:"#3a2b2b" }}
-          onClick={onClose}
-        >
-          Discard
-        </Button>
-      </Box>
+      {isPending ? (
+        <CircularProgress sx={{ alignSelf: "center" }} />
+      ) : (
+        <>
+          <Box display="flex" justifyContent="space-between" mt={4} gap={2}>
+            <Button
+              variant="contained"
+              fullWidth
+              sx={{ bgcolor: "#7367F0", textTransform: "none" }}
+              onClick={handleSubmit(handleAddLevel)}
+              disabled={!isValid}
+            >
+              Add
+              {/* {isEditMode ? "Update" : "Add"} */}
+            </Button>
+            <Button
+              fullWidth
+              sx={{
+                color: "#a64445",
+                textTransform: "none",
+                bgcolor: "#3a2b2b",
+              }}
+              onClick={handleClose}
+            >
+              Discard
+            </Button>
+          </Box>
+        </>
+      )}
     </Drawer>
   );
 }

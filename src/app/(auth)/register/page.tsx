@@ -22,9 +22,9 @@ const Register = () => {
     <div className='h-dvh flex'>
       <div className='w-[50%] lg:w-[50%] overflow-hidden hidden md:block'>
         <img
-          src='/images/register-hero.png'
-          alt=''
-          className='h-[1016px] w-full'
+          src="/images/register-hero.png"
+          alt=""
+          className="h-[1016px] w-full"
         />
       </div>
       <div className='md:w-[50%] w-full grid place-items-center overflow-y-auto p-8 py-16'>
@@ -118,11 +118,11 @@ const Register = () => {
               />
             </div>
 
-            <div className='flex items-center gap-2'>
-              <Checkbox className='!p-0' />{" "}
-              <span className='text-muted'>
+            <div className="flex items-center gap-2">
+              <Checkbox className="!p-0" />{" "}
+              <span className="text-muted">
                 I agree to{" "}
-                <span className='text-primary'>privacy policy & terms</span>
+                <span className="text-primary">privacy policy & terms</span>
               </span>
             </div>
 
@@ -134,9 +134,9 @@ const Register = () => {
               Sign up
             </Button>
 
-            <div className='text-sm text-center block mt-2'>
+            <div className="text-sm text-center block mt-2">
               Already have an account?{" "}
-              <Link className='text-primary' href='/login'>
+              <Link className="text-primary" href="/login">
                 Sign in instead
               </Link>
             </div>
@@ -158,7 +158,7 @@ const Register = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default Register
