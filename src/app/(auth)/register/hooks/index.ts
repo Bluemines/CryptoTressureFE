@@ -19,6 +19,7 @@ export default function useRegisterHook(ref?: string) {
     control,
     handleSubmit,
     getValues,
+    watch,
     formState: { errors },
   } = useForm<RegisterFormType>({
     resolver: yupResolver(registerSchema) as Resolver<RegisterFormType>,
@@ -127,5 +128,5 @@ const [disabled, setDisabled] = useState(false)
     // console.log(response)
   }
 
-  return { control, errors, handleSubmit, onSubmit, error, submitCode, disabled }
+  return { control, errors, handleSubmit, onSubmit, error, submitCode, disabled, watch }
 }

@@ -8,8 +8,7 @@ import { authStore } from "@/store/authStore"
 import CardLoader from "@/loaders/CardLoader"
 export default function Collection() {
   const { user } = authStore()
-  const { data: myMachinesData, isLoading: isMachinesLoading } =
-    useGetMyMachines(user?.id)
+  const { data: myMachinesData, isLoading: isMachinesLoading } = useGetMyMachines(user?.id)
 
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [selectedNFT, setSelectedNFT] = useState<any>(null)

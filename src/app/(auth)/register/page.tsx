@@ -17,6 +17,7 @@ const Register = () => {
     onSubmit,
     submitCode,
     disabled,
+    watch
   } = useRegisterHook(ref || "")
   return (
     <div className='h-dvh flex'>
@@ -30,7 +31,7 @@ const Register = () => {
       <div className='md:w-[50%] w-full grid place-items-center overflow-y-auto p-8 py-16'>
         <div className='w-full max-w-md'>
           <div className='text-[#737373] font-medium text-2xl'>LOGO</div>
-          <div className='text-3xl mt-4'>Welcome to NFT!</div>
+          <div className='text-3xl mt-4'>Welcome to Bluemines</div>
           <div className='text-muted text-sm mt-2'>
             Please create to your account and start the adventure
           </div>
@@ -82,7 +83,7 @@ const Register = () => {
                     variant='outlined'
                     sx={{ height: "70%", mt: "15%" }}
                     onClick={submitCode}
-                    disabled={disabled}
+                    disabled={disabled || !watch('email')}
                   >
                     {disabled ? "Code send" : "Get Code"}
                   </Button>
