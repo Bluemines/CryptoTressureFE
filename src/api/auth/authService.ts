@@ -13,3 +13,8 @@ export const updateUser = async (form: FormData) => {
   })
   return data
 }
+
+export const updatePassword = async (currentPassword: string, newPassword: string, confirmPassword: string) => {
+  const { data } = await apiClient.patch('auth/password', { currentPassword, newPassword, confirmPassword })
+  return data
+}
