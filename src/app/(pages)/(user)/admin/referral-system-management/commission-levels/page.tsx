@@ -23,12 +23,11 @@ export default function CommissionLevels() {
         buttonText="Add new Level"
         data={levels}
         columns={columns}
-        actions={true}
+        actions={false}
         titlePage="commission"
-        onClick2={() => setOpenEdit(true)}
+        // onClick2={() => setOpenEdit(true)}
       />
       <AddLevelDrawer open={open} onClose={() => setOpen(false)} />
-      <AddLevelDrawer open={openEdit} onClose={() => setOpenEdit(false)} />
     </div>
   );
 }
