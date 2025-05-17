@@ -10,6 +10,7 @@ interface User {
   emailVerified: boolean
   createdAt: string
   updatedAt: string
+  profile: string | null
 }
 
 interface UserStore {

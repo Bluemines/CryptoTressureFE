@@ -9,6 +9,8 @@ import {
   useReadNotifications,
 } from "@/api/notifications/useNotifications"
 import toast from "react-hot-toast"
+import { authStore } from "@/store/authStore"
+import { base_image_url } from "../constants/keys"
 
 const Header = () => {
   const { data: notifications } = useGetNotifications()
@@ -16,6 +18,8 @@ const Header = () => {
   const { mutate: postReadNotifications } = useReadNotifications()
 
   const role = localStorage.getItem("role") === "USER" ? "user" : "admin"
+
+  const { user } = authStore()
 
 
   const handleReadNotifications = (id: number) => {
@@ -88,7 +92,7 @@ const Header = () => {
         <Link href={`/${role}/settings`}>
           <Avatar
             size={38}
-            src='https://i.pravatar.cc/300'
+            src={user?.profile ? `${base_image_url}${user.profile}` : 'https://i.pravatar.cc/300'}
             className='border-2 border-white'
           />
         </Link>

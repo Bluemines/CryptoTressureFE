@@ -3,14 +3,8 @@ import { getCurrentUser, updateUser } from "./authService"
 import { IAxiosError } from "@/lib/axiosError"
 import queryClient from "@/app/utils/queryClient"
 
-type updateUserPayload = {
-  id: number,
-  username: string
-  phone: string
-}
-
 export const useGetCurrentUser = (options?: UseQueryOptions<any, IAxiosError>) => {
-  return useQuery<any, IAxiosError>({
+  return useQuery<any, IAxiosError, any>({
     queryKey: ["currentUser"],
     queryFn: getCurrentUser,
     ...options,
@@ -18,8 +12,8 @@ export const useGetCurrentUser = (options?: UseQueryOptions<any, IAxiosError>) =
 }
 
 export const useUpdateUser = () => {
-  return useMutation<any, IAxiosError, updateUserPayload>({
-    mutationFn: (payload) => updateUser(payload.id, payload.username, payload.phone),
+  return useMutation<any, IAxiosError, FormData>({
+    mutationFn: (form) => updateUser(form),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["currentUser"] })
     },

@@ -5,7 +5,11 @@ export const getCurrentUser = async () => {
   return data.data
 }
 
-export const updateUser = async (id: number, username: string, phone: string) => {
-  const { data } = await apiClient.patch('user/update', { id, username, phone })
+export const updateUser = async (form: FormData) => {
+  const { data } = await apiClient.patch("user/update", form, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  })
   return data
 }
