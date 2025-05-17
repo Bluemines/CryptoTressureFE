@@ -86,7 +86,7 @@ const page = () => {
   return (
     <div>
       <div className="text-white text-lg mt-2">Deposit</div>
-      <div className="bg-[#161616] p-4 rounded-lg my-4 flex gap-4 items-center">
+      <div className="bg-[#161616] p-4 rounded-lg my-4 flex flex-col md:flex-row gap-4 md:items-center">
         <div className="space-y-2 flex-1">
           <label htmlFor="depositAmount" className="block text-white text-sm">
             Deposit Amount

@@ -1,7 +1,7 @@
-"use client";
+"use client"
 
-import { usePathname } from "next/navigation";
-import { Layout, Menu } from "antd";
+import { usePathname } from "next/navigation"
+import { Layout, Menu } from "antd"
 import {
   DashboardOutlined,
   CompassOutlined,
@@ -15,16 +15,16 @@ import {
   TeamOutlined,
   LogoutOutlined,
   MenuUnfoldOutlined,
-} from "@ant-design/icons";
-import type { MenuProps } from "antd";
-import Link from "next/link";
-import { authStore } from "@/store/authStore";
-import toast from "react-hot-toast";
-import { useState } from "react";
-import { CloseOutlined } from "@mui/icons-material";
+} from "@ant-design/icons"
+import type { MenuProps } from "antd"
+import Link from "next/link"
+import { authStore } from "@/store/authStore"
+import toast from "react-hot-toast"
+import { useEffect, useState } from "react"
+import { CloseOutlined } from "@mui/icons-material"
 
-const { Sider } = Layout;
-type MenuItem = Required<MenuProps>["items"][number];
+const { Sider } = Layout
+type MenuItem = Required<MenuProps>["items"][number]
 
 const routeMap = {
   dashboard: "/admin/dashboard",
@@ -38,7 +38,7 @@ const routeMap = {
   faqs: "/faqs",
   termsAndConditions: "/contact",
   contactInformation: "/contact",
-};
+}
 
 const menuItems: MenuItem[] = [
   {
@@ -119,32 +119,49 @@ const menuItems: MenuItem[] = [
     icon: <LogoutOutlined />,
     label: <span>Logout</span>,
   },
-];
+]
 
 const AdminSidebar = () => {
-  const pathname = usePathname();
+  const pathname = usePathname()
   const { logout } = authStore()
   const [collapsed, setCollapsed] = useState(true)
-  
 
   const selectedKey =
     Object.entries(routeMap).find(([, path]) =>
       pathname.startsWith(path)
-    )?.[0] || "dashboard";
+    )?.[0] || "dashboard"
 
-    const handleClick: MenuProps["onClick"] = ({ key }) => {
-      if (key === "logout") {
-        logout()
-        toast.loading('Loggin Out!')
-      }
-      setCollapsed(true)
+  const handleClick: MenuProps["onClick"] = ({ key }) => {
+    if (key === "logout") {
+      logout()
+      toast.loading("Loggin Out!")
     }
+    setCollapsed(true)
+  }
+
+  useEffect(() => {
+    if (!collapsed) {
+      document.body.classList.add("overflow-hidden")
+    } else {
+      document.body.classList.remove("overflow-hidden")
+    }
+
+    return () => {
+      document.body.classList.remove("overflow-hidden")
+    }
+  }, [collapsed])
 
   return (
     <>
+      {!collapsed && (
+        <div
+          className='fixed inset-0 bg-black/60 z-30 md:hidden'
+          onClick={() => setCollapsed(true)}
+        />
+      )}
       {/* Mobile Toggle Button */}
       <button
-        className="md:hidden fixed top-6 left-6 z-50 bg-[#161616] text-white p-2 rounded"
+        className='md:hidden fixed top-6 left-6 z-50 bg-[#161616] text-white p-2 rounded'
         onClick={() => setCollapsed(!collapsed)}
       >
         {collapsed ? <MenuUnfoldOutlined /> : <CloseOutlined />}
@@ -157,45 +174,45 @@ const AdminSidebar = () => {
           ${collapsed ? "-translate-x-full" : "translate-x-0"}
         `}
       >
-        <div className="h-16 grid place-items-center text-white font-bold border-b border-gray-700">
+        <div className='h-16 grid place-items-center text-white font-bold border-b border-gray-700'>
           LOGO
         </div>
-        <div className="overflow-y-auto h-[calc(100vh-64px)] scrollbar-hide">
+        <div className='overflow-y-auto h-[calc(100vh-64px)] scrollbar-hide'>
           <Menu
-            mode="inline"
+            mode='inline'
             selectedKeys={[selectedKey]}
-            theme="dark"
+            theme='dark'
             items={menuItems}
-            className="!bg-[#161616]"
+            className='!bg-[#161616]'
             onClick={handleClick}
           />
         </div>
       </div>
 
       {/* Desktop Sidebar */}
-      <div className="hidden md:block sticky top-0 h-screen w-[220px]">
+      <div className='hidden md:block sticky top-0 h-screen w-[220px]'>
         <Sider
-          theme="dark"
-          className="!bg-[#161616] h-screen overflow-hidden"
+          theme='dark'
+          className='!bg-[#161616] h-screen overflow-hidden'
           width={220}
         >
-          <div className="h-16 grid place-items-center text-white font-bold border-b border-gray-700">
+          <div className='h-16 grid place-items-center text-white font-bold border-b border-gray-700'>
             LOGO
           </div>
-          <div className="overflow-y-auto h-[calc(100vh-64px)] scrollbar-hide">
+          <div className='overflow-y-auto h-[calc(100vh-64px)] scrollbar-hide'>
             <Menu
-              mode="inline"
+              mode='inline'
               selectedKeys={[selectedKey]}
-              theme="dark"
+              theme='dark'
               items={menuItems}
-              className="!bg-[#161616]"
+              className='!bg-[#161616]'
               onClick={handleClick}
             />
           </div>
         </Sider>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default AdminSidebar;
+export default AdminSidebar

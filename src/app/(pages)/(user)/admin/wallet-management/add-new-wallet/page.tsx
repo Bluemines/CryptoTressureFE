@@ -1,8 +1,6 @@
 "use client"
 import AddEasypaisaDrawer from "@/app/components/drawers/AddEasypaisaDrawer"
-import PrimaryButton from "@/app/components/ui/PrimaryButton"
 import { ArrowRightOutlined } from "@ant-design/icons"
-import { Input, Modal } from "antd"
 import { useState } from "react"
 
 const page = () => {
@@ -17,7 +15,7 @@ const page = () => {
         sint. <br /> Velit officia consequat duis enim velit mollit.
       </div>
 
-      <div className='rounded p-4 border border-gray-500 my-4 w-1/4'>
+      <div className='rounded p-4 border border-gray-500 my-4 w-full md:w-1/4'>
         <img src='/easypaisa.png' alt='' />
 
         <div className='text-[#858584]'>

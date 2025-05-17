@@ -22,12 +22,12 @@ export default function MachineManagemnt() {
   const [open, setOpen] = useState(false);
   const [open2, setOpen2] = useState(false);
   return (
-    <div className="min-h-screen bg-black p-4 md:p-8">
+    <div className="min-h-screen bg-black py-4 md:p-8">
       <div className="max-w-7xl mx-auto space-y-8">
         <Typography sx={{ fontWeight: "bold", color: "white", fontSize: 24 }}>
           Machine Management
         </Typography>
-        <main className="mt-10">
+        <main className="mt-4 md:mt-10">
           <AdminTable
             buttonText="Add machine"
             editProduct={true}

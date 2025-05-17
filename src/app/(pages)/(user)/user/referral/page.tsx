@@ -64,8 +64,8 @@ const page = () => {
         Invite your friends and get rewarded! You'll receive a 10% bonus on
         every user you refer. Start sharing now and watch your earnings 🚀💰
       </div>
-      <div className="bg-[#161616] p-4 rounded-lg my-4 flex gap-4 items-center">
-        <div className="space-y-2 flex-1">
+      <div className="bg-[#161616] p-4 rounded-lg my-4 flex flex-col md:flex-row gap-4 items-center">
+        <div className="flex-1">
           <input
             value={referralLink?.link}
             type="text"

@@ -82,9 +82,9 @@ const Wallet = () => {
 
   return (
     <div className="text-white py-5">
-      <div className="flex items-center justify-between">
-        <div className="text-xl">P2P Wallet</div>
-        <div className="flex gap-2 items-center">
+      <div className="flex flex-col md:items-center justify-between">
+        <div className="text-xl mb-4 md:mb-0">P2P Wallet</div>
+        <div className="flex flex-col gap-2 md:items-center">
           <div className="bg-[#2B2B2B] py-2 px-4 rounded">
             Easypaisa account *******1234 is connected
           </div>
@@ -100,7 +100,7 @@ const Wallet = () => {
         </div>
       </div>
 
-      <div className="flex gap-4 my-4">
+      <div className="flex flex-col md:flex-row gap-4 my-4">
         {statsData.map((item, index) => (
           <StatsCard
             key={index}
