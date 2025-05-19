@@ -1,98 +1,110 @@
-"use client";
-import Tabs from "@/app/components/Tabs";
-import PrimaryButton from "@/app/components/ui/PrimaryButton";
-import StatsCard from "@/app/components/ui/StatsCard";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import DataTable from "@/app/components/DataTable/DataTable";
-import { TableColumn } from "react-data-table-component";
+"use client"
+import PrimaryButton from "@/app/components/ui/PrimaryButton"
+import StatsCard from "@/app/components/ui/StatsCard"
+import { useRouter } from "next/navigation"
+import DataTable from "@/app/components/DataTable/DataTable"
+import { TableColumn } from "react-data-table-component"
+import StatusBadge from "@/app/components/ui/StatusBadge"
+import { useGetWalletStats } from "@/api/wallet"
+import StatsCardSkeleton from "@/loaders/StatsCardSkeleton"
 
 const Wallet = () => {
+
+  const { data: walletStats, isLoading } = useGetWalletStats();
+
   const statsData = [
-    { label: "Available Balance", value: "24K", bgColor: "bg-[#6F4FF2]" },
-    { label: "Available Credits", value: "82K", bgColor: "bg-[#50BB25]" },
-    { label: "Available Debts", value: "200", bgColor: "bg-[#F9D62C]" },
+    { label: "Available Balance", value: walletStats?.available + "$", bgColor: "bg-[#6F4FF2]" },
+    { label: "Reserved Balance", value: walletStats?.reserved+ "$", bgColor: "bg-[#50BB25]" },
+    { label: "Total Balance", value: walletStats?.total+ "$", bgColor: "bg-[#F9D62C]" },
   ];
   type Data = {
-    sr: number;
-    username: string;
-    currency: string;
-    amount: string;
-    source: string;
-    date: string;
-  };
+    sr: number
+    date: string
+    amount: string
+    fee: string
+    netPayout: string
+    method: string
+    status: string
+  }
   const dataSource = [
     {
       sr: 1,
-      username: "John Doe",
-      currency: "USD",
-      amount: "Rs 1332",
-      source: "Lorem Ipsum",
       date: "1 min ago",
+      amount: "Rs 1332",
+      fee: "Rs 5",
+      netPayout: "Rs 1327",
+      method: "Easypaisa",
+      status: 'Approved'
     },
     {
       sr: 2,
-      username: "John Doe",
-      currency: "USD",
-      amount: "Rs 1332",
-      source: "Lorem Ipsum",
       date: "1 min ago",
+      amount: "Rs 1332",
+      fee: "Rs 5",
+      netPayout: "Rs 1327",
+      method: "Easypaisa",
+      status: 'Pending'
     },
     {
       sr: 3,
-      username: "John Doe",
-      currency: "USD",
-      amount: "Rs 1332",
-      source: "Lorem Ipsum",
       date: "1 min ago",
+      amount: "Rs 1332",
+      fee: "Rs 5",
+      netPayout: "Rs 1327",
+      method: "Easypaisa",
+      status: 'Rejected'
     },
-  ];
+  ]
 
-  const columns:TableColumn<Data>[] = [
+  const columns: TableColumn<Data>[] = [
     {
-      name: "Sr#",
+      name: "ID",
       selector: (row) => row.sr,
       sortable: true,
     },
     {
-      name: "Username",
-      selector: (row) => row.username,
-    },
-    {
-      name: "Currency",
-      selector: (row) => row.currency,
+      name: "Date",
+      selector: (row) => row.date,
     },
     {
       name: "Amount",
       selector: (row) => row.amount,
     },
     {
-      name: "Source",
-      selector: (row) => row.source,
+      name: "Fee",
+      selector: (row) => row.fee,
     },
     {
-      name: "Date",
-      selector: (row) => row.date,
+      name: "Net Payout",
+      selector: (row) => row.netPayout,
     },
-  ];
+    {
+      name: "Method",
+      selector: (row) => row.method,
+    },
+    {
+      name: "Status",
+      selector: (row) => row.status,
+      cell: (row) => <StatusBadge status={row.status} />,
+    },
+  ]
 
-  const tabs = ["Credit", "Debit"];
-  const [activeTab, setActiveTab] = useState(tabs[0]);
-  const router = useRouter();
+  const tabs = ["Credit", "Debit"]
+  const router = useRouter()
 
   return (
-    <div className="text-white py-5">
-      <div className="flex flex-col md:items-center justify-between">
-        <div className="text-xl mb-4 md:mb-0">P2P Wallet</div>
-        <div className="flex flex-col gap-2 md:items-center">
-          <div className="bg-[#2B2B2B] py-2 px-4 rounded">
+    <div className='text-white py-5'>
+      <div className='flex flex-col md:flex-row md:items-center justify-between'>
+        <div className='text-xl mb-4 md:mb-0'>P2P Wallet</div>
+        <div className='flex flex-col md:flex-row gap-2 md:items-center'>
+          <div className='bg-[#2B2B2B] py-2 px-4 rounded'>
             Easypaisa account *******1234 is connected
           </div>
           <div>
             <PrimaryButton
               onClick={() => router.push("/user/wallet/add-new-wallet")}
-              bgColor="#7367F0"
-              className="!text-white !border-none !font-medium"
+              bgColor='#7367F0'
+              className='!text-white !border-none !font-medium'
             >
               Add new Wallet
             </PrimaryButton>
@@ -100,29 +112,22 @@ const Wallet = () => {
         </div>
       </div>
 
-      <div className="flex flex-col md:flex-row gap-4 my-4">
-        {statsData.map((item, index) => (
+      <div className='flex flex-col md:flex-row gap-4 my-4'>
+        {isLoading
+      ? Array(3).fill(0).map((_, i) => <StatsCardSkeleton key={i} />)
+      : statsData.map((stat, index) => (
           <StatsCard
             key={index}
-            label={item.label}
-            value={item.value}
-            bgColor={item.bgColor}
+            label={stat.label}
+            value={stat.value ?? "N/A"}
+            bgColor={stat.bgColor}
           />
         ))}
       </div>
 
-      <Tabs tabs={tabs} activeTab={activeTab} setActiveTab={setActiveTab} />
-
-      <div className="mt-4">
-        {activeTab === "Credit" && (
-          <DataTable data={dataSource} columns={columns} themeStyle="gray" />
-        )}
-        {activeTab === "Debit" && (
-          <DataTable data={dataSource} columns={columns} themeStyle="gray" />
-        )}
-      </div>
+      <DataTable data={dataSource} columns={columns} themeStyle='gray' />
     </div>
-  );
-};
+  )
+}
 
-export default Wallet;
+export default Wallet

@@ -16,6 +16,12 @@ export default function StatusBadge({ status }: StatusBadgeProps) {
     case 'declined':
       colorClasses = 'bg-[#2c0d11] text-[#EC1E2D] border border-red-600';
       break;
+    case 'approved':
+      colorClasses = 'bg-[#1e3d2c] text-[#28C76F]'
+      break;
+    case 'rejected':
+      colorClasses = 'bg-[#462321] text-[#F04438]'
+      break;
     default:
       colorClasses = 'bg-gray-100 text-gray-600 border border-gray-400';
       break;
