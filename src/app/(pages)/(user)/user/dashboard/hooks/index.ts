@@ -20,5 +20,5 @@ export default function useUserDashboard() {
       currency: "PKR",
     }).format(value);
   };
-  return { stats,formatCurrency };
+  return { stats,formatCurrency, isLoading };
 }

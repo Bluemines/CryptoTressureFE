@@ -14,3 +14,8 @@ export const getAllWallets = async () => {
   const { data } = await apiClient.get('wallet')
   return data.data
 }
+
+export const suspendProduct = async (id: any) => {
+  const { data } = await apiClient.delete(`/products/${id}`)
+  return data
+}

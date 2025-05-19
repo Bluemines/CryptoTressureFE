@@ -4,7 +4,13 @@ import React, { useEffect, useState } from "react"
 import Cookies from "js-cookie"
 import { useRouter } from "next/navigation"
 
-const AuthGuard = ({ allowedRole, children }: { allowedRole: string, children: React.ReactNode }) => {
+const AuthGuard = ({
+  allowedRole,
+  children,
+}: {
+  allowedRole: string
+  children: React.ReactNode
+}) => {
   const router = useRouter()
   const [authorized, setAuthorized] = useState(false)
 
@@ -14,11 +20,7 @@ const AuthGuard = ({ allowedRole, children }: { allowedRole: string, children: R
     if (role === allowedRole) {
       setAuthorized(true)
     } else {
-      if (window.history.length > 1) {
-        router.back()
-      } else {
-        router.push('/')
-      }
+      router.push("/")
     }
   }, [allowedRole, router])
 

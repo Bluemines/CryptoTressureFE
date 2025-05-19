@@ -6,7 +6,7 @@ export interface ISignupBody {
   email: string;
   password: string;
   code: string;
-  username: string;
+  username?: string;
   referralCode?: string;
   phone: string | undefined;
 }

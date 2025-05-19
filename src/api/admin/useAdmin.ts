@@ -1,6 +1,7 @@
-import { useQuery } from "@tanstack/react-query"
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { IAxiosError } from "@/lib/axiosError"
-import { getAllWallets, getChartData, getProducts } from "./adminService"
+import { getAllWallets, getChartData, getProducts, suspendProduct } from "./adminService"
+import toast from "react-hot-toast"
 
 export const useGetProducts = () => {
   return useQuery<any, IAxiosError>({
@@ -22,3 +23,17 @@ export const useGetChartData = () => {
     queryFn: getChartData,
   })
 }
+
+export const useSuspendProduct = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation<any, IAxiosError, { id: any }>({
+    mutationFn: ({ id }) => suspendProduct(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["products"] });
+    },
+    onError: (error: any) => {
+      toast.error(error.response?.data?.message)
+    }
+  });
+};
