@@ -5,10 +5,14 @@ import { Button, Checkbox } from "@mui/material"
 import Link from "next/link"
 import useRegisterHook from "./hooks"
 import { useSearchParams } from "next/navigation"
+import { useState } from "react"
 
 const Register = () => {
   const searchParams = useSearchParams()
   const ref = searchParams.get("ref")
+
+  const [agreedToTerms, setAgreedToTerms] = useState(false)
+  const [showTermsError, setShowTermsError] = useState(false)
 
   const {
     control,
@@ -17,15 +21,15 @@ const Register = () => {
     onSubmit,
     submitCode,
     disabled,
-    watch
+    watch,
   } = useRegisterHook(ref || "")
   return (
     <div className='h-dvh flex'>
       <div className='w-[50%] lg:w-[50%] overflow-hidden hidden md:block'>
         <img
-          src="/images/register-hero.png"
-          alt=""
-          className="h-[1016px] w-full"
+          src='/images/register-hero.png'
+          alt=''
+          className='h-[1016px] w-full'
         />
       </div>
       <div className='md:w-[50%] w-full grid place-items-center overflow-y-auto p-8 py-16'>
@@ -37,14 +41,14 @@ const Register = () => {
           </div>
 
           <div className='space-y-4'>
-            <div className='space-y-1'>
+            {/* <div className='space-y-1'>
               <FormInput
                 name='username'
                 control={control}
                 errors={errors}
                 label='Username'
               />
-            </div>
+            </div> */}
             <div className='space-y-1'>
               <FormInput
                 name='phone'
@@ -83,7 +87,7 @@ const Register = () => {
                     variant='outlined'
                     sx={{ height: "70%", mt: "15%" }}
                     onClick={submitCode}
-                    disabled={disabled || !watch('email')}
+                    disabled={disabled || !watch("email")}
                   >
                     {disabled ? "Code send" : "Get Code"}
                   </Button>
@@ -119,25 +123,45 @@ const Register = () => {
               />
             </div>
 
-            <div className="flex items-center gap-2">
-              <Checkbox className="!p-0" />{" "}
-              <span className="text-muted">
+            <div className='flex items-start gap-2'>
+              <Checkbox
+                className='!p-0'
+                checked={agreedToTerms}
+                onChange={(e) => {
+                  setAgreedToTerms(e.target.checked)
+                  if (e.target.checked) setShowTermsError(false)
+                }}
+              />
+              <span className='text-muted text-sm'>
                 I agree to{" "}
-                <span className="text-primary">privacy policy & terms</span>
+                <span className='text-primary underline cursor-pointer'>
+                  privacy policy & terms
+                </span>
               </span>
             </div>
+            {showTermsError && (
+              <div className='text-red-500 text-xs'>
+                You must agree to continue.
+              </div>
+            )}
 
             <Button
               variant='contained'
               fullWidth
-              onClick={handleSubmit(onSubmit)}
+              onClick={() => {
+                if (!agreedToTerms) {
+                  setShowTermsError(true)
+                  return
+                }
+                handleSubmit(onSubmit)()
+              }}
             >
               Sign up
             </Button>
 
-            <div className="text-sm text-center block mt-2">
+            <div className='text-sm text-center block mt-2'>
               Already have an account?{" "}
-              <Link className="text-primary" href="/login">
+              <Link className='text-primary' href='/login'>
                 Sign in instead
               </Link>
             </div>
@@ -159,7 +183,7 @@ const Register = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
 export default Register

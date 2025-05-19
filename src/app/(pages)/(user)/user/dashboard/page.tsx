@@ -1,63 +1,83 @@
 "use client"
-
+import { Modal, Box, Typography, Button } from "@mui/material"
 import { useGetMyMachines, useGetPopularProducts } from "@/api/user/useUser"
 import { NFTCard } from "@/app/components/cards/NFTCard"
 import { StatsCard } from "@/app/components/cards/StatsCard"
 import CardLoader from "@/loaders/CardLoader"
 import { authStore } from "@/store/authStore"
 import { useRouter } from "next/navigation"
-import useUserDashboard from "./hooks";
+import useUserDashboard from "./hooks"
+import StatsCardSkeleton from "@/loaders/StatsCardSkeleton"
+import { useEffect, useState } from "react"
 
 const page = () => {
   const { user } = authStore()
-  const { data, isLoading } = useGetPopularProducts();
+
+  const [openProfileModal, setOpenProfileModal] = useState(false)
+
+  useEffect(() => {
+    if (user && !user.profile) {
+      setOpenProfileModal(true)
+    }
+  }, [user])
+
+  const { data, isLoading } = useGetPopularProducts()
   const popularProducts = data?.items
-  const {
-    data: myMachinesData,
-    isLoading: isMachinesLoading,
-  } = useGetMyMachines(user?.id);
+  const { data: myMachinesData, isLoading: isMachinesLoading } =
+    useGetMyMachines(user?.id)
 
   const router = useRouter()
 
-
-  const { stats, formatCurrency } = useUserDashboard();
+  const {
+    stats,
+    formatCurrency,
+    isLoading: isStatsLoading,
+  } = useUserDashboard()
 
   const statsData = [
     {
-      value: stats ? formatCurrency(stats.currentDeposit) : "Loading...",
+      // @ts-ignore
+      value: stats ? formatCurrency(stats.data.currentDeposit) : "Loading...",
       label: "Current Deposit",
       color: "bg-[#7C3AED]",
     },
     {
-      value: stats ? formatCurrency(stats.currentBalance) : "Loading...",
+      // @ts-ignore
+      value: stats ? formatCurrency(stats.data.currentBalance) : "Loading...",
       label: "Current Balance",
       color: "bg-[#22C55E]",
     },
     {
-      value: stats ? formatCurrency(stats.totalWithdraw) : "Loading...",
+      // @ts-ignore
+      value: stats ? formatCurrency(stats.data.totalWithdraw) : "Loading...",
       label: "Total Withdraw",
       color: "bg-[#EAB308]",
     },
     {
-      value: stats ? formatCurrency(stats.totalReferralBonus) : "Loading...",
+      // @ts-ignore
+      value: stats ? formatCurrency(stats.data.totalReferralBonus) : "Loading...",
       label: "Total Referral Bonus",
       color: "bg-[#F97316]",
     },
-  ];
+  ]
 
   return (
     <div className='min-h-screen bg-black py-4 md:p-8'>
       <div className='max-w-7xl mx-auto space-y-8'>
         {/* Stats Grid */}
         <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4'>
-          {statsData.map((stat, index) => (
-            <StatsCard
-              key={index}
-              value={stat.value}
-              label={stat.label}
-              color={stat.color}
-            />
-          ))}
+          {isStatsLoading
+            ? Array(4)
+                .fill(0)
+                .map((_, index) => <StatsCardSkeleton key={index} />)
+            : statsData.map((stat, index) => (
+                <StatsCard
+                  key={index}
+                  value={stat.value}
+                  label={stat.label}
+                  color={stat.color}
+                />
+            ))}
         </div>
 
         {/* Popular Machines */}
@@ -81,7 +101,9 @@ const page = () => {
                     days={nft.rentalDays}
                     level='Lv1-Lv3'
                     action='Buy'
-                    onClick={() => router.push(`/user/explore/NFTdetails?id=${nft?.id}`)}
+                    onClick={() =>
+                      router.push(`/user/explore/NFTdetails?id=${nft?.id}`)
+                    }
                   />
                 ))}
           </div>
@@ -92,7 +114,9 @@ const page = () => {
           <h2 className='text-2xl font-bold text-white mb-4'>My Machines</h2>
           <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4'>
             {isMachinesLoading
-              ? Array.from({ length: 4 }).map((_, idx) => <CardLoader key={idx} />)
+              ? Array.from({ length: 4 }).map((_, idx) => (
+                  <CardLoader key={idx} />
+                ))
               : myMachinesData?.map((nft: any, index: number) => (
                   <NFTCard
                     key={index}
@@ -109,6 +133,42 @@ const page = () => {
           </div>
         </div>
       </div>
+      <Modal
+        open={openProfileModal}
+        onClose={() => setOpenProfileModal(false)}
+        aria-labelledby="profile-modal-title"
+        aria-describedby="profile-modal-description"
+      >
+        <Box
+          sx={{
+            position: "absolute" as const,
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: 400,
+            bgcolor: "background.paper",
+            borderRadius: 2,
+            boxShadow: 24,
+            p: 4,
+            textAlign: "center",
+          }}
+        >
+          <Typography id="profile-modal-title" variant="h6" component="h2">
+            Complete Your Profile
+          </Typography>
+          <Typography id="profile-modal-description" sx={{ mt: 2 }}>
+            Please upload a profile picture to complete your profile.
+          </Typography>
+          <Button
+            variant="contained"
+            color="primary"
+            href="/user/settings"
+            sx={{ mt: 3 }}
+          >
+            Go to Settings
+          </Button>
+        </Box>
+      </Modal>
     </div>
   )
 }

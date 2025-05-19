@@ -92,7 +92,7 @@ const Header = () => {
         <Link href={`/${role}/settings`}>
           <Avatar
             size={38}
-            src={user?.profile ? `${base_image_url}${user.profile}` : 'https://i.pravatar.cc/300'}
+            src={user?.profile ? `${base_image_url}${user.profile}` : '#'}
             className='border-2 border-white'
           />
         </Link>
