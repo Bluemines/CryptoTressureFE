@@ -22,6 +22,9 @@ export default function StatusBadge({ status }: StatusBadgeProps) {
     case 'rejected':
       colorClasses = 'bg-[#462321] text-[#F04438]'
       break;
+    case 'suspended':
+      colorClasses = 'bg-[#462321] text-[#F04438]'
+      break;
     default:
       colorClasses = 'bg-gray-100 text-gray-600 border border-gray-400';
       break;

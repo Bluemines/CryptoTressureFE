@@ -5,18 +5,74 @@ import { useRouter } from "next/navigation"
 import DataTable from "@/app/components/DataTable/DataTable"
 import { TableColumn } from "react-data-table-component"
 import StatusBadge from "@/app/components/ui/StatusBadge"
-import { useGetWalletStats } from "@/api/wallet"
+import { useGetWalletStats, usePostWalletWithdraw } from "@/api/wallet"
 import StatsCardSkeleton from "@/loaders/StatsCardSkeleton"
+import { Button, Input } from "@mui/material"
+import { useState } from "react"
+import Modal from "@/app/components/modals/Modal"
+import { useForm } from "react-hook-form"
+import toast from "react-hot-toast"
+
+type Inputs = {
+  amount: number
+  cnic: string
+}
 
 const Wallet = () => {
+  const { data: walletStats, isLoading } = useGetWalletStats()
 
-  const { data: walletStats, isLoading } = useGetWalletStats();
+  const [formData, setFormData] = useState<Inputs | null>(null)
+  const [showConfirmModal, setShowConfirmModal] = useState(false)
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<Inputs>({ mode: "onChange" })
+
+  const [showWithdrawModal, setShowWithdrawModal] = useState(false)
+
+  const { mutate: postWithdraw } = usePostWalletWithdraw()
+
+  const onSubmit = (data: Inputs) => {
+    console.log("Withdraw Form Data:", data)
+    const postData = { amount: Number(data.amount), cnic: data.cnic }
+    postWithdraw(postData, {
+      onSuccess: (data) => {
+        toast.success('Withdraw req sent!')
+      },
+      onError: (error: any) => {
+        toast.error(error.response?.data.message)
+      }
+    })
+    setShowWithdrawModal(false)
+    reset()
+  }
+
+  const handleWithdrawContinue = (data: Inputs) => {
+    setFormData(data)
+    setShowWithdrawModal(false)
+    setShowConfirmModal(true)
+  }
 
   const statsData = [
-    { label: "Available Balance", value: walletStats?.available + "$", bgColor: "bg-[#6F4FF2]" },
-    { label: "Reserved Balance", value: walletStats?.reserved+ "$", bgColor: "bg-[#50BB25]" },
-    { label: "Total Balance", value: walletStats?.total+ "$", bgColor: "bg-[#F9D62C]" },
-  ];
+    {
+      label: "Available Balance",
+      value: walletStats?.available + "$",
+      bgColor: "bg-[#6F4FF2]",
+    },
+    {
+      label: "Reserved Balance",
+      value: walletStats?.reserved + "$",
+      bgColor: "bg-[#50BB25]",
+    },
+    {
+      label: "Total Balance",
+      value: walletStats?.total + "$",
+      bgColor: "bg-[#F9D62C]",
+    },
+  ]
   type Data = {
     sr: number
     date: string
@@ -34,7 +90,7 @@ const Wallet = () => {
       fee: "Rs 5",
       netPayout: "Rs 1327",
       method: "Easypaisa",
-      status: 'Approved'
+      status: "Approved",
     },
     {
       sr: 2,
@@ -43,7 +99,7 @@ const Wallet = () => {
       fee: "Rs 5",
       netPayout: "Rs 1327",
       method: "Easypaisa",
-      status: 'Pending'
+      status: "Pending",
     },
     {
       sr: 3,
@@ -52,7 +108,7 @@ const Wallet = () => {
       fee: "Rs 5",
       netPayout: "Rs 1327",
       method: "Easypaisa",
-      status: 'Rejected'
+      status: "Rejected",
     },
   ]
 
@@ -100,7 +156,13 @@ const Wallet = () => {
           <div className='bg-[#2B2B2B] py-2 px-4 rounded'>
             Easypaisa account *******1234 is connected
           </div>
-          <div>
+          <div className='flex gap-2'>
+            <Button
+              onClick={() => setShowWithdrawModal(true)}
+              variant='outlined'
+            >
+              Withdraw Amount
+            </Button>
             <PrimaryButton
               onClick={() => router.push("/user/wallet/add-new-wallet")}
               bgColor='#7367F0'
@@ -114,18 +176,95 @@ const Wallet = () => {
 
       <div className='flex flex-col md:flex-row gap-4 my-4'>
         {isLoading
-      ? Array(3).fill(0).map((_, i) => <StatsCardSkeleton key={i} />)
-      : statsData.map((stat, index) => (
-          <StatsCard
-            key={index}
-            label={stat.label}
-            value={stat.value ?? "N/A"}
-            bgColor={stat.bgColor}
-          />
-        ))}
+          ? Array(3)
+              .fill(0)
+              .map((_, i) => <StatsCardSkeleton key={i} />)
+          : statsData.map((stat, index) => (
+              <StatsCard
+                key={index}
+                label={stat.label}
+                value={stat.value ?? "N/A"}
+                bgColor={stat.bgColor}
+              />
+            ))}
       </div>
 
       <DataTable data={dataSource} columns={columns} themeStyle='gray' />
+
+      <Modal open={showWithdrawModal} setOpen={setShowWithdrawModal}>
+        <form onSubmit={handleSubmit(handleWithdrawContinue)}>
+          <div className='text-2xl font-medium'>Withdraw</div>
+          <div className='bg-[#2B2B2B] p-4 rounded-lg mt-4 space-y-4'>
+            {/* Amount */}
+            <div className='space-y-2'>
+              <label className='block'>Amount</label>
+              <Input
+                disableUnderline
+                {...register("amount", { required: "Amount is required" })}
+                className='!bg-[#161616] px-2 py-1 w-full rounded-md text-white'
+                placeholder='Enter your Amount'
+                type='number'
+              />
+              {errors.amount && (
+                <p className='text-red-500 text-sm'>{errors.amount.message}</p>
+              )}
+            </div>
+
+            {/* CNIC */}
+            <div className='space-y-2'>
+              <label className='block'>Destination CNIC</label>
+              <Input
+                disableUnderline
+                {...register("cnic", { required: "CNIC is required" })}
+                className='!bg-[#161616] px-2 py-1 w-full rounded-md text-white'
+                placeholder='Enter your CNIC'
+              />
+              {errors.cnic && (
+                <p className='text-red-500 text-sm'>{errors.cnic.message}</p>
+              )}
+            </div>
+          </div>
+          <Button type='submit' variant='contained' fullWidth className='!mt-4'>
+            Next
+          </Button>
+        </form>
+      </Modal>
+
+      <Modal open={showConfirmModal} setOpen={setShowConfirmModal}>
+        <div className='text-2xl font-medium'>Confirm Withdrawal</div>
+        <div className='bg-[#2B2B2B] p-4 rounded-lg mt-4 space-y-4 text-white'>
+          <div>
+            <strong>Amount:</strong> {formData?.amount}
+          </div>
+          <div>
+            <strong>CNIC:</strong> {formData?.cnic}
+          </div>
+          <div className='flex gap-2 mt-4'>
+            <Button
+              variant='outlined'
+              fullWidth
+              onClick={() => {
+                setShowConfirmModal(false)
+                setShowWithdrawModal(true) // go back
+              }}
+            >
+              Back
+            </Button>
+            <Button
+              variant='contained'
+              fullWidth
+              onClick={() => {
+                if (formData) {
+                  onSubmit(formData)
+                  setShowConfirmModal(false)
+                }
+              }}
+            >
+              Confirm
+            </Button>
+          </div>
+        </div>
+      </Modal>
     </div>
   )
 }

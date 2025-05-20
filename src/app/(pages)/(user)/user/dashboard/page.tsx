@@ -12,9 +12,8 @@ import { useEffect, useState } from "react"
 
 const page = () => {
   const { user } = authStore()
-
+  const points = localStorage.getItem('points')
   const [openProfileModal, setOpenProfileModal] = useState(false)
-
   useEffect(() => {
     if (user && !user.profile) {
       setOpenProfileModal(true)
@@ -60,7 +59,6 @@ const page = () => {
       color: "bg-[#F97316]",
     },
   ]
-
   return (
     <div className='min-h-screen bg-black py-4 md:p-8'>
       <div className='max-w-7xl mx-auto space-y-8'>
@@ -169,6 +167,11 @@ const page = () => {
           </Button>
         </Box>
       </Modal>
+      {points && +points > 0 && (
+  <div className="mt-8 text-center text-white rounded-lg py-4 px-6">
+    🎉 You have received <span className="font-bold">{points}</span> reward points!
+  </div>
+)}
     </div>
   )
 }
