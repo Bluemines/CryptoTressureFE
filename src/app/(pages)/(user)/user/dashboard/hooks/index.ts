@@ -14,11 +14,11 @@ export default function useUserDashboard() {
     isSuccess: onSuccess,
   } = useQuery<UserDashboardStats>(getUserDashboardStatsApi());
   const formatCurrency = (value: number | string) => {
-    if (typeof value !== "number") return value;
-    return new Intl.NumberFormat("en-PK", {
-      style: "currency",
-      currency: "PKR",
-    }).format(value);
-  };
+  if (typeof value !== "number") return value;
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+  }).format(value);
+};
   return { stats,formatCurrency, isLoading };
 }

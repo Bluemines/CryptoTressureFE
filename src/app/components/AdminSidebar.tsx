@@ -11,8 +11,6 @@ import {
   UploadOutlined,
   ShareAltOutlined,
   DollarOutlined,
-  InfoCircleOutlined,
-  TeamOutlined,
   LogoutOutlined,
   MenuUnfoldOutlined,
 } from "@ant-design/icons"
@@ -175,7 +173,7 @@ const AdminSidebar = () => {
         `}
       >
         <div className='h-16 grid place-items-center text-white font-bold border-b border-gray-700'>
-          LOGO
+          <img src='/logo.jpg' alt="logo" className="w-16 h-16" />
         </div>
         <div className='overflow-y-auto h-[calc(100vh-64px)] scrollbar-hide'>
           <Menu
@@ -197,7 +195,7 @@ const AdminSidebar = () => {
           width={220}
         >
           <div className='h-16 grid place-items-center text-white font-bold border-b border-gray-700'>
-            LOGO
+            <img src='/logo.jpg' alt="logo" className="w-16 h-16" />
           </div>
           <div className='overflow-y-auto h-[calc(100vh-64px)] scrollbar-hide'>
             <Menu

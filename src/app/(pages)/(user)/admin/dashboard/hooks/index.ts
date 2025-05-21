@@ -22,5 +22,5 @@ export default function useAdminDashboard() {
     isSuccess,
   } = useQuery<[]>(getAdminRecentWithdrawlsApi());
 
-  return { stats, withDrawls };
+  return { stats, withDrawls, isLoading };
 }

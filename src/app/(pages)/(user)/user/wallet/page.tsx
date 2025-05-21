@@ -12,6 +12,7 @@ import { useState } from "react"
 import Modal from "@/app/components/modals/Modal"
 import { useForm } from "react-hook-form"
 import toast from "react-hot-toast"
+import { formatCurrency } from "@/lib"
 
 type Inputs = {
   amount: number
@@ -59,17 +60,17 @@ const Wallet = () => {
   const statsData = [
     {
       label: "Available Balance",
-      value: walletStats?.available + "$",
+      value: formatCurrency(walletStats?.available),
       bgColor: "bg-[#6F4FF2]",
     },
     {
       label: "Reserved Balance",
-      value: walletStats?.reserved + "$",
+      value:  formatCurrency(walletStats?.reserved),
       bgColor: "bg-[#50BB25]",
     },
     {
       label: "Total Balance",
-      value: walletStats?.total + "$",
+      value: formatCurrency(walletStats?.total),
       bgColor: "bg-[#F9D62C]",
     },
   ]

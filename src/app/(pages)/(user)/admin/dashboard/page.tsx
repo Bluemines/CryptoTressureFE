@@ -7,6 +7,7 @@ import AdminTable from "../../../../components/ui/tables/AdminTable";
 import { Card } from "@mui/material";
 import useUserManagement from "../usersManagement/hooks";
 import useAdminDashboard from "./hooks";
+import { formatCurrency } from "@/lib";
 export default function Dashboard() {
   const { users } = useUserManagement();
   const { stats, withDrawls } = useAdminDashboard();
@@ -42,13 +43,13 @@ export default function Dashboard() {
       //   image: Image,
     },
     {
-      value: stats ? stats.platformBalance : "Loading...",
+      value: stats ? formatCurrency(stats.platformBalance) : "Loading...",
       label: "Platform Balance",
       color: "bg-[#33482a]",
       //   image: Image,
     },
     {
-      value: stats ? stats.totalRevenue : "Loading...",
+      value: stats ? formatCurrency(stats.totalRevenue) : "Loading...",
       label: "Total Revenue",
       color: "bg-[#274650]",
       //   image: Image,

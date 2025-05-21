@@ -24,6 +24,7 @@ import type { MenuProps } from "antd"
 import Link from "next/link"
 import { authStore } from "@/store/authStore"
 import toast from "react-hot-toast"
+import Image from "next/image"
 
 const { Sider } = Layout
 type MenuItem = Required<MenuProps>["items"][number]
@@ -121,7 +122,7 @@ const Sidebar = () => {
         `}
       >
         <div className="h-16 grid place-items-center text-white font-bold border-b border-gray-700">
-          LOGO
+          <img src='/logo.jpg' alt="logo" className="w-16 h-16" />
         </div>
         <div className="overflow-y-auto h-[calc(100vh-64px)] scrollbar-hide">
           <Menu
@@ -143,7 +144,7 @@ const Sidebar = () => {
           width={220}
         >
           <div className="h-16 grid place-items-center text-white font-bold border-b border-gray-700">
-            LOGO
+            <img src='/logo.jpg' alt="logo" className="w-16 h-16" />
           </div>
           <div className="overflow-y-auto h-[calc(100vh-64px)] scrollbar-hide">
             <Menu

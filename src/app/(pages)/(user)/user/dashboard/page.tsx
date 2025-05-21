@@ -110,25 +110,30 @@ const page = () => {
         {/* My Machines */}
         <div>
           <h2 className='text-2xl font-bold text-white mb-4'>My Machines</h2>
-          <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4'>
-            {isMachinesLoading
-              ? Array.from({ length: 4 }).map((_, idx) => (
-                  <CardLoader key={idx} />
-                ))
-              : myMachinesData?.map((nft: any, index: number) => (
-                  <NFTCard
-                    key={index}
-                    image={nft.image}
-                    title={nft.title}
-                    price={+nft.price}
-                    dailyIncome={+nft.dailyIncome}
-                    fee={+nft.fee}
-                    days={nft.rentalDays}
-                    level='Lv1-Lv3'
-                    action='Sell'
-                  />
-                ))}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {isMachinesLoading ? (
+              Array.from({ length: 4 }).map((_, idx) => <CardLoader key={idx} />)
+            ) : myMachinesData && myMachinesData.length > 0 ? (
+              myMachinesData.map((nft: any, index: number) => (
+                <NFTCard
+                  key={index}
+                  image={nft.image}
+                  title={nft.title}
+                  price={+nft.price}
+                  dailyIncome={+nft.dailyIncome}
+                  fee={+nft.fee}
+                  days={nft.rentalDays}
+                  level="Lv1-Lv3"
+                  action="Sell"
+                />
+              ))
+            ) : (
+              <div className="col-span-full text-center text-gray-400 py-10">
+                You have'nt bought any machines.
+              </div>
+            )}
           </div>
+
         </div>
       </div>
       <Modal

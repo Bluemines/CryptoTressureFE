@@ -1,7 +1,6 @@
 "use client"
-import Image from "next/image"
 import React from "react"
-
+import Image from "next/image"
 import HeroImage from "../assets/Images/HeroImg.png"
 import Aboutus1 from "../assets/Images/image1.png"
 import Aboutus2 from "../assets/Images/image2.png"
@@ -9,17 +8,25 @@ import ChooseAMachineImage from "../assets/Images/choose-a-machine.png"
 import EarnDailyRewards from "../assets/Images/earn-daily-rewards.png"
 import LevelUpandRefer from "../assets/Images/level-up-and-refer.png"
 import Link from "next/link"
-import FaqImage from '../assets/Images/faq-image.png'
-import AutomatedRewardsImg from '../assets/Images/automated-rewards.png'
-import SmartLevelingSystemImg from '../assets/Images/smart-leveling-system.png'
-import ReferralProgram from '../assets/Images/referral-program.png'
-import SecureAndVerified from '../assets/Images/secure-and-verified.png'
-import SmartAdminOversight from '../assets/Images/super-admin-oversight.png'
+import FaqImage from "../assets/Images/faq-image.png"
+import AutomatedRewardsImg from "../assets/Images/automated-rewards.png"
+import SmartLevelingSystemImg from "../assets/Images/smart-leveling-system.png"
+import ReferralProgram from "../assets/Images/referral-program.png"
+import SecureAndVerified from "../assets/Images/secure-and-verified.png"
+import SmartAdminOversight from "../assets/Images/super-admin-oversight.png"
 import {
   FaFacebookF,
   FaTwitter,
   FaInstagram,
   FaLinkedinIn,
+  FaLightbulb,
+  FaShieldAlt,
+  FaUserCheck,
+  FaUsers,
+  FaCoins,
+  FaLayerGroup,
+  FaUserFriends,
+  FaUserCog,
 } from "react-icons/fa"
 import {
   Accordion,
@@ -28,68 +35,22 @@ import {
   Typography,
 } from "@mui/material"
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore"
-
-const faqData = [
-  {
-    question: "What is your return policy?",
-    answer: "We offer a 30-day return policy on all items with a full refund.",
-  },
-  {
-    question: "Do you ship internationally?",
-    answer: "Yes, we ship to over 100 countries around the world.",
-  },
-  {
-    question: "How can I track my order?",
-    answer:
-      "Once your order is shipped, you will receive a tracking number via email.",
-  },
-  {
-    question: "Can I change or cancel my order?",
-    answer: "Orders can be modified within 24 hours after placement.",
-  },
-]
+import { faqData } from "../lib/faqData"
+import { OurValues } from "../lib/OurValuesData"
 
 const LandingPage = () => {
   return (
     <div className='bg-[#0D0D0D] text-white font-sans'>
       {/* Header */}
-      <header className='flex justify-between items-center p-4 border-b border-gray-800'>
-        <input
-          type='text'
-          placeholder='Search'
-          className='bg-gray-900 text-sm text-white px-4 py-2 rounded w-1/3'
-        />
-        <div className='flex items-center gap-4'>
-          <Link href='/login'>
-              <button className='bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded cursor-pointer'>
-                Login
-              </button>
-            </Link>
-          <div className='relative'>
-            <span className='absolute top-0 right-0 bg-red-600 text-white text-xs rounded-full px-1.5 py-0.5'>
-              4
-            </span>
-            <svg
-              xmlns='http://www.w3.org/2000/svg'
-              fill='none'
-              viewBox='0 0 24 24'
-              strokeWidth={1.5}
-              stroke='currentColor'
-              className='w-6 h-6 text-white'
-            >
-              <path
-                strokeLinecap='round'
-                strokeLinejoin='round'
-                d='M14.857 17.657A7.488 7.488 0 0112 18c-4.142 0-7.5-3.358-7.5-7.5S7.858 3 12 3s7.5 3.358 7.5 7.5a7.5 7.5 0 01-4.643 6.957l-.857 3.543z'
-              />
-            </svg>
-          </div>
-          <img
-            src='https://randomuser.me/api/portraits/men/32.jpg'
-            alt='Profile'
-            className='w-8 h-8 rounded-full'
-          />
-        </div>
+      <header className='text-center p-4 border-b border-gray-800'>
+        <h1 className='text-2xl md:text-4xl font-bold mb-2'>
+          Welcome to <span className='text-blue-500'>Bluemines</span> – Your
+          UK-Based Gateway to Crypto Wealth!
+        </h1>
+        <p className='text-sm md:text-lg text-gray-300 mb-6'>
+          Discover the Future of Secure and Profitable Crypto Mining, Right from
+          the Heart of the UK
+        </p>
       </header>
 
       {/* Hero Section */}
@@ -103,9 +64,6 @@ const LandingPage = () => {
             Invest in high-performing machines, grow daily rewards, and climb
             your way up through our transparent point-based leveling system.
           </p>
-          <button className='mt-6 bg-[#7B61FF] hover:bg-[#674ddf] text-white px-6 py-2 rounded'>
-            View Plans
-          </button>
         </div>
         <Image src={HeroImage} alt='Hero' className='rounded-lg md:max-w-lg' />
       </section>
@@ -190,6 +148,12 @@ const LandingPage = () => {
                 Register Now
               </button>
             </Link>
+            <span className='px-4'>Or</span>
+            <Link href='/login'>
+              <button className='bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded cursor-pointer'>
+                Sign In
+              </button>
+            </Link>
           </div>
         </div>
       </section>
@@ -260,82 +224,80 @@ const LandingPage = () => {
         Our <span className='text-[#7B61FF]'>Features</span>
       </h2>
       <section>
-        <div className='flex flex-col items-center gap-6 px-4 py-10'>
-          {/* Top Row (3 Cards) */}
-          <div className='flex flex-wrap justify-center gap-6 max-w-6xl w-full'>
-            <div className='bg-[#7367F0] p-6 rounded-xl w-full sm:w-[300px]'>
-              <Image
-                src={AutomatedRewardsImg}
-                alt='Icon'
-                className='h-18 w-18 mb-4 rounded-full bg-white object-contain'
-              />
-              <h2 className='text-xl text-white font-semibold mb-2'>
-                Automated Rewards
-              </h2>
-              <p className='text-white'>
-                Sit back while rewards are calculated and sent to your wallet.
-              </p>
-            </div>
-            <div className='bg-[#1B1B1B] p-6 rounded-xl w-full sm:w-[300px]'>
-              <Image
-                src={SmartLevelingSystemImg}
-                alt='Icon'
-                className='h-18 w-18 bg-[#404040] mb-4 rounded-full object-contain'
-              />
-              <h2 className='text-xl text-white font-semibold mb-2'>
-                Smart Leveling System
-              </h2>
-              <p className='text-white'>
-                Earn points through activity and unlock higher levels for better perks.
-              </p>
-            </div>
-            <div className='bg-[#1B1B1B] p-6 rounded-xl w-full sm:w-[300px]'>
-              <Image
-                src={ReferralProgram}
-                alt='Icon'
-                className='h-18 w-18 bg-[#404040] mb-4 rounded-full object-contain'
-              />
-              <h2 className='text-xl text-white font-semibold mb-2'>
-                Referral Program
-              </h2>
-              <p className='text-white'>
-                Invite others, earn commissions, and grow your network.
-              </p>
-            </div>
+      <div className="flex flex-col items-center gap-6 px-4 py-10">
+        {/* Top Row (3 Cards) */}
+        <div className="flex flex-wrap justify-center gap-6 max-w-6xl w-full">
+          <div className="bg-[#7367F0] p-6 rounded-xl w-full sm:w-[300px] flex flex-col">
+            <FaCoins className="text-black text-6xl mb-4 rounded-full bg-white bg-opacity-20 p-4" />
+            <h2 className="text-xl text-white font-semibold mb-2">Automated Rewards</h2>
+            <p className="text-white">
+              Sit back while rewards are calculated and sent to your wallet.
+            </p>
           </div>
 
-          {/* Bottom Row (2 Cards) */}
-          <div className='flex flex-wrap justify-center gap-6 max-w-4xl w-full'>
-            <div className='bg-[#1B1B1B] p-6 rounded-xl w-full sm:w-[300px]'>
-              <Image
-                src={SecureAndVerified}
-                alt='Icon'
-                className='h-18 w-18 bg-[#404040] mb-4 rounded-full object-contain'
-              />
-              <h2 className='text-xl text-white font-semibold mb-2'>
-                Secure & Verified
-              </h2>
-              <p className='text-white'>
-                Fully protected data and manual control over wallet activity.
-              </p>
-            </div>
-            <div className='bg-[#1B1B1B] p-6 rounded-xl w-full sm:w-[300px]'>
-              <Image
-                src={SmartAdminOversight}
-                alt='Icon'
-                className='h-18 w-18 bg-[#404040] mb-4 rounded-full object-contain'
-              />
-              <h2 className='text-xl text-white font-semibold mb-2'>
-                Smart Admin Oversight
-              </h2>
-              <p className='text-white'>
-                Our system is overseen by a powerful admin backend for accuracy and transparency.
-              </p>
-            </div>
+          <div className="bg-[#1B1B1B] p-6 rounded-xl w-full sm:w-[300px] flex flex-col">
+            <FaLayerGroup className="text-[#7367F0] text-6xl mb-4 rounded-full bg-[#404040] p-4" />
+            <h2 className="text-xl text-white font-semibold mb-2">Smart Leveling System</h2>
+            <p className="text-white">
+              Earn points through activity and unlock higher levels for better perks.
+            </p>
+          </div>
+
+          <div className="bg-[#1B1B1B] p-6 rounded-xl w-full sm:w-[300px] flex flex-col">
+            <FaUserFriends className="text-[#7367F0] text-6xl mb-4 rounded-full bg-[#404040] p-4" />
+            <h2 className="text-xl text-white font-semibold mb-2">Referral Program</h2>
+            <p className="text-white">
+              Invite others, earn commissions, and grow your network.
+            </p>
+          </div>
+        </div>
+
+        {/* Bottom Row (2 Cards) */}
+        <div className="flex flex-wrap justify-center gap-6 max-w-4xl w-full">
+          <div className="bg-[#1B1B1B] p-6 rounded-xl w-full sm:w-[300px] flex flex-col">
+            <FaShieldAlt className="text-[#7367F0] text-6xl mb-4 rounded-full bg-[#404040] p-4" />
+            <h2 className="text-xl text-white font-semibold mb-2">Secure & Verified</h2>
+            <p className="text-white">
+              Fully protected data and manual control over wallet activity.
+            </p>
+          </div>
+
+          <div className="bg-[#1B1B1B] p-6 rounded-xl w-full sm:w-[300px] flex flex-col">
+            <FaUserCog className="text-[#7367F0] text-6xl mb-4 rounded-full bg-[#404040] p-4" />
+            <h2 className="text-xl text-white font-semibold mb-2">Smart Admin Oversight</h2>
+            <p className="text-white">
+              Our system is overseen by a powerful admin backend for accuracy and transparency.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+      <section>
+        <div className='bg-[#0F0F0F] py-16 px-4 text-white'>
+          <h2 className='text-center text-3xl sm:text-4xl font-semibold mb-12'>
+            Our <span className='text-[#7367F0]'>Values</span>
+          </h2>
+
+          <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto'>
+            {OurValues.map((value, i) => (
+              <div
+                key={i}
+                className='bg-[#1C1C1C] p-6 rounded-2xl border border-[#2C2C2C] hover:shadow-lg transition-shadow duration-300'
+              >
+                {value.icon}
+                <h4 className='text-xl font-semibold mb-2 text-white'>
+                  {value.title}
+                </h4>
+                <p className='text-[#D1D1D1] text-sm leading-relaxed'>
+                  {value.description}
+                </p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
-      <section>
+
+      {/* <section>
         <div className='bg-[#0F0F0F] py-16 px-4 text-white'>
           <h2 className='text-center text-3xl sm:text-4xl font-semibold mb-12'>
             See what our <span className='text-[#7367F0]'>client’s</span> say
@@ -371,7 +333,7 @@ const LandingPage = () => {
               ))}
           </div>
         </div>
-      </section>
+      </section> */}
 
       <section>
         <div className='bg-[#0F0F0F] text-white py-16 px-6 lg:px-20'>
@@ -391,39 +353,41 @@ const LandingPage = () => {
                 Frequently Asked{" "}
                 <span className='text-[#7367F0]'>Questions</span>
               </h2>
-
-              {faqData.map((item, index) => (
-                <Accordion
-                  key={index}
-                  sx={{
-                    backgroundColor: "#1C1C1C",
-                    color: "white",
-                    boxShadow: "none",
-                    mb: 2,
-                    borderRadius: 2,
-                    "&:before": {
-                      display: "none",
-                    },
-                  }}
-                >
-                  <AccordionSummary
-                    expandIcon={<ExpandMoreIcon sx={{ color: "#7367F0" }} />}
+              <div className='max-h-[500px] overflow-y-auto'>
+                {faqData.map((item, index) => (
+                  <Accordion
+                    key={index}
+                    sx={{
+                      backgroundColor: "#1C1C1C",
+                      color: "white",
+                      boxShadow: "none",
+                      mb: 2,
+                      borderRadius: 2,
+                      "&:before": {
+                        display: "none",
+                      },
+                    }}
                   >
-                    <Typography sx={{ fontWeight: 500 }}>
-                      {item.question}
-                    </Typography>
-                  </AccordionSummary>
-                  <AccordionDetails>
-                    <Typography sx={{ color: "#d1d1d1" }}>
-                      {item.answer}
-                    </Typography>
-                  </AccordionDetails>
-                </Accordion>
-              ))}
+                    <AccordionSummary
+                      expandIcon={<ExpandMoreIcon sx={{ color: "#7367F0" }} />}
+                    >
+                      <Typography sx={{ fontWeight: 500 }}>
+                        {item.question}
+                      </Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                      <Typography sx={{ color: "#d1d1d1" }}>
+                        {item.answer}
+                      </Typography>
+                    </AccordionDetails>
+                  </Accordion>
+                ))}
+              </div>
             </div>
           </div>
         </div>
       </section>
+
       <footer className='bg-[#1B1B1B] text-gray-400 px-6 py-10'>
         <div className='max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start gap-10'>
           {/* Left Section */}

@@ -15,6 +15,15 @@ body {
   background-color: #080a0c;
 }
 
+.hide-scrollbar {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE 10+ */
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari and Opera */
+}
+
 .custom-dark-input::placeholder {
   color: white !important;
 }
