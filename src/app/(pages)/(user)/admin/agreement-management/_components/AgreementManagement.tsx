@@ -1,5 +1,4 @@
 "use client"
-
 import React from "react"
 import ReactQuill from "react-quill-new"
 import useAgreement from "../hooks"

@@ -150,19 +150,7 @@ const Login = () => {
           </Link>
         </div>
 
-        {/* <Divider>Or</Divider>
 
-        <div className='flex items-center justify-center gap-2 mt-4'>
-          <div className='h-[38px] w-[38px] bg-[#1d2b48] grid place-items-center rounded'>
-            <img src='/icons/fb.png' alt='' />
-          </div>
-          <div className='h-[38px] w-[38px] bg-[#0d3148] grid place-items-center rounded'>
-            <img src='/icons/twitter.png' alt='' />
-          </div>
-          <div className='h-[38px] w-[38px] bg-[#3f1917] grid place-items-center rounded'>
-            <img src='/icons/google.png' alt='' />
-          </div>
-        </div> */}
       </form>
       {/* forget pass modal */}
       <Modal
