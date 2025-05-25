@@ -78,7 +78,7 @@ export default function Home() {
   return (
     <ThemeProvider theme={theme}>
       <Head>
-        <title>CryptoTreasure - Your UK-Based Gateway to Crypto Wealth</title>
+        <title>Bluemines - Your UK-Based Gateway to Crypto Wealth</title>
         <meta
           name="description"
           content="Discover the Future of Secure and Profitable Crypto Mining, Right from the Heart of the UK"
@@ -105,7 +105,7 @@ export default function Home() {
               component="h2"
               sx={{ mb: 1, fontWeight: "bold" }}
             >
-              Welcome to CryptoTreasure – Your UK-Based Gateway to Crypto
+              Welcome to Bluemines – Your UK-Based Gateway to Crypto
               Wealth!
             </Typography>
             <Typography variant="subtitle1" sx={{ mb: 5 }}>
@@ -136,7 +136,7 @@ export default function Home() {
                 <Box>
                   <Typography paragraph>
                     Based in the vibrant and innovative landscape of the United
-                    Kingdom, CryptoTreasure was founded in 2023, with a simple
+                    Kingdom, Bluemines was founded in 2023, with a simple
                     yet powerful vision: to make crypto mining accessible,
                     secure, and profitable for everyone.
                   </Typography>
@@ -149,7 +149,7 @@ export default function Home() {
                     standards of UK regulations.
                   </Typography>
                   <Typography paragraph>
-                    Today, CryptoTreasure is proud to be a leading name in the
+                    Today, Bluemines is proud to be a leading name in the
                     crypto mining industry, helping users worldwide unlock their
                     financial potential.
                   </Typography>
@@ -194,7 +194,7 @@ export default function Home() {
               user-friendly, and fully compliant with UK financial regulations.
             </Typography>
             <Typography variant="body1" align="center">
-              At CryptoTreasure, we believe that everyone should have the
+              At Bluemines, we believe that everyone should have the
               opportunity to benefit from the crypto revolution – and we're here
               to make that happen.
             </Typography>
@@ -441,7 +441,7 @@ export default function Home() {
                 data and investments are protected at all times.
               </Typography>
               <Typography paragraph>
-                But our vision doesn't stop at the UK. CryptoTreasure is a
+                But our vision doesn't stop at the UK. Bluemines is a
                 global platform, serving users from all corners of the world.
                 Whether you're in London, New York, or Tokyo, we're here to help
                 you unlock your crypto treasure.
@@ -465,13 +465,13 @@ export default function Home() {
               align="center"
               sx={{ mb: 2 }}
             >
-              Join the CryptoTreasure Community
+              Join the Bluemines Community
             </Typography>
             <Typography variant="body1" align="center" paragraph>
               We're more than just a platform – we're a community of like-minded
               individuals who believe in the power of cryptocurrency. Whether
               you're here to grow your wealth, learn about crypto, or connect
-              with others, CryptoTreasure is your partner in this exciting
+              with others, Bluemines is your partner in this exciting
               journey.
             </Typography>
             <Typography variant="h6" align="center" sx={{ mb: 1 }}>

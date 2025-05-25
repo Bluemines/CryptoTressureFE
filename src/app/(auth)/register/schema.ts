@@ -2,7 +2,7 @@
 import * as yup from "yup";
 
 export const registerSchema = yup.object({
-    username: yup.string().optional(),
+    username: yup.string().min(3,"Username must be atleast 3 letters").required(),
     email: yup.string().email("Invalid email").required("Email is required"),
     code: yup.string().required("Code is required"),
     password: yup
