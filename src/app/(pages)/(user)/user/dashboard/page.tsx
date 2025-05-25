@@ -97,7 +97,7 @@ const page = () => {
                     dailyIncome={+nft.dailyIncome}
                     fee={+nft.fee}
                     days={nft.rentalDays}
-                    level='Lv1-Lv3'
+                    level={nft.level}
                     action='Buy'
                     onClick={() =>
                       router.push(`/user/explore/NFTdetails?id=${nft?.id}`)

@@ -36,7 +36,7 @@ export const authStore = create<UserStore>((set) => ({
     localStorage.clear();
 
     // Optional: redirect to login or home page
-    window.location.replace('/login'); // Uncomment this if you want to redirect
+    window.location.replace('/login');
   },
   setPoints: (points: number) => {
     set((state) => {
