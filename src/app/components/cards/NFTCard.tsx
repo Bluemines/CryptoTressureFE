@@ -3,6 +3,7 @@
 import { base_image_url } from "@/app/constants/keys";
 import { ArrowRight } from "lucide-react";
 import React from "react";
+import CountdownTimer from "../CountdownTimer";
 
 interface NFTCardProps {
   image: string;
@@ -14,6 +15,15 @@ interface NFTCardProps {
   level: string;
   action: "Buy" | "Sell" | "Rented";
   onClick?: () => void;
+
+  countdownTimeLeft?: {
+    days: number;
+    hours: number;
+    mins: number;
+    secs: number;
+    isExpired: boolean;
+  };
+  onExpire?: () => void;
 }
 
 // Internal Card component
@@ -62,6 +72,7 @@ export function NFTCard({
   fee,
   days,
   level,
+  countdownTimeLeft,
   action,
   onClick,
 }: NFTCardProps) {
@@ -69,6 +80,11 @@ export function NFTCard({
     <Card className="bg-[#1A1F2C] border-none overflow-hidden">
       <div className="relative aspect-square">
         <img src={`${base_image_url}${image}`} alt={title} className="object-fit w-full h-full" />
+        {action === "Sell" && countdownTimeLeft && countdownTimeLeft.isExpired === false && (
+          <div className="absolute top-2  right-2 z-10 bg-[#7367F0] bg-opacity-60 rounded-md px-2">
+            <CountdownTimer timeLeft={countdownTimeLeft} />
+          </div>
+        )}
       </div>
       <CardContent className="p-4">
         <h3 className="text-xl font-semibold text-white mb-4">{title}</h3>

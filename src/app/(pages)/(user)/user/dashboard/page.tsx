@@ -9,10 +9,12 @@ import { useRouter } from "next/navigation"
 import useUserDashboard from "./hooks"
 import StatsCardSkeleton from "@/loaders/StatsCardSkeleton"
 import { useEffect, useState } from "react"
+import { loginDataStore } from "@/store/loginDataStore"
+import CountdownTimer from "@/app/components/CountdownTimer"
 
 const page = () => {
   const { user } = authStore()
-  const points = localStorage.getItem('points')
+  const points = localStorage.getItem("points")
   const [openProfileModal, setOpenProfileModal] = useState(false)
   useEffect(() => {
     if (user && !user.profile) {
@@ -20,11 +22,12 @@ const page = () => {
     }
   }, [user])
 
+  const { loginData } = loginDataStore()
+
   const { data, isLoading } = useGetPopularProducts()
   const popularProducts = data?.items
   const { data: myMachinesData, isLoading: isMachinesLoading } =
     useGetMyMachines()
-
   const router = useRouter()
 
   const {
@@ -54,7 +57,8 @@ const page = () => {
     },
     {
       // @ts-ignore
-      value: stats ? formatCurrency(stats.data.totalReferralBonus) : "Loading...",
+      value: stats ? formatCurrency(stats.data.totalReferralBonus)
+        : "Loading...",
       label: "Total Referral Bonus",
       color: "bg-[#F97316]",
     },
@@ -75,14 +79,30 @@ const page = () => {
                   label={stat.label}
                   color={stat.color}
                 />
-            ))}
+              ))}
         </div>
 
         {/* Popular Machines */}
         <div>
-          <h2 className='text-2xl font-bold text-white mb-4'>
-            Popular Machines
-          </h2>
+          <div className="flex flex-col md:flex-row items-center justify-between">
+            <h2 className='text-2xl font-bold text-white mb-4'>
+              Popular Machines
+            </h2>
+            <div className="flex items-center justify-between flex-col md:flex-row w-full md:w-auto gap-2 md:gap-4 bg-[#7367F0] p-2 my-4">
+              <span>Trial Fund Expiry</span>
+              {loginData ? (
+                <CountdownTimer
+                  timeLeft={loginData.trialFundTimeLeft}
+                  onExpire={() => {
+                    console.log("Trial fund expired");
+                  }}
+                />
+              ) : (
+                <span>Loading...</span>
+              )}
+            </div>
+          </div>
+
           <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4'>
             {isLoading
               ? Array.from({ length: 4 }).map((_, idx) => (
@@ -110,9 +130,11 @@ const page = () => {
         {/* My Machines */}
         <div>
           <h2 className='text-2xl font-bold text-white mb-4'>My Machines</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4'>
             {isMachinesLoading ? (
-              Array.from({ length: 4 }).map((_, idx) => <CardLoader key={idx} />)
+              Array.from({ length: 4 }).map((_, idx) => (
+                <CardLoader key={idx} />
+              ))
             ) : myMachinesData && myMachinesData.length > 0 ? (
               myMachinesData.map((nft: any, index: number) => (
                 <NFTCard
@@ -123,24 +145,24 @@ const page = () => {
                   dailyIncome={+nft.dailyIncome}
                   fee={+nft.fee}
                   days={nft.rentalDays}
-                  level="Lv1-Lv3"
-                  action="Sell"
+                  level='Lv1-Lv3'
+                  action='Sell'
+                  countdownTimeLeft={nft.remaining}
                 />
               ))
             ) : (
-              <div className="col-span-full text-center text-gray-400 py-10">
+              <div className='col-span-full text-center text-gray-400 py-10'>
                 You have'nt bought any machines.
               </div>
             )}
           </div>
-
         </div>
       </div>
       <Modal
         open={openProfileModal}
         onClose={() => setOpenProfileModal(false)}
-        aria-labelledby="profile-modal-title"
-        aria-describedby="profile-modal-description"
+        aria-labelledby='profile-modal-title'
+        aria-describedby='profile-modal-description'
       >
         <Box
           sx={{
@@ -156,16 +178,16 @@ const page = () => {
             textAlign: "center",
           }}
         >
-          <Typography id="profile-modal-title" variant="h6" component="h2">
+          <Typography id='profile-modal-title' variant='h6' component='h2'>
             Complete Your Profile
           </Typography>
-          <Typography id="profile-modal-description" sx={{ mt: 2 }}>
+          <Typography id='profile-modal-description' sx={{ mt: 2 }}>
             Please upload a profile picture to complete your profile.
           </Typography>
           <Button
-            variant="contained"
-            color="primary"
-            href="/user/settings"
+            variant='contained'
+            color='primary'
+            href='/user/settings'
             sx={{ mt: 3 }}
           >
             Go to Settings
@@ -173,36 +195,41 @@ const page = () => {
         </Box>
       </Modal>
       {points && +points > 0 && (
-        <div className="mt-8 text-center text-white rounded-lg py-4 px-6">
-          🎉 You have received <span className="font-bold">{points}</span> reward points!
+        <div className='mt-8 text-center text-white rounded-lg py-4 px-6'>
+          🎉 You have received <span className='font-bold'>{points}</span>{" "}
+          reward points!
         </div>
       )}
 
-      <div className="mt-16 bg-white dark:bg-gray-900 rounded-xl p-8 shadow-lg text-center text-black dark:text-white">
-        <h2 className="text-3xl font-bold mb-6">Why Choose Bluemines?</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 text-left">
-          <div className="space-y-2">
-            <h3 className="text-xl font-semibold">🔒 Secure & Reliable</h3>
-            <p className="text-sm text-gray-600 dark:text-gray-300">
-              We prioritize your data and investment security using top-grade infrastructure and encryption.
+      <div className='mt-16 bg-white dark:bg-gray-900 rounded-xl p-8 shadow-lg text-center text-black dark:text-white'>
+        <h2 className='text-3xl font-bold mb-6'>Why Choose Bluemines?</h2>
+        <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 text-left'>
+          <div className='space-y-2'>
+            <h3 className='text-xl font-semibold'>🔒 Secure & Reliable</h3>
+            <p className='text-sm text-gray-600 dark:text-gray-300'>
+              We prioritize your data and investment security using top-grade
+              infrastructure and encryption.
             </p>
           </div>
-          <div className="space-y-2">
-            <h3 className="text-xl font-semibold">⚡ Daily Earnings</h3>
-            <p className="text-sm text-gray-600 dark:text-gray-300">
-              Earn daily returns on your virtual mining machines — let your assets work for you.
+          <div className='space-y-2'>
+            <h3 className='text-xl font-semibold'>⚡ Daily Earnings</h3>
+            <p className='text-sm text-gray-600 dark:text-gray-300'>
+              Earn daily returns on your virtual mining machines — let your
+              assets work for you.
             </p>
           </div>
-          <div className="space-y-2">
-            <h3 className="text-xl font-semibold">👥 Referral Bonuses</h3>
-            <p className="text-sm text-gray-600 dark:text-gray-300">
-              Invite your friends and earn attractive bonuses when they join and participate.
+          <div className='space-y-2'>
+            <h3 className='text-xl font-semibold'>👥 Referral Bonuses</h3>
+            <p className='text-sm text-gray-600 dark:text-gray-300'>
+              Invite your friends and earn attractive bonuses when they join and
+              participate.
             </p>
           </div>
-          <div className="space-y-2">
-            <h3 className="text-xl font-semibold">📈 Transparent Stats</h3>
-            <p className="text-sm text-gray-600 dark:text-gray-300">
-              Get real-time insights into your earnings, balance, and machine performance.
+          <div className='space-y-2'>
+            <h3 className='text-xl font-semibold'>📈 Transparent Stats</h3>
+            <p className='text-sm text-gray-600 dark:text-gray-300'>
+              Get real-time insights into your earnings, balance, and machine
+              performance.
             </p>
           </div>
         </div>

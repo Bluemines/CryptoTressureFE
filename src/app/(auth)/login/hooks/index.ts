@@ -21,6 +21,7 @@ import { AxiosError } from "axios";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import auth from "@/app/utils/auth";
+import { loginDataStore } from "@/store/loginDataStore";
 // import { authStore } from "@/store/authStore"
 
 const roles = {
@@ -34,6 +35,8 @@ export default function useLogin() {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
+
+  const { setLoginData } = loginDataStore()
 
   const {
     control,
@@ -50,6 +53,7 @@ export default function useLogin() {
   const { mutateAsync: loginUser, isPending } = useMutation({
     mutationFn: loginApi.mutationFn,
     onSuccess: (data) => {
+      setLoginData(data.data)
       const points = data?.data?.points;
       localStorage.setItem("points", points);
       auth.setToken(data.data.access_token);
