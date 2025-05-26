@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { IAxiosError } from "@/lib/axiosError"
-import { AddDepositforUser, getAllWallets, getChartData, getProducts, suspendProduct } from "./adminService"
+import { AddDepositforUser, getAllWallets, getChartData, getProducts, suspendProduct, ListAdminDepositsforUser, } from "./adminService"
 import toast from "react-hot-toast"
 
 export const useGetProducts = () => {
@@ -49,3 +49,10 @@ export const useAddDepositforUser = () => {
   });
 };
 
+
+export const useListAdminDepositsforUser = () => {
+  return useQuery<any, IAxiosError>({
+    queryKey: ["ListAdminDepositsforUser"],
+    queryFn: ListAdminDepositsforUser,
+  })
+}
