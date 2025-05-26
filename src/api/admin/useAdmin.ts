@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { IAxiosError } from "@/lib/axiosError"
-import { getAllWallets, getChartData, getProducts, suspendProduct } from "./adminService"
+import { AddDepositforUser, getAllWallets, getChartData, getProducts, suspendProduct } from "./adminService"
 import toast from "react-hot-toast"
 
 export const useGetProducts = () => {
@@ -37,3 +37,15 @@ export const useSuspendProduct = () => {
     }
   });
 };
+
+
+export const useAddDepositforUser = () => {
+
+  return useMutation<any, IAxiosError, { amount:number, email:string }>({
+    mutationFn: (payload) => AddDepositforUser(payload.amount, payload.email),
+    onError: (error: any) => {
+      toast.error(error.response?.data?.message)
+    }
+  });
+};
+
