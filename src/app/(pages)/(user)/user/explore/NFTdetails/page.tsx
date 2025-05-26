@@ -37,7 +37,7 @@ export default function NFTdetails() {
             dailyIncome={+data.dailyIncome}
             fee={+data.fee}
             days={data.rentalDays}
-            level='Lv1-Lv3'
+            level={data.level}
             description={data.description}
             isHero={true}
             onClick={() => setIsModalOpen(true)}

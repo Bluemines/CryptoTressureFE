@@ -3,18 +3,15 @@
 import { useGetPopularProducts } from "@/api/user/useUser";
 import { NFTCard } from "@/app/components/cards/NFTCard";
 import CardLoader from "@/loaders/CardLoader";
-import { authStore } from "@/store/authStore";
+// import { authStore } from "@/store/authStore";
 import { useRouter } from "next/navigation";
-import usePopProducts from "./hooks";
+// import usePopProducts from "./hooks";
 
 export default function Explore() {
 
   const { data, isLoading } = useGetPopularProducts();
   const popularProducts = data?.items
   const router = useRouter();
-
-  const { products } = usePopProducts();
-  // console.log(products);
 
   return (
     <div className="min-h-screen bg-black p-4 md:p-8">
@@ -35,7 +32,7 @@ export default function Explore() {
                     dailyIncome={+nft.dailyIncome}
                     fee={+nft.fee}
                     days={nft.rentalDays}
-                    level='Lv1-Lv3'
+                    level={nft.level}
                     action='Buy'
                     onClick={() => router.push(`/user/explore/NFTdetails?id=${nft?.id}`)}
                   />

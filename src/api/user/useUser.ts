@@ -2,6 +2,7 @@ import { useMutation, useQuery } from "@tanstack/react-query"
 import { IAxiosError } from "@/lib/axiosError"
 import {
   buyProduct,
+  convertCurrency,
   getMyMachines,
   getPopularProducts,
   getProductById,
@@ -18,11 +19,10 @@ export const useGetPopularProducts = () => {
   })
 }
 
-export const useGetMyMachines = (id?: number) => {
+export const useGetMyMachines = () => {
   return useQuery<any, IAxiosError>({
-    queryKey: ["get_my_machines", id],
-    queryFn: ({ queryKey }) => getMyMachines(queryKey[1] as number),
-    enabled: !!id,
+    queryKey: ["get_my_machines"],
+    queryFn: getMyMachines,
   })
 }
 
@@ -58,5 +58,12 @@ export const useBuyProduct = () => {
       const err = error as AxiosError<{ message: string }>
       toast.error(err.response?.data?.message || "Something went wrong")
     },
+  })
+}
+
+export const useGetCurrencyValue = () => {
+  return useQuery({
+    queryKey: ['currency_value'],
+    queryFn: convertCurrency
   })
 }

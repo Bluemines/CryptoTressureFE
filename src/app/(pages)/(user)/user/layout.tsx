@@ -2,21 +2,26 @@ import Sidebar from "@/app/components/Sidebar"
 import Header from "@/app/components/Header"
 import AuthGuard from "@/app/components/AuthGuard"
 import CurrentUserFetcher from "@/app/components/CurrentUserFetcher"
+import RedirectIfNotLoggedIn from "@/app/components/RedirectIfNotLoggedIn"
+// import ClearLocalStorageOnExit from "@/app/components/ClearLocalStorageOnExit"
 
 const layout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <AuthGuard allowedRole="USER">
-      <CurrentUserFetcher />
-      <div className='min-h-screen flex'>
-        <div className=''>
-          <Sidebar />
+    <RedirectIfNotLoggedIn>
+      <AuthGuard allowedRole='USER'>
+        <CurrentUserFetcher />
+        <div className='min-h-screen flex'>
+          <div className=''>
+            <Sidebar />
+          </div>
+          <div className='flex-1 p-5  overflow-x-hidden'>
+            <Header />
+            {children}
+          </div>
         </div>
-        <div className='flex-1 p-5  overflow-x-hidden'>
-          <Header />
-          {children}
-        </div>
-      </div>
-    </AuthGuard>
+      </AuthGuard>
+      {/* <ClearLocalStorageOnExit /> */}
+    </RedirectIfNotLoggedIn>
   )
 }
 

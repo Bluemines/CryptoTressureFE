@@ -9,20 +9,12 @@ import EarnDailyRewards from "../assets/Images/earn-daily-rewards.png";
 import LevelUpandRefer from "../assets/Images/level-up-and-refer.png";
 import Link from "next/link";
 import FaqImage from "../assets/Images/faq-image.png";
-import AutomatedRewardsImg from "../assets/Images/automated-rewards.png";
-import SmartLevelingSystemImg from "../assets/Images/smart-leveling-system.png";
-import ReferralProgram from "../assets/Images/referral-program.png";
-import SecureAndVerified from "../assets/Images/secure-and-verified.png";
-import SmartAdminOversight from "../assets/Images/super-admin-oversight.png";
 import {
   FaFacebookF,
   FaTwitter,
   FaInstagram,
   FaLinkedinIn,
-  FaLightbulb,
   FaShieldAlt,
-  FaUserCheck,
-  FaUsers,
   FaCoins,
   FaLayerGroup,
   FaUserFriends,
@@ -40,8 +32,18 @@ import { faqData } from "../lib/faqData";
 import { OurValues } from "../lib/OurValuesData";
 import FormInput from "./ui/Inputs/FormInput";
 import useLogin from "../(auth)/login/hooks";
+import { usePathname } from "next/navigation";
 
 const LandingPage = () => {
+
+  const navLinks = [
+    { name: 'Home', href: '/' },
+    { name: 'Login', href: '/login' },
+    { name: 'About', href: '/#' },
+    { name: 'FAQs', href: '/#' },
+    { name: 'Contact', href: '/#' },
+  ];
+
   const {
     control,
     handleSubmit,
@@ -52,8 +54,32 @@ const LandingPage = () => {
     message,
     isPending,
   } = useLogin();
+
+  const pathname = usePathname();
+
   return (
     <div className="bg-[#0D0D0D] text-white font-sans">
+
+      <nav className="w-full border-b border-gray-800 py-4 overflow-x-auto">
+        <ul className="flex justify-center space-x-8 text-sm font-medium">
+          {navLinks.map((link) => {
+            const isActive = pathname === link.href;
+            return (
+              <li key={link.href}>
+                <Link
+                  href={link.href}
+                  className={`transition-colors duration-200 px-2 py-1 rounded-md hover:text-blue-300 ${
+                    isActive ? 'text-blue-400 border-b-2 border-blue-500' : 'text-white/80'
+                  }`}
+                >
+                  {link.name}
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
+      </nav>
+
       {/* Header */}
       <header className="text-center p-4 border-b border-gray-800">
         <h1 className="text-2xl md:text-4xl font-bold mb-2">

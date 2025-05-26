@@ -23,7 +23,7 @@ const page = () => {
   const { data, isLoading } = useGetPopularProducts()
   const popularProducts = data?.items
   const { data: myMachinesData, isLoading: isMachinesLoading } =
-    useGetMyMachines(user?.id)
+    useGetMyMachines()
 
   const router = useRouter()
 
@@ -97,7 +97,7 @@ const page = () => {
                     dailyIncome={+nft.dailyIncome}
                     fee={+nft.fee}
                     days={nft.rentalDays}
-                    level='Lv1-Lv3'
+                    level={nft.level}
                     action='Buy'
                     onClick={() =>
                       router.push(`/user/explore/NFTdetails?id=${nft?.id}`)
@@ -173,10 +173,40 @@ const page = () => {
         </Box>
       </Modal>
       {points && +points > 0 && (
-  <div className="mt-8 text-center text-white rounded-lg py-4 px-6">
-    🎉 You have received <span className="font-bold">{points}</span> reward points!
-  </div>
-)}
+        <div className="mt-8 text-center text-white rounded-lg py-4 px-6">
+          🎉 You have received <span className="font-bold">{points}</span> reward points!
+        </div>
+      )}
+
+      <div className="mt-16 bg-white dark:bg-gray-900 rounded-xl p-8 shadow-lg text-center text-black dark:text-white">
+        <h2 className="text-3xl font-bold mb-6">Why Choose Bluemines?</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 text-left">
+          <div className="space-y-2">
+            <h3 className="text-xl font-semibold">🔒 Secure & Reliable</h3>
+            <p className="text-sm text-gray-600 dark:text-gray-300">
+              We prioritize your data and investment security using top-grade infrastructure and encryption.
+            </p>
+          </div>
+          <div className="space-y-2">
+            <h3 className="text-xl font-semibold">⚡ Daily Earnings</h3>
+            <p className="text-sm text-gray-600 dark:text-gray-300">
+              Earn daily returns on your virtual mining machines — let your assets work for you.
+            </p>
+          </div>
+          <div className="space-y-2">
+            <h3 className="text-xl font-semibold">👥 Referral Bonuses</h3>
+            <p className="text-sm text-gray-600 dark:text-gray-300">
+              Invite your friends and earn attractive bonuses when they join and participate.
+            </p>
+          </div>
+          <div className="space-y-2">
+            <h3 className="text-xl font-semibold">📈 Transparent Stats</h3>
+            <p className="text-sm text-gray-600 dark:text-gray-300">
+              Get real-time insights into your earnings, balance, and machine performance.
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
   )
 }
