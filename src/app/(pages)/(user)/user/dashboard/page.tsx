@@ -23,7 +23,7 @@ const page = () => {
   const { data, isLoading } = useGetPopularProducts()
   const popularProducts = data?.items
   const { data: myMachinesData, isLoading: isMachinesLoading } =
-    useGetMyMachines(user?.id)
+    useGetMyMachines()
 
   const router = useRouter()
 
