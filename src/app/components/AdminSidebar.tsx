@@ -28,6 +28,7 @@ const routeMap = {
   dashboard: "/admin/dashboard",
   usersManagement: "/admin/usersManagement",
   machineManagement: "/admin/machineManagement",
+  deposit: "/admin/deposit",
   agreementManagement: "/admin/agreement-management",
   rewardsDistribution: "/admin/rewards-distribution",
   referalSystemManagement: "/admin/referral-system-management",
@@ -53,6 +54,11 @@ const menuItems: MenuItem[] = [
     key: "machineManagement",
     icon: <AppstoreOutlined />,
     label: <Link href={routeMap.machineManagement}>Machine Management</Link>,
+  },
+   {
+    key: "deposit",
+    icon: <AppstoreOutlined />,
+    label: <Link href={routeMap.deposit}>Deposit</Link>,
   },
   {
     key: "agreementManagement",

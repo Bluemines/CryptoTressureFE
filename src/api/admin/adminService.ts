@@ -19,3 +19,8 @@ export const suspendProduct = async (id: any) => {
   const { data } = await apiClient.delete(`/products/${id}`)
   return data
 }
+
+export const AddDepositforUser = async (amount:number, email:string) => {
+  const { data } = await apiClient.post(`deposit/admin`,{amount,email} )
+  return data
+}
