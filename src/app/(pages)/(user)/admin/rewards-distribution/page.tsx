@@ -23,39 +23,6 @@ const page = () => {
   ];
   const { rewards } = useRewards();
   const [open, setOpen] = useState(false);
-  const data = [
-    {
-      id: 1,
-      name: "John Bushmill",
-      email: "Johnb@mail.com",
-      level: 2,
-      date: "1 min ago",
-      rewardAmount: "$1000",
-      status: "Failed",
-    },
-    {
-      id: 2,
-      name: "Jane Doe",
-      email: "jane@mail.com",
-      level: 3,
-      date: "5 min ago",
-      rewardAmount: "$500",
-      status: "Success",
-    },
-    {
-      id: 3,
-      name: "Alice Smith",
-      email: "alice@mail.com",
-      level: 1,
-      date: "10 min ago",
-      rewardAmount: "$200",
-      status: "Success",
-    },
-  ];
-
-  // const filteredData = data.filter((row) =>
-  //   row.name.toLowerCase().includes(search.toLowerCase())
-  // )
 
   return (
     <div>

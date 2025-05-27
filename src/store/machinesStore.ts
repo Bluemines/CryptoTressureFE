@@ -6,7 +6,7 @@ export interface MachineItem {
   description: string;
   price: string;
   dailyIncome: string;
-  fee: string;
+  level: string;
   rentalDays: number;
   image: string;
   userId: number;

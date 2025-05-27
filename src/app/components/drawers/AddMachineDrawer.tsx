@@ -49,8 +49,8 @@ export default function AddMachineDrawer({
         price: machine?.price,
         dailyIncome: machine?.dailyIncome,
         image: machine?.image as any,
-        fee: machine?.fee,
         rentalDays: machine?.rentalDays,
+        level: machine?.level,
       });
     }
   }, [open, currentMachineId, machine]);
@@ -96,6 +96,12 @@ export default function AddMachineDrawer({
         multiline
         rows={4}
       />
+      <FormInput
+        name="level"
+        label="Level Name"
+        control={control}
+        errors={errors}
+      />
 
       <Button
         component="label"
@@ -116,12 +122,12 @@ export default function AddMachineDrawer({
 
       <FormInput
         name="dailyIncome"
-        label="Daily Income"
+        label="Daily Mining Reward (%)"
         control={control}
         errors={errors}
       />
 
-      <FormInput name="fee" label="Fee" control={control} errors={errors} />
+      {/* <FormInput name="fee" label="Fee" control={control} errors={errors} /> */}
 
       <FormInput
         name="rentalDays"

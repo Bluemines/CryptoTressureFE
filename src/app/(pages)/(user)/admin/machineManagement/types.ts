@@ -3,7 +3,7 @@ export interface AddMachineFormType {
     description: string;
     price: string;
     dailyIncome: string;
-    fee: string;
+    level: string;
     rentalDays: number;
     image?: File; 
   }
@@ -14,7 +14,6 @@ export interface AddMachineFormType {
     description: string;
     price: string;
     dailyIncome: string;
-    fee: string;
     rentalDays: number;
     roiPercent: number;
     image: string;
@@ -22,6 +21,7 @@ export interface AddMachineFormType {
     updatedAt: string;
     deletedAt: string | null;
     userId: number;
+    level: string;
   }
   
   export interface MachineResponse {

@@ -64,6 +64,12 @@ export default function EditMachineDrawer({
         multiline
         rows={4}
       />
+      <FormInput
+        name="level"
+        label="Add Level"
+        control={control}
+        errors={errors}
+      />
 
       <Button
         component="label"
@@ -84,12 +90,12 @@ export default function EditMachineDrawer({
 
       <FormInput
         name="dailyIncome"
-        label="Daily Income"
+        label="Daily Mining Reward (%)"
         control={control}
         errors={errors}
       />
 
-      <FormInput name="fee" label="Fee" control={control} errors={errors} />
+      {/* <FormInput name="fee" label="Fee" control={control} errors={errors} /> */}
 
       <FormInput
         name="rentalDays"

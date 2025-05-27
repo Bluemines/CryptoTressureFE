@@ -210,6 +210,15 @@ const AdminTable = ({
         return false
       })
     }
+    if (titlePage === "transactions" && searchQuery) {
+      const query = searchQuery.toLowerCase()
+      filtered = filtered.filter((row) => {
+        if (row.transactiontype && typeof row.transactiontype === "string") {
+          return row.transactiontype.toLowerCase().includes(query)
+        }
+        return false
+      })
+    }
 
     setFilteredData(filtered)
     setTotal(filtered.length)
@@ -265,7 +274,7 @@ const AdminTable = ({
             <>
               <Box
                 component='input'
-                placeholder='Search by user name'
+                placeholder='Search Here'
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 sx={{

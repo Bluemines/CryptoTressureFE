@@ -1,9 +1,9 @@
-"use client"
+"use client";
 import AdminTable from "@/app/components/ui/tables/AdminTable";
 import { useRouter } from "next/navigation";
 
 const ReferalManagement = () => {
-  const router = useRouter()
+  const router = useRouter();
   const columns = [
     { id: "name", label: "User" },
     { id: "email", label: "Email" },
@@ -47,10 +47,21 @@ const ReferalManagement = () => {
 
   return (
     <div>
-      <div className='font-semibold text-xl my-3'>Referral System Management</div>
-      <AdminTable onClick={()=>router.push("referral-system-management/commission-levels")} showHeader buttonText="Manage Commission Level" data={data} columns={columns} actions={false} />
+      <div className="font-semibold text-xl my-3">
+        Referral System Management
+      </div>
+      <AdminTable
+        onClick={() =>
+          router.push("referral-system-management/commission-levels")
+        }
+        showHeader
+        showButton={false}
+        data={data}
+        columns={columns}
+        actions={false}
+      />
     </div>
-  )
-}
+  );
+};
 
-export default ReferalManagement
+export default ReferalManagement;

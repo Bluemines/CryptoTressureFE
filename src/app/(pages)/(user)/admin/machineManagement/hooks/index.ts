@@ -17,7 +17,7 @@ export interface Machine {
   description: string;
   price: string;
   dailyIncome: string;
-  fee: string;
+  level: string;
   rentalDays: number;
   roiPercent: number;
   image: string;
@@ -51,8 +51,8 @@ export default function useMachineManagement() {
       description: "",
       price: "",
       dailyIncome: "",
-      fee: "",
       rentalDays: 0,
+      level:""
     },
   });
   const handleImageSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -81,7 +81,7 @@ export default function useMachineManagement() {
     }
     try {
       setMessage("");
-      const { title, description, price, dailyIncome, fee, rentalDays } =
+      const { title, description, price, dailyIncome, fee, rentalDays, level } =
         data as any;
 
       const formData = new FormData();
@@ -91,6 +91,7 @@ export default function useMachineManagement() {
       formData.append("dailyIncome", dailyIncome);
       formData.append("fee", fee);
       formData.append("rentalDays", rentalDays);
+      formData.append("level", level);
 
       if (selectedImage) {
         formData.append("image", selectedImage);

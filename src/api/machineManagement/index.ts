@@ -4,8 +4,7 @@ import { MachineItem } from "@/store/machinesStore";
 
 interface ApiResponse {
     data: {
-      items: MachineItem[]; // Add items array inside data
-      // Add other properties if needed
+      items: MachineItem[]; 
     };
     status: string;
     message: string;

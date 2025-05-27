@@ -73,6 +73,7 @@ export default function useRewards() {
     isSuccess,
     isError,
     error,
+    isPending,
   } = useMutation({
     mutationFn: addRewardApi.mutationFn,
   });
@@ -82,7 +83,7 @@ export default function useRewards() {
         onSuccess: () => {
           toast.success("Reward Added Successfully");
           refetch();
-          reset()
+          reset();
         },
         onError: (error: any) => toast.error("Error adding reward: ", error),
       });
@@ -100,5 +101,6 @@ export default function useRewards() {
     form,
     handleSelectChange,
     isValid,
+    isPending,
   };
 }

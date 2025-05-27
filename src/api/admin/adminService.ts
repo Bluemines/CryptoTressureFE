@@ -24,3 +24,8 @@ export const AddDepositforUser = async (amount:number, email:string) => {
   const { data } = await apiClient.post(`deposit/admin`,{amount,email} )
   return data
 }
+
+export const ListAdminDepositsforUser = async () => {
+  const { data } = await apiClient.get(`deposit/admin` )
+  return data
+}

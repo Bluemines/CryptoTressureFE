@@ -12,7 +12,7 @@ interface ProductData {
   description: string;
   dailyIncome: string;
   price: string;
-  fee: string;
+  level: string;
   rentalDays: number;
   image: File;
 }
@@ -39,7 +39,7 @@ export default function useEditProducts() {
         description: product?.data?.description,
         dailyIncome: product?.data?.dailyIncome,
         price: product?.data?.price,
-        fee: product?.data?.fee,
+        level: product?.data?.level,
         rentalDays: product?.data?.rentalDays,
         image: product?.data?.image,
       });
@@ -60,7 +60,7 @@ export default function useEditProducts() {
       description: "",
       price: "",
       dailyIncome: "",
-      fee: "",
+      level: "",
       rentalDays: 0,
     },
   });
@@ -82,9 +82,7 @@ export default function useEditProducts() {
   } = useMutation({
     mutationFn: editMachineApi.mutationFn,
   });
-  const handleEditMachine: SubmitHandler<AddMachineFormType> = async (
-    data
-  ) => {
+  const handleEditMachine: SubmitHandler<AddMachineFormType> = async (data) => {
     if (!selectedImage) {
       setOpenToast(true);
       setMessage("Please uplaod an Image");
