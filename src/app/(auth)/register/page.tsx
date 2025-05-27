@@ -63,7 +63,7 @@ const Register = () => {
                 name="username"
                 control={control}
                 errors={errors}
-                label="User Name/Full Name"
+                label="Full Name"
               />
             </div>
             {/* <div className="space-y-1">

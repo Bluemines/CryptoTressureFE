@@ -31,6 +31,7 @@ const routeMap = {
   deposit: "/admin/deposit",
   transactions: "/admin/transactions",
   agreementManagement: "/admin/agreement-management",
+  getagreement: "/admin/get-agreements",
   rewardsDistribution: "/admin/rewards-distribution",
   referalSystemManagement: "/admin/referral-system-management",
   walletManagement: "/admin/wallet-management",
@@ -71,6 +72,13 @@ const menuItems: MenuItem[] = [
     icon: <WalletOutlined />,
     label: (
       <Link href={routeMap.agreementManagement}>Agreement Management</Link>
+    ),
+  },
+  {
+    key: "getagreement",
+    icon: <WalletOutlined />,
+    label: (
+      <Link href={routeMap.getagreement}>Agreement</Link>
     ),
   },
   {
