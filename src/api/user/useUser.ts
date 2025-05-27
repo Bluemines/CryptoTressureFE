@@ -6,6 +6,7 @@ import {
   getMyMachines,
   getPopularProducts,
   getProductById,
+  getReferralTree,
   referralHistory,
   referralLink,
 } from "./userService"
@@ -23,6 +24,13 @@ export const useGetMyMachines = () => {
   return useQuery<any, IAxiosError>({
     queryKey: ["get_my_machines"],
     queryFn: getMyMachines,
+  })
+}
+
+export const useGetReferralTree = () => {
+  return useQuery<any, IAxiosError>({
+    queryKey: ['get_referral_tree'],
+    queryFn: getReferralTree
   })
 }
 
