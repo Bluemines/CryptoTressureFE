@@ -22,6 +22,8 @@ type Inputs = {
 const Wallet = () => {
   const { data: walletStats, isLoading } = useGetWalletStats()
 
+  console.log("new wallet stats: ", walletStats)
+
   const [formData, setFormData] = useState<Inputs | null>(null)
   const [showConfirmModal, setShowConfirmModal] = useState(false)
 
@@ -60,18 +62,28 @@ const Wallet = () => {
   const statsData = [
     {
       label: "Available Balance",
-      value: formatCurrency(walletStats?.available),
+      value: formatCurrency(walletStats?.balance),
       bgColor: "bg-[#6F4FF2]",
     },
     {
       label: "Reserved Balance",
-      value:  formatCurrency(walletStats?.reserved),
+      value:  formatCurrency(walletStats?.reservedAmount),
       bgColor: "bg-[#50BB25]",
     },
     {
-      label: "Total Balance",
-      value: formatCurrency(walletStats?.total),
+      label: "Team Earnings",
+      value: formatCurrency(walletStats?.teamEarnings),
       bgColor: "bg-[#F9D62C]",
+    },
+    {
+      label: "Investment Earnings",
+      value: formatCurrency(walletStats?.investmentEarnings),
+      bgColor: "bg-[#50BB25]",
+    },
+    {
+      label: "Referral Earnings",
+      value: formatCurrency(walletStats?.referralEarnings),
+      bgColor: "bg-[#6F4FF2]",
     },
   ]
   type Data = {
@@ -177,7 +189,7 @@ const Wallet = () => {
 
       <div className='flex flex-col md:flex-row gap-4 my-4'>
         {isLoading
-          ? Array(3)
+          ? Array(5)
               .fill(0)
               .map((_, i) => <StatsCardSkeleton key={i} />)
           : statsData.map((stat, index) => (

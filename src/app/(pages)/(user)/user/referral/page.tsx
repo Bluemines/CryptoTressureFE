@@ -1,5 +1,5 @@
 "use client";
-import { useGetReferralHistory, useGetReferralLink } from "@/api/user/useUser";
+import { useGetReferralHistory, useGetReferralLink, useGetReferralTree } from "@/api/user/useUser";
 import DataTable from "@/app/components/DataTable/DataTable";
 import { Button } from "@mui/material";
 import { format } from "date-fns";
@@ -17,6 +17,9 @@ const page = () => {
 
   const { data: referralHistory, isLoading } = useGetReferralHistory()
   const { data: referralLink, isLoading: isRefLinkLoading } = useGetReferralLink()
+  const { data: referralTree, isLoading: isReferralTreeLoading } = useGetReferralTree()
+
+  console.log('referral tree: ', referralTree)
 
   const transformedData: Data[] = referralHistory?.map((ref: any) => ({
     id: ref.id,

@@ -31,6 +31,11 @@ export const buyProduct = async (id: number) => {
   return data.data
 }
 
+export const getReferralTree = async () => {
+  const { data } = await apiClient.get('referral/tree')
+  return data
+}
+
 export const convertCurrency = async () => {
   const res = await axios.get(
     "https://api.exchangeratesapi.io/v1/latest?access_key=28efabef496f650d981f930739aa25e2"
