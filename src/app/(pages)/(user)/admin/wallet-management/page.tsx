@@ -1,5 +1,6 @@
 "use client"
 
+import { useAdminAllWallets } from '@/api/admin/useAdmin'
 import { StatsCard } from "@/app/components/cards/StatsCard"
 import PrimaryButton from "@/app/components/ui/PrimaryButton"
 import { useRouter } from "next/navigation"
@@ -16,30 +17,47 @@ import useAdminDashboard from "../dashboard/hooks"
 import StatsCardSkeleton from "@/loaders/StatsCardSkeleton"
 import TableSkeleton from "@/loaders/TableSkeleton"
 
-
 const Page = () => {
   const router = useRouter()
+
+  // Your existing hooks
   const { data, isLoading: isPendingLoading } = useGetPendingWallets()
   const { data: walletHistory, isLoading: isWalletHistoryLoading } = useGetWalletHistory()
   const { stats, isLoading: isStatsLoading } = useAdminDashboard()
 
-  const statsData = [
+  // New wallet summary hook
+  const { data: walletSummaryData, isLoading: isWalletSummaryLoading } = useAdminAllWallets()
+
+  // Wallet summary cards data
+  const walletSummary = [
     {
-      value: stats?.totalUsers?.toLocaleString() || "0",
-      label: "Total Users",
-      color: "bg-[#7C3AED]",
+      label: "Balance",
+      value: walletSummaryData?.data?.balance?.toLocaleString() || "0",
+      color: "bg-[#4F46E5]", // Indigo
     },
     {
-      value: stats?.verifiedUsers?.toLocaleString() || "0",
-      label: "Verified Users",
-      color: "bg-[#50BB25]",
+      label: "Reserved Amount",
+      value: walletSummaryData?.data?.reservedAmount?.toLocaleString() || "0",
+      color: "bg-[#16A34A]", // Green
     },
     {
-      value: stats?.suspendedUsers?.toLocaleString() || "0",
-      label: "Suspended Users",
-      color: "bg-[#EC1E2D]",
+      label: "Referral Earnings",
+      value: walletSummaryData?.data?.referralEarnings?.toLocaleString() || "0",
+      color: "bg-[#F59E0B]", // Amber
+    },
+    {
+      label: "Team Earnings",
+      value: walletSummaryData?.data?.teamEarnings?.toLocaleString() || "0",
+      color: "bg-[#EF4444]", // Red
+    },
+    {
+      label: "Investment Earnings",
+      value: walletSummaryData?.data?.investmentEarnings?.toLocaleString() || "0",
+      color: "bg-[#10B981]", // Teal
     },
   ]
+
+  // NOTE: Removed the existing statsData section as requested
 
   const { mutate: rejectWithdrawl } = useRejectWithdrawl()
   const { mutate: approveWithdrawl } = useApproveWithdrawl()
@@ -105,20 +123,23 @@ const Page = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 my-4">
-        {isStatsLoading
-          ? Array(3)
+      {/* Wallet Summary Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 my-4">
+        {isWalletSummaryLoading
+          ? Array(5)
               .fill(null)
               .map((_, i) => <StatsCardSkeleton key={i} />)
-          : statsData.map((stat, index) => (
+          : walletSummary.map((item, index) => (
               <StatsCard
                 key={index}
-                value={stat.value}
-                label={stat.label}
-                color={stat.color}
+                value={item.value}
+                label={item.label}
+                color={item.color}
               />
             ))}
       </div>
+
+      {/* Removed existing stats cards */}
 
       <div className="font-semibold text-xl my-3">Pending Withdrawal</div>
 

@@ -34,3 +34,13 @@ export const ListUserTransaction = async () => {
   const { data } = await apiClient.get(`/transactions/admin` )
   return data
 }
+
+export const GetAgreement = async () => {
+  const { data } = await apiClient.get(`agreements/getAgreements` )
+  return data
+}
+
+export const AdminAllWallets = async () => {
+  const { data } = await apiClient.get(`wallet/admin-allWallets` )
+  return data
+}

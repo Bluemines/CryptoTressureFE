@@ -7,7 +7,9 @@ import {
   getProducts, 
   suspendProduct, 
   ListAdminDepositsforUser, 
-  ListUserTransaction 
+  ListUserTransaction,
+  GetAgreement,
+  AdminAllWallets
 } from "./adminService"
 import toast from "react-hot-toast"
 
@@ -69,6 +71,20 @@ export const useListUserTransaction = () => {
   return useQuery<any, IAxiosError>({
     queryKey: ["ListUserTransaction"],
     queryFn: ListUserTransaction,
+  })
+}
+
+export const useGetAgreement = () => {
+  return useQuery<any, IAxiosError>({
+    queryKey: ["GetAgreement"],
+    queryFn: GetAgreement,
+  })
+}
+
+export const useAdminAllWallets = () => {
+  return useQuery<any, IAxiosError>({
+    queryKey: ["AdminAllWallets"],
+    queryFn: AdminAllWallets,
   })
 }
 
