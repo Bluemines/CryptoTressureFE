@@ -1,65 +1,61 @@
 "use client";
-import AdminTable from "@/app/components/ui/tables/AdminTable";
 import { useRouter } from "next/navigation";
+import AdminTable from "@/app/components/ui/tables/AdminTable";
+import { format } from "date-fns";
+import { useReferralsData } from "@/api/admin/useAdmin";
 
 const ReferalManagement = () => {
   const router = useRouter();
+  const { data, isLoading } = useReferralsData();
+
+  const handleView = (id: number) => {
+    router.push(`/admin/referral-system-management/referral/${id}`);
+  };
+
   const columns = [
     { id: "name", label: "User" },
     { id: "email", label: "Email" },
     { id: "level", label: "Level" },
-    { id: "date", label: "Date" },
+    { id: "date", label: "Date Joined" },
     { id: "rewardAmount", label: "Reward Amount" },
     { id: "status", label: "Status" },
+    { id: "action", label: "Action" },
   ];
 
-  const data = [
-    {
-      id: 1,
-      name: "John Bushmill",
-      email: "Johnb@mail.com",
-      level: 2,
-      date: "1 min ago",
-      rewardAmount: "$1000",
-      status: "Failed",
-    },
-    {
-      id: 2,
-      name: "John Bushmill",
-      email: "Johnb@mail.com",
-      level: 2,
-      date: "1 min ago",
-      rewardAmount: "$1000",
-      status: "Success",
-    },
-    {
-      id: 3,
-      name: "John Bushmill",
-      email: "Johnb@mail.com",
-      level: 2,
-      date: "1 min ago",
-      rewardAmount: "$1000",
-      status: "Success",
-    },
-
-    // Add more entries...
-  ];
+  const tableData = data?.data?.map((item: any) => ({
+    id: item.referredId,
+    name: item.username,
+    email: item.email,
+    level: item.level,
+    date: format(new Date(item.joinedAt), "yyyy-MM-dd HH:mm"),
+    rewardAmount: "$0",
+    status: "Success",
+    action: (
+      <button
+        onClick={() => handleView(item.referralId)}
+        className="text-blue-400 hover:underline"
+      >
+        View More
+      </button>
+    ),
+  })) || [];
 
   return (
-    <div>
-      <div className="font-semibold text-xl my-3">
-        Referral System Management
-      </div>
-      <AdminTable
-        onClick={() =>
-          router.push("referral-system-management/commission-levels")
-        }
-        showHeader
-        showButton={false}
-        data={data}
-        columns={columns}
-        actions={false}
-      />
+    <div className="p-4 md:p-6 text-white">
+      <h1 className="text-2xl font-semibold mb-4">Referral System Management</h1>
+
+      {isLoading ? (
+        <p className="text-gray-300">Loading...</p>
+      ) : (
+        <AdminTable
+          showHeader
+          showButton={false}
+          data={tableData}
+          columns={columns}
+          actions={false}
+          onClick={() => {}}
+        />
+      )}
     </div>
   );
 };

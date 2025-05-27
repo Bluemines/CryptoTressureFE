@@ -1,6 +1,7 @@
 "use client";
 import { useGetReferralHistory, useGetReferralLink, useGetReferralTree } from "@/api/user/useUser";
 import DataTable from "@/app/components/DataTable/DataTable";
+import { authStore } from "@/store/authStore";
 import { Button } from "@mui/material";
 import { format } from "date-fns";
 import { TableColumn } from "react-data-table-component";
@@ -13,14 +14,50 @@ type Data = {
   date: string;
   commissionAmount: number
 };
+
 const page = () => {
 
   const { data: referralHistory, isLoading } = useGetReferralHistory()
   const { data: referralLink, isLoading: isRefLinkLoading } = useGetReferralLink()
   const { data: referralTree, isLoading: isReferralTreeLoading } = useGetReferralTree()
 
-  console.log('referral tree: ', referralTree)
+  const { user } = authStore()
+  console.log("user: ", user)
 
+const dummyReferrals = [
+    {
+      id: 29,
+      userName: "c",
+      email: "c@gmail.com",
+      date: format(new Date("2025-05-25T19:50:00.765Z"), "yyyy-MM-dd HH:mm"),
+      commissionAmount: 0,
+    },
+    {
+      id: 30,
+      userName: "d",
+      email: "d@gmail.com",
+      date: format(new Date("2025-05-25T19:52:13.118Z"), "yyyy-MM-dd HH:mm"),
+      commissionAmount: 0,
+    },
+    {
+      id: 31,
+      userName: "e",
+      email: "e@gmail.com",
+      date: format(new Date("2025-05-25T19:55:16.201Z"), "yyyy-MM-dd HH:mm"),
+      commissionAmount: 0,
+    },
+  ];
+
+  const rootUser: Data = {
+    id: user?.id || 0,
+    userName: user?.username + " (root user)" || "",
+    email: user?.email || "",
+    date: format(new Date(user?.createdAt || new Date()), "yyyy-MM-dd HH:mm"),
+    commissionAmount: 0,
+  };
+
+  const data: Data[] = [rootUser, ...dummyReferrals];
+  
   const transformedData: Data[] = referralHistory?.map((ref: any) => ({
     id: ref.id,
     userName: ref.username,
@@ -30,29 +67,28 @@ const page = () => {
     commissionAmount: ref.earnedCommissions
   }));
 
-  const columns:TableColumn<Data>[] = [
-    {
-      name: "User Name",
-      selector: (row) => row.userName,
-      sortable: true,
-    },
-    {
-      name: "Email",
-      selector: (row) => row.email,
-      sortable: true,
-    },
-    {
-      name: "Account Created Date",
-      selector: (row) => row.date,
-      sortable: true,
-    },
-    {
-      name: "Commission Amount",
-      selector: (row) => row.commissionAmount,
-      sortable: true,
-    },
+  const columns: TableColumn<Data>[] = [
+      {
+        name: "User Name",
+        selector: (row) => row.userName,
+        sortable: true,
+      },
+      {
+        name: "Email",
+        selector: (row) => row.email,
+        sortable: true,
+      },
+      {
+        name: "Account Created Date",
+        selector: (row) => row.date,
+        sortable: true,
+      },
+      {
+        name: "Commission Amount",
+        selector: (row) => row.commissionAmount,
+        sortable: true,
+      },
   ];
-
   const handleCopy = () => {
     if (referralLink?.link) {
       navigator.clipboard.writeText(referralLink.link);
@@ -82,7 +118,7 @@ const page = () => {
         </div>
       </div>
       <div className="text-[#C0C0C0] text-xl">Referral History</div>
-      <DataTable data={transformedData} columns={columns} themeStyle="black" />
+      <DataTable data={data} columns={columns} themeStyle="black" />
     </div>
   );
 };

@@ -63,6 +63,7 @@ const page = () => {
       color: "bg-[#F97316]",
     },
   ]
+
   return (
     <div className='min-h-screen bg-black py-4 md:p-8'>
       <div className='max-w-7xl mx-auto space-y-8'>
@@ -84,23 +85,25 @@ const page = () => {
 
         {/* Popular Machines */}
         <div>
-          <div className="flex flex-col md:flex-row items-center justify-between">
+          <div className='flex flex-col md:flex-row items-center justify-between'>
             <h2 className='text-2xl font-bold text-white mb-4'>
               Popular Machines
             </h2>
-            <div className="flex items-center justify-between flex-col md:flex-row w-full md:w-auto gap-2 md:gap-4 bg-[#7367F0] p-2 my-4">
-              <span>Trial Fund Expiry</span>
-              {loginData ? (
-                <CountdownTimer
-                  timeLeft={loginData.trialFundTimeLeft}
-                  onExpire={() => {
-                    console.log("Trial fund expired");
-                  }}
-                />
-              ) : (
-                <span>Loading...</span>
-              )}
-            </div>
+            {loginData && !loginData?.trialFundTimeLeft.isExpired && (
+              <div className='flex items-center justify-between flex-col md:flex-row w-full md:w-auto gap-2 md:gap-4 bg-[#7367F0] p-2 my-4'>
+                <span>Trial Fund Expiry</span>
+                {loginData ? (
+                  <CountdownTimer
+                    timeLeft={loginData.trialFundTimeLeft}
+                    onExpire={() => {
+                      console.log("Trial fund expired")
+                    }}
+                  />
+                ) : (
+                  <span>Loading...</span>
+                )}
+              </div>
+            )}
           </div>
 
           <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4'>

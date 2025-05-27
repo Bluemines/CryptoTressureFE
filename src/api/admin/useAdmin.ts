@@ -6,7 +6,7 @@ import {
   getChartData, 
   getProducts, 
   suspendProduct, 
-  ListAdminDepositsforUser, 
+  ListAdminDepositsforUser, getReferralsData, getReferralDataById, 
   ListUserTransaction,
   GetAgreement,
   AdminAllWallets
@@ -88,3 +88,18 @@ export const useAdminAllWallets = () => {
   })
 }
 
+
+export const useReferralsData = () => {
+  return useQuery<any, IAxiosError>({
+    queryKey: ['get_admin_referrals_data'],
+    queryFn: getReferralsData
+  })
+}
+
+export const useReferralDataById = (id: number) => {
+  return useQuery<any, IAxiosError>({
+    queryKey: ['get_admin_referral_data', id],
+    queryFn: () => getReferralDataById(id),
+    enabled: !!id,
+  });
+};

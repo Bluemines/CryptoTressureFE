@@ -33,8 +33,9 @@ export default function Collection() {
                   dailyIncome={+nft.dailyIncome}
                   fee={+nft.fee}
                   days={nft.rentalDays}
-                  level='Lv1-Lv3'
+                  level={nft.level}
                   action='Rented'
+                  countdownTimeLeft={nft.remaining}
                   onClick={() => {
                     setSelectedNFT(nft)
                     setIsModalOpen(true)

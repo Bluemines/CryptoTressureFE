@@ -30,6 +30,16 @@ export const ListAdminDepositsforUser = async () => {
   return data
 }
 
+export const getReferralsData = async () => {
+  const { data } = await apiClient.get('referral/admin/listing')
+  return data
+}
+
+export const getReferralDataById = async (id: number) => {
+  const { data } = await apiClient.get(`referral/admin/tree/${id}`)
+  return data
+} 
+
 export const ListUserTransaction = async () => {
   const { data } = await apiClient.get(`/transactions/admin` )
   return data

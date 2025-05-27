@@ -159,7 +159,7 @@ const LandingPage = () => {
   return (
     <div className='bg-[#0D0D0D] text-white font-sans'>
       <nav className='w-full border-b border-gray-800 py-4 overflow-x-auto'>
-        <ul className='flex justify-center space-x-8 text-sm font-medium'>
+        <ul className='flex justify-center space-x-4 md:space-x-8 text-sm font-medium'>
           {navLinks.map((link) => {
             const isHashLink = link.href.startsWith('#')
             const isActive = pathname === link.href

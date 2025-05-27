@@ -81,7 +81,7 @@ export function NFTCard({
       <div className="relative aspect-square">
         <img src={`${base_image_url}${image}`} alt={title} className="object-fit w-full h-full" />
         {action === "Sell" && countdownTimeLeft && countdownTimeLeft.isExpired === false && (
-          <div className="absolute top-2  right-2 z-10 bg-[#7367F0] bg-opacity-60 rounded-md px-2">
+          <div className="absolute top-2 right-2 z-10 bg-[#7367F0] bg-opacity-60 rounded-md px-2">
             <CountdownTimer timeLeft={countdownTimeLeft} />
           </div>
         )}
