@@ -11,8 +11,7 @@ import EditMachineDrawer from "@/app/components/drawers/EditMachineDrawer";
 export default function MachineManagemnt() {
   const { machines, handelSetEditValues, currentMachine } =
     useMachineManagement();
-  const { product } = useEditProducts();
-  console.log("product: ", product);
+
   const columns = [
     { id: "title", label: "Title" },
     { id: "rentalDays", label: "Rent Days" },
@@ -39,6 +38,7 @@ export default function MachineManagemnt() {
             }}
             onClick2={() => setOpen2(true)}
             titlePage="machine"
+            icon1={false}
           />
           <AddMachineDrawer
             machine={currentMachine}

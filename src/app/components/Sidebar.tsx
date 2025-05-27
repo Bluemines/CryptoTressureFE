@@ -38,6 +38,7 @@ const routeMap = {
   withdraw: "/user/withdraw",
   referral: "/user/referral",
   commission: "/user/commission",
+  transactions: "/user/transactions",
   settings: "/user/settings",
   about: "/user/aboutUs",
   team: "/team",
@@ -54,6 +55,7 @@ const menuItems: MenuItem[] = [
   { key: "withdraw", icon: <UploadOutlined />, label: <Link href={routeMap.withdraw}>Withdraw History</Link> },
   { key: "referral", icon: <ShareAltOutlined />, label: <Link href={routeMap.referral}>Referral</Link> },
   { key: "commission", icon: <DollarOutlined />, label: <Link href={routeMap.commission}>Referral Commission</Link> },
+  { key: "transactions", icon: <DollarOutlined />, label: <Link href={routeMap.transactions}>Transactions</Link> },
   { key: "settings", icon: <SettingOutlined />, label: <Link href={routeMap.settings}>Settings</Link> },
   // {
   //   type: "group", label: "MORE", children: [

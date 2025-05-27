@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import HeroImage from "../assets/Images/HeroImg.png";
 import Aboutus1 from "../assets/Images/image1.png";
@@ -34,14 +34,113 @@ import FormInput from "./ui/Inputs/FormInput";
 import useLogin from "../(auth)/login/hooks";
 import { usePathname } from "next/navigation";
 
-const LandingPage = () => {
+const CryptoTicker = () => {
+  const [cryptoData, setCryptoData] = useState({});
+  const [loading, setLoading] = useState(true);
 
+  const cryptoNames = {
+    bitcoin: "Bitcoin (BTC)",
+    ethereum: "Ethereum (ETH)",
+    dogecoin: "Dogecoin (DOGE)",
+    solana: "Solana (SOL)",
+    cardano: "Cardano (ADA)",
+    polkadot: "Polkadot (DOT)",
+    tron: "Tron (TRX)",
+    chainlink: "Chainlink (LINK)",
+    "shiba-inu": "Shiba Inu (SHIB)",
+    litecoin: "Litecoin (LTC)",
+    binancecoin: "Binance Coin (BNB)",
+  } as any;
+
+  useEffect(() => {
+    const fetchCryptoData = async () => {
+      try {
+        const response = await fetch(
+          "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,dogecoin,solana,cardano,polkadot,tron,chainlink,shiba-inu,litecoin,binancecoin&vs_currencies=usd"
+        );
+        const data = await response.json();
+        setCryptoData(data);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching crypto data:", error);
+        setLoading(false);
+      }
+    };
+
+    fetchCryptoData();
+
+    const interval = setInterval(fetchCryptoData, 30000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="bg-[#7367F0] py-3 overflow-hidden">
+        <div className="text-white text-center">Loading crypto prices...</div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="bg-[#7367F0] py-3 overflow-hidden relative">
+      <div className="flex animate-scroll">
+        <div className="flex whitespace-nowrap">
+          {Object.entries(cryptoData).map(([key, value]: any) => (
+            <div key={key} className="inline-flex items-center mx-8 text-white">
+              <span className="font-semibold text-sm">{cryptoNames[key]}:</span>
+              <span className="ml-2 font-bold text-sm">
+                $
+                {typeof value.usd === "number"
+                  ? value.usd.toLocaleString()
+                  : value.usd}
+              </span>
+            </div>
+          ))}
+        </div>
+
+        <div className="flex whitespace-nowrap">
+          {Object.entries(cryptoData).map(([key, value]: any) => (
+            <div
+              key={`${key}-duplicate`}
+              className="inline-flex items-center mx-8 text-white"
+            >
+              <span className="font-semibold text-sm">{cryptoNames[key]}:</span>
+              <span className="ml-2 font-bold text-sm">
+                $
+                {typeof value.usd === "number"
+                  ? value.usd.toLocaleString()
+                  : value.usd}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <style jsx>{`
+        @keyframes scroll {
+          0% {
+            transform: translateX(0);
+          }
+          100% {
+            transform: translateX(-50%);
+          }
+        }
+
+        .animate-scroll {
+          animation: scroll 30s linear infinite;
+        }
+      `}</style>
+    </div>
+  );
+};
+const LandingPage = () => {
   const navLinks = [
-    { name: 'Home', href: '/' },
-    { name: 'Login', href: '/login' },
-    { name: 'About', href: '/#' },
-    { name: 'FAQs', href: '/#' },
-    { name: 'Contact', href: '/#' },
+    { name: "Home", href: "/" },
+    { name: "Login", href: "/login" },
+    { name: "About", href: "/#" },
+    { name: "FAQs", href: "/#" },
+    { name: "Contact", href: "/#" },
   ];
 
   const {
@@ -59,7 +158,6 @@ const LandingPage = () => {
 
   return (
     <div className="bg-[#0D0D0D] text-white font-sans">
-
       <nav className="w-full border-b border-gray-800 py-4 overflow-x-auto">
         <ul className="flex justify-center space-x-8 text-sm font-medium">
           {navLinks.map((link) => {
@@ -69,7 +167,9 @@ const LandingPage = () => {
                 <Link
                   href={link.href}
                   className={`transition-colors duration-200 px-2 py-1 rounded-md hover:text-blue-300 ${
-                    isActive ? 'text-blue-400 border-b-2 border-blue-500' : 'text-white/80'
+                    isActive
+                      ? "text-blue-400 border-b-2 border-blue-500"
+                      : "text-white/80"
                   }`}
                 >
                   {link.name}
@@ -79,7 +179,6 @@ const LandingPage = () => {
           })}
         </ul>
       </nav>
-
       {/* Header */}
       <header className="text-center p-4 border-b border-gray-800">
         <h1 className="text-2xl md:text-4xl font-bold mb-2">
@@ -106,7 +205,7 @@ const LandingPage = () => {
         </div>
         <Image src={HeroImage} alt="Hero" className="rounded-lg md:max-w-lg" />
       </section>
-
+      <CryptoTicker />
       {/* About Us Section */}
       <section className="bg-[#111111] px-8 md:px-16 py-12">
         <h2 className="text-3xl font-semibold mb-6">About Us</h2>
@@ -114,9 +213,9 @@ const LandingPage = () => {
           <div className="flex-1 text-gray-300">
             <p className="mb-4">
               Based in the vibrant and innovative landscape of the United
-              Kingdom, Bluemines was founded in 2023, with a simple yet
-              powerful vision: to make crypto mining accessible, secure, and
-              profitable for everyone.
+              Kingdom, Bluemines was founded in 2023, with a simple yet powerful
+              vision: to make crypto mining accessible, secure, and profitable
+              for everyone.
             </p>
             <p className="mb-4">
               Our journey began when a group of blockchain enthusiasts and
@@ -153,62 +252,42 @@ const LandingPage = () => {
           How It <span className="text-[#7B61FF]">Works</span>
         </h2>
         <div className="flex flex-col md:flex-row gap-10 items-center">
-          <div className='bg-[#1A1A1A] p-6 rounded-xl w-full md:w-1/2 shadow-lg'>
-            {/* <label className='block text-gray-400 text-sm mb-2'>Email</label>
-            <input
-              type='email'
-              className='w-full p-2 rounded bg-[#0D0D0D] text-white border border-gray-700 mb-4'
-              defaultValue='ryan@insertframe.io'
-              disabled
-            />
-            <label className='block text-gray-400 text-sm mb-2'>Password</label>
-            <input
-              type='password'
-              className='w-full p-2 rounded bg-[#0D0D0D] text-white border border-gray-700 mb-4'
-              defaultValue='•••••••••••••••'
-              disabled
-            />
-            <button
-              disabled
-              className='w-full bg-[#7B61FF] hover:bg-[#674ddf] text-white py-2 rounded'
-            >
-              Login
-            </button> */}
-          <form onSubmit={handleSubmit(handleLogin)} className="space-y-4">
-            <div className="space-y-1">
-              <FormInput
-                name="email"
-                control={control}
-                label="Email or Username"
-                errors={errors}
-                rules={{ required: "Email is required" }}
-              />
-              <FormInput
-                name="password"
-                control={control}
-                label="Password"
-                type="password"
-                errors={errors}
-                rules={{ required: "Password is required" }}
-              />
-            </div>
+          <div className="bg-[#1A1A1A] p-6 rounded-xl w-full md:w-1/2 shadow-lg">
+            <form onSubmit={handleSubmit(handleLogin)} className="space-y-4">
+              <div className="space-y-1">
+                <FormInput
+                  name="email"
+                  control={control}
+                  label="Email or Username"
+                  errors={errors}
+                  rules={{ required: "Email is required" }}
+                />
+                <FormInput
+                  name="password"
+                  control={control}
+                  label="Password"
+                  type="password"
+                  errors={errors}
+                  rules={{ required: "Password is required" }}
+                />
+              </div>
 
-            <Button
-              variant="contained"
-              fullWidth
-              type="submit"
-              disabled={isPending}
-            >
-              Sign in
-            </Button>
+              <Button
+                variant="contained"
+                fullWidth
+                type="submit"
+                disabled={isPending}
+              >
+                Sign in
+              </Button>
 
-            <div className="text-sm text-center block mt-2">
-              New on our platform?{" "}
-              <Link className="text-primary" href="/register">
-                Create an account
-              </Link>
-            </div>
-          </form>
+              <div className="text-sm text-center block mt-2">
+                New on our platform?{" "}
+                <Link className="text-primary" href="/register">
+                  Create an account
+                </Link>
+              </div>
+            </form>
           </div>
 
           <div className="w-full md:w-1/2">

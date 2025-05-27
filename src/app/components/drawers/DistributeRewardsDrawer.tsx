@@ -14,6 +14,7 @@ import {
   InputLabel,
   FormControl,
   SelectChangeEvent,
+  CircularProgress,
 } from "@mui/material";
 import { useState } from "react";
 import FormInput from "../ui/Inputs/FormInput";
@@ -42,6 +43,7 @@ export default function DistributeRewardsDrawer({
     handleSelectChange,
     form,
     isValid,
+    isPending,
   } = useRewards();
   const { data } = useGetProducts();
   const { users } = useUserManagement();
@@ -118,29 +120,32 @@ export default function DistributeRewardsDrawer({
         errors={errors}
         label="Reward"
       />
-
-      <Box display="flex" justifyContent="space-between" mt={4} gap={2}>
-        <Button
-          variant="contained"
-          fullWidth
-          sx={{ bgcolor: "#7367F0", textTransform: "none" }}
-          disabled={!isValid}
-          onClick={handleSubmit(handleAddReward)}
-        >
-          Send
-        </Button>
-        <Button
-          fullWidth
-          sx={{
-            color: "#a64445",
-            textTransform: "none",
-            bgcolor: "#3a2b2b",
-          }}
-          onClick={onClose}
-        >
-          Discard
-        </Button>
-      </Box>
+      {isPending ? (
+        <CircularProgress sx={{ alignSelf: "center" }} />
+      ) : (
+        <Box display="flex" justifyContent="space-between" mt={4} gap={2}>
+          <Button
+            variant="contained"
+            fullWidth
+            sx={{ bgcolor: "#7367F0", textTransform: "none" }}
+            disabled={!isValid}
+            onClick={handleSubmit(handleAddReward)}
+          >
+            Send
+          </Button>
+          <Button
+            fullWidth
+            sx={{
+              color: "#a64445",
+              textTransform: "none",
+              bgcolor: "#3a2b2b",
+            }}
+            onClick={onClose}
+          >
+            Discard
+          </Button>
+        </Box>
+      )}
     </Drawer>
   );
 }
