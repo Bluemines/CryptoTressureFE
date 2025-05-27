@@ -29,3 +29,8 @@ export const ListAdminDepositsforUser = async () => {
   const { data } = await apiClient.get(`deposit/admin` )
   return data
 }
+
+export const ListUserTransaction = async () => {
+  const { data } = await apiClient.get(`/transactions/admin` )
+  return data
+}
