@@ -17,7 +17,6 @@ const ReferalManagement = () => {
     { id: "email", label: "Email" },
     { id: "level", label: "Level" },
     { id: "date", label: "Date Joined" },
-    { id: "rewardAmount", label: "Reward Amount" },
     { id: "status", label: "Status" },
     { id: "action", label: "Action" },
   ];
@@ -28,7 +27,6 @@ const ReferalManagement = () => {
     email: item.email,
     level: item.level,
     date: format(new Date(item.joinedAt), "yyyy-MM-dd HH:mm"),
-    rewardAmount: "$0",
     status: "Success",
     action: (
       <button
