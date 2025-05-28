@@ -16,6 +16,7 @@ import toast from "react-hot-toast"
 import useAdminDashboard from "../dashboard/hooks"
 import StatsCardSkeleton from "@/loaders/StatsCardSkeleton"
 import TableSkeleton from "@/loaders/TableSkeleton"
+import { formatCurrency } from '@/lib'
 
 const Page = () => {
   const router = useRouter()
@@ -32,27 +33,27 @@ const Page = () => {
   const walletSummary = [
     {
       label: "Balance",
-      value: walletSummaryData?.data?.balance?.toLocaleString() || "0",
+      value: formatCurrency(walletSummaryData?.data?.balance) || "0",
       color: "bg-[#4F46E5]", // Indigo
     },
     {
       label: "Reserved Amount",
-      value: walletSummaryData?.data?.reservedAmount?.toLocaleString() || "0",
+      value: formatCurrency(walletSummaryData?.data?.reservedAmount) || "0",
       color: "bg-[#16A34A]", // Green
     },
     {
       label: "Referral Earnings",
-      value: walletSummaryData?.data?.referralEarnings?.toLocaleString() || "0",
+      value: formatCurrency(walletSummaryData?.data?.referralEarnings) || "0",
       color: "bg-[#F59E0B]", // Amber
     },
     {
       label: "Team Earnings",
-      value: walletSummaryData?.data?.teamEarnings?.toLocaleString() || "0",
+      value: formatCurrency(walletSummaryData?.data?.teamEarnings) || "0",
       color: "bg-[#EF4444]", // Red
     },
     {
       label: "Investment Earnings",
-      value: walletSummaryData?.data?.investmentEarnings?.toLocaleString() || "0",
+      value: formatCurrency(walletSummaryData?.data?.investmentEarnings) || "0",
       color: "bg-[#10B981]", // Teal
     },
   ]
