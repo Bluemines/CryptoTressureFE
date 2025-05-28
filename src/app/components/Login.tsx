@@ -90,14 +90,6 @@ const Login = () => {
       <div className='text-[#737373] font-medium text-2xl'>LOGO</div>
       <div className='text-3xl mt-4'>Welcome to Bluemines</div>
       <div className='text-[#c0c0c0] text-sm mt-2'>
-        <Snackbar
-          // anchorOrigin={{ vertical, horizontal }}
-          // key={vertical + horizontal}
-          open={open}
-          onClose={() => setOpen(false)}
-          autoHideDuration={2000}
-          message={message}
-        />
         Please sign in to your account and start the adventure
       </div>
 

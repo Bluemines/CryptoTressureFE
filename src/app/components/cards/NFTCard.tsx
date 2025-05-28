@@ -1,29 +1,29 @@
-"use client";
+"use client"
 
-import { base_image_url } from "@/app/constants/keys";
-import { ArrowRight } from "lucide-react";
-import React from "react";
-import CountdownTimer from "../CountdownTimer";
+import { base_image_url } from "@/app/constants/keys"
+import { ArrowRight } from "lucide-react"
+import React from "react"
+import CountdownTimer from "../CountdownTimer"
 
 interface NFTCardProps {
-  image: string;
-  title: string;
-  price: number;
-  dailyIncome: number;
-  fee: number;
-  days: number;
-  level: string;
-  action: "Buy" | "Sell" | "Rented";
-  onClick?: () => void;
+  image: string
+  title: string
+  price: number
+  dailyIncome: number
+  fee: number
+  days: number
+  level: string
+  action: "Buy" | "Sell" | "Rented"
+  onClick?: () => void
 
   countdownTimeLeft?: {
-    days: number;
-    hours: number;
-    mins: number;
-    secs: number;
-    isExpired: boolean;
-  };
-  onExpire?: () => void;
+    days: number
+    hours: number
+    mins: number
+    secs: number
+    isExpired: boolean
+  }
+  onExpire?: () => void
 }
 
 // Internal Card component
@@ -31,22 +31,22 @@ const Card = ({
   children,
   className = "",
 }: {
-  children: React.ReactNode;
-  className?: string;
+  children: React.ReactNode
+  className?: string
 }) => {
-  return <div className={`rounded-lg shadow-sm ${className}`}>{children}</div>;
-};
+  return <div className={`rounded-lg shadow-sm ${className}`}>{children}</div>
+}
 
 // Internal CardContent component
 const CardContent = ({
   children,
   className = "",
 }: {
-  children: React.ReactNode;
-  className?: string;
+  children: React.ReactNode
+  className?: string
 }) => {
-  return <div className={`p-4 ${className}`}>{children}</div>;
-};
+  return <div className={`p-4 ${className}`}>{children}</div>
+}
 
 // Internal Button component
 const Button = ({
@@ -61,8 +61,8 @@ const Button = ({
     >
       {children}
     </button>
-  );
-};
+  )
+}
 
 export function NFTCard({
   image,
@@ -77,39 +77,45 @@ export function NFTCard({
   onClick,
 }: NFTCardProps) {
   return (
-    <Card className="bg-[#1A1F2C] border-none overflow-hidden">
-      <div className="relative aspect-square">
-        <img src={`${base_image_url}${image}`} alt={title} className="object-fit w-full h-full" />
-        {action === "Sell" && countdownTimeLeft && countdownTimeLeft.isExpired === false && (
-          <div className="absolute top-2 right-2 z-10 bg-[#7367F0] bg-opacity-60 rounded-md px-2">
-            <CountdownTimer timeLeft={countdownTimeLeft} />
-          </div>
-        )}
+    <Card className='bg-[#1A1F2C] border-none overflow-hidden'>
+      <div className='relative aspect-square'>
+        <img
+          src={`${base_image_url}${image}`}
+          alt={title}
+          className='object-fit w-full h-full'
+        />
+        {(action === "Sell" || action === "Rented") &&
+          countdownTimeLeft &&
+          countdownTimeLeft.isExpired === false && (
+            <div className='absolute top-2 right-2 z-10 bg-[#7367F0] bg-opacity-60 rounded-md px-2'>
+              <CountdownTimer timeLeft={countdownTimeLeft} />
+            </div>
+          )}
       </div>
-      <CardContent className="p-4">
-        <h3 className="text-xl font-semibold text-white mb-4">{title}</h3>
-        <div className="space-y-2 mb-4">
-          <div className="flex justify-between text-sm">
-            <span className="text-gray-400">Price</span>
-            <span className="text-white">${price}</span>
+      <CardContent className='p-4'>
+        <h3 className='text-xl font-semibold text-white mb-4'>{title}</h3>
+        <div className='space-y-2 mb-4'>
+          <div className='flex justify-between text-sm'>
+            <span className='text-gray-400'>Price</span>
+            <span className='text-white'>${price}</span>
           </div>
-          <div className="flex justify-between text-sm">
-            <span className="text-gray-400">Daily Income</span>
-            <span className="text-white">{dailyIncome}%</span>
+          <div className='flex justify-between text-sm'>
+            <span className='text-gray-400'>Daily Income</span>
+            <span className='text-white'>{dailyIncome}%</span>
           </div>
-          <div className="flex justify-between text-sm">
+          {/* <div className="flex justify-between text-sm">
             <span className="text-gray-400">Fee</span>
             <span className="text-white">{fee}%</span>
-          </div>
+          </div> */}
         </div>
-        <div className="flex justify-between text-sm mb-4">
+        <div className='flex justify-between text-sm mb-4'>
           <div>
-            <span className="text-gray-400">Days: </span>
-            <span className="text-white">{days}</span>
+            <span className='text-gray-400'>Days: </span>
+            <span className='text-white'>{days}</span>
           </div>
           <div>
-            <span className="text-gray-400">Level: </span>
-            <span className="text-white">{level}</span>
+            <span className='text-gray-400'>Level: </span>
+            <span className='text-white'>{level}</span>
           </div>
         </div>
         <Button
@@ -121,9 +127,9 @@ export function NFTCard({
           onClick={onClick}
         >
           {action}
-          <ArrowRight className="w-4 h-4 ml-2" />
+          <ArrowRight className='w-4 h-4 ml-2' />
         </Button>
       </CardContent>
     </Card>
-  );
+  )
 }

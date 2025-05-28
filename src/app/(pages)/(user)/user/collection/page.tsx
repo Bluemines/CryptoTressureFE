@@ -4,11 +4,11 @@ import NFTModal from "@/app/components/modals/NFTModal"
 import { useState } from "react"
 // import Image from "../../../../assets/Images/exploreImg.png"
 import { useGetMyMachines } from "@/api/user/useUser"
-import { authStore } from "@/store/authStore"
 import CardLoader from "@/loaders/CardLoader"
 export default function Collection() {
-  const { user } = authStore()
   const { data: myMachinesData, isLoading: isMachinesLoading } = useGetMyMachines()
+
+  console.log("myMachinesData", myMachinesData)
 
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [selectedNFT, setSelectedNFT] = useState<any>(null)
