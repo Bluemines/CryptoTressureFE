@@ -1,5 +1,6 @@
-"use client";
-import { useGetReferralHistory, useGetReferralLink, useGetReferralTree } from "@/api/user/useUser";
+'use client';
+
+import { useGetReferralLink } from "@/api/user/useUser";
 import DataTable from "@/app/components/DataTable/DataTable";
 import { authStore } from "@/store/authStore";
 import { Button } from "@mui/material";
@@ -12,42 +13,15 @@ type Data = {
   userName: string;
   email: string;
   date: string;
-  commissionAmount: number
+  commissionAmount: number;
 };
 
 const page = () => {
 
-  const { data: referralHistory, isLoading } = useGetReferralHistory()
-  const { data: referralLink, isLoading: isRefLinkLoading } = useGetReferralLink()
-  const { data: referralTree, isLoading: isReferralTreeLoading } = useGetReferralTree()
+  const { data: referralLink } = useGetReferralLink();
+  const { user } = authStore();
 
-  const { user } = authStore()
-  console.log("user: ", user)
-
-const dummyReferrals = [
-    {
-      id: 29,
-      userName: "c",
-      email: "c@gmail.com",
-      date: format(new Date("2025-05-25T19:50:00.765Z"), "yyyy-MM-dd HH:mm"),
-      commissionAmount: 0,
-    },
-    {
-      id: 30,
-      userName: "d",
-      email: "d@gmail.com",
-      date: format(new Date("2025-05-25T19:52:13.118Z"), "yyyy-MM-dd HH:mm"),
-      commissionAmount: 0,
-    },
-    {
-      id: 31,
-      userName: "e",
-      email: "e@gmail.com",
-      date: format(new Date("2025-05-25T19:55:16.201Z"), "yyyy-MM-dd HH:mm"),
-      commissionAmount: 0,
-    },
-  ];
-
+  // Root user data (no dynamic referral history yet)
   const rootUser: Data = {
     id: user?.id || 0,
     userName: user?.username + " (root user)" || "",
@@ -56,39 +30,31 @@ const dummyReferrals = [
     commissionAmount: 0,
   };
 
-  const data: Data[] = [rootUser, ...dummyReferrals];
+  const data: Data[] = [rootUser];  // Only root user data for now
   
-  const transformedData: Data[] = referralHistory?.map((ref: any) => ({
-    id: ref.id,
-    userName: ref.username,
-    email: ref.email,
-    date: format(new Date(ref.joinedDate), "yyyy-MM-dd HH:mm"),
-    status: ref.status,
-    commissionAmount: ref.earnedCommissions
-  }));
-
   const columns: TableColumn<Data>[] = [
-      {
-        name: "User Name",
-        selector: (row) => row.userName,
-        sortable: true,
-      },
-      {
-        name: "Email",
-        selector: (row) => row.email,
-        sortable: true,
-      },
-      {
-        name: "Account Created Date",
-        selector: (row) => row.date,
-        sortable: true,
-      },
-      {
-        name: "Commission Amount",
-        selector: (row) => row.commissionAmount,
-        sortable: true,
-      },
+    {
+      name: "User Name",
+      selector: (row) => row.userName,
+      sortable: true,
+    },
+    {
+      name: "Email",
+      selector: (row) => row.email,
+      sortable: true,
+    },
+    {
+      name: "Account Created Date",
+      selector: (row) => row.date,
+      sortable: true,
+    },
+    {
+      name: "Commission Amount",
+      selector: (row) => row.commissionAmount,
+      sortable: true,
+    },
   ];
+
   const handleCopy = () => {
     if (referralLink?.link) {
       navigator.clipboard.writeText(referralLink.link);

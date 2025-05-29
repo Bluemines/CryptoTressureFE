@@ -10,7 +10,9 @@ import {
   referralHistory,
   referralLink,
   initDeposit,
-  postWebhook
+  postWebhook,
+  getDepositHistory,
+  getWalletHistory 
 } from "./userService"
 import toast from "react-hot-toast"
 import { AxiosError } from "axios"
@@ -104,5 +106,19 @@ export const useGetCurrencyValue = () => {
   return useQuery({
     queryKey: ['currency_value'],
     queryFn: convertCurrency
+  })
+}
+
+export const usegetDepositHistory = () => {
+  return useQuery({
+    queryKey: ['Deposit_History'],
+    queryFn: getDepositHistory
+  })
+}
+
+export const useGetWalletHistory = () => {
+  return useQuery({
+    queryKey: ['Wallt_History'],
+    queryFn: getWalletHistory
   })
 }
