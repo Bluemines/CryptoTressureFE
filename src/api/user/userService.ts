@@ -31,6 +31,16 @@ export const buyProduct = async (id: number) => {
   return data.data
 }
 
+
+export const initDeposit = async ( amount: number) => {
+  const { data } = await apiClient.post(`deposit/init`, {  amount });
+  return data; // This should return the whole response, which includes { reference: '...' }
+};
+
+export const postWebhook = async (data: any) => {
+  return apiClient.post("/deposit/webhook", data);
+};
+
 export const getReferralTree = async () => {
   const { data } = await apiClient.get('referral/tree')
   return data

@@ -1,21 +1,29 @@
 "use client"
+
 import { useState, useEffect } from "react"
 import { Button } from "@mui/material"
 import DataTable from "@/app/components/DataTable/DataTable"
 import StatusBadge from "@/app/components/ui/StatusBadge"
+import { useinitDeposit, usePostWebhook } from '@/api/user/useUser';
+import toast from "react-hot-toast"
 
+// Type for Deposit data
 type Deposit = {
   id: number
   packageName: string
   depositPrice: string
   depositId: number
-  status: "Success" | "Failed" | "Pending"
+  status: "SUCCESS" | "Failed" | "Pending"
   depositDate: string
 }
 
 const Page = () => {
   const [pkrAmount, setPkrAmount] = useState("")
   const [convertedUSD, setConvertedUSD] = useState<string | null>(null)
+  const [reference, setReference] = useState<string | null>(null)
+  
+  const { mutate: initDepositMutate } = useinitDeposit()
+  const { mutate: postWebhookMutate } = usePostWebhook()
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -26,6 +34,7 @@ const Page = () => {
     return () => clearTimeout(timeout)
   }, [pkrAmount])
 
+  // Convert PKR to USD
   async function convertPKRtoUSD(pkrAmount: number) {
     const apiUrl =
       "https://api.exchangeratesapi.io/v1/latest?access_key=28efabef496f650d981f930739aa25e2"
@@ -49,13 +58,45 @@ const Page = () => {
     }
   }
 
+  // Handle deposit initiation
+  const handleDeposit = () => {
+    const amount = Number(pkrAmount)
+
+    if (isNaN(amount) || amount <= 0) {
+      toast.error("Please enter a valid amount.")
+      return
+    }
+
+    initDepositMutate({ amount })
+      .then((ref) => setReference(ref)) // Set reference if deposit is successful
+      .catch((err) => console.error(err))
+  }
+
+  // Handle posting webhook
+  const handleWebhook = () => {
+    if (!reference) {
+      toast.error("No reference to send webhook.")
+      return
+    }
+
+    const webhookData = {
+      reference,
+      status: "SUCCESS", // Example: success status
+      amount: 500, // Example: amount
+      transactionId: "EP123456789", // Example: transaction ID
+    }
+
+    postWebhookMutate(webhookData)
+  }
+
+  // Example deposit data
   const data: Deposit[] = [
     {
       id: 1,
       packageName: "Level One",
       depositPrice: "$20",
       depositId: 2414142,
-      status: "Success",
+      status: "SUCCESS",
       depositDate: "04/22/2016",
     },
     // Add more if needed...
@@ -117,7 +158,7 @@ const Page = () => {
             value={convertedUSD ? "$" + convertedUSD : "Converted USD"}
             disabled
             className='bg-[#262626] placeholder:text-white rounded px-4 py-2 w-full'
-            placeholder='Enter PKR Amount'
+            placeholder='Converted USD'
           />
         </div>
 
@@ -133,9 +174,19 @@ const Page = () => {
         </div>
 
         <div className='self-end'>
-          <Button variant='contained'>Deposit</Button>
+          <Button variant='contained' onClick={handleDeposit}>
+            Deposit
+          </Button>
         </div>
       </div>
+
+      {reference && (
+        <div className='mt-4'>
+          <Button variant='contained' color='primary' onClick={handleWebhook}>
+            Confirm Deposit via Webhook
+          </Button>
+        </div>
+      )}
 
       <DataTable data={data} columns={columns} themeStyle='black' />
     </div>
