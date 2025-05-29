@@ -14,7 +14,7 @@ import CountdownTimer from "@/app/components/CountdownTimer"
 
 const page = () => {
   const { user } = authStore()
-  const points = localStorage.getItem("points")
+  // const points = localStorage.getItem("points")
   const [openProfileModal, setOpenProfileModal] = useState(false)
   useEffect(() => {
     if (user && !user.profile) {
@@ -197,12 +197,12 @@ const page = () => {
           </Button>
         </Box>
       </Modal>
-      {points && +points > 0 && (
+      {/* {points && +points > 0 && (
         <div className='mt-8 text-center text-white rounded-lg py-4 px-6'>
           🎉 You have received <span className='font-bold'>{points}</span>{" "}
           reward points!
         </div>
-      )}
+      )} */}
     </div>
   )
 }

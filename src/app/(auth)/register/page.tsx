@@ -35,7 +35,9 @@ const Register = () => {
       </div>
       <div className="md:w-[50%] w-full grid place-items-center overflow-y-auto p-8 py-16">
         <div className="w-full max-w-md">
-          <div className="text-[#737373] font-medium text-2xl">LOGO</div>
+          <div className='h-16 text-white font-bold'>
+          <img src='/logo.jpg' alt="logo" className="w-16 h-16" />
+        </div>
           <div className="text-3xl mt-4">Welcome to Bluemines</div>
           <div className="text-muted text-sm mt-2">
             Please create to your account and start the adventure
