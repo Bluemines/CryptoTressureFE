@@ -53,6 +53,17 @@ export const getReferralTree = async () => {
   return data
 }
 
+export const getDepositHistory = async () => {
+  const { data } = await apiClient.get('deposit/history')
+  return data
+}
+
+
+export const getWalletHistory = async () => {
+  const { data } = await apiClient.get('wallet/me')
+  return data
+}
+
 export const convertCurrency = async () => {
   const res = await axios.get(
     "https://api.exchangeratesapi.io/v1/latest?access_key=28efabef496f650d981f930739aa25e2"

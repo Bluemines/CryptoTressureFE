@@ -1,196 +1,250 @@
-"use client"
+'use client';
 
-import { useState, useEffect } from "react"
-import { Button } from "@mui/material"
-import DataTable from "@/app/components/DataTable/DataTable"
-import StatusBadge from "@/app/components/ui/StatusBadge"
-import { useinitDeposit, usePostWebhook } from '@/api/user/useUser';
-import toast from "react-hot-toast"
+import { useForm } from 'react-hook-form';
+import { Button } from '@mui/material';
+import { useAddDepositforUser, useListAdminDepositsforUser } from '@/api/admin/useAdmin';
+import toast from 'react-hot-toast';
+import { useState, useEffect } from 'react';
+import DataTable from 'react-data-table-component';
+import StatusBadge from '@/app/components/ui/StatusBadge';
+import { usegetDepositHistory } from '@/api/user/useUser';; // Import the usegetDepositHistory hook
 
-// Type for Deposit data
+type FormValues = {
+  amount: number;
+  email: string;
+};
+
 type Deposit = {
-  id: number
-  packageName: string
-  depositPrice: string
-  depositId: number
-  status: "SUCCESS" | "Failed" | "Pending"
-  depositDate: string
-}
+  id: number;
+  amount: string;
+  status: 'SUCCESS' | 'PENDING' | 'FAILED';
+  provider: string;
+  createdAt: string;
+  user: {
+    id: number;
+    email: string;
+    username: string;
+  };
+};
 
-const Page = () => {
-  const [pkrAmount, setPkrAmount] = useState("")
-  const [convertedUSD, setConvertedUSD] = useState<string | null>(null)
-  const [reference, setReference] = useState<string | null>(null)
-  
-  const { mutate: initDepositMutate } = useinitDeposit()
-  const { mutate: postWebhookMutate } = usePostWebhook()
+const columns = [
+  {
+    name: 'Email',
+    selector: (row: Deposit) => row.user.email,
+    sortable: true,
+  },
+  {
+    name: 'Username',
+    selector: (row: Deposit) => row.user.username,
+    sortable: true,
+  },
+  {
+    name: 'Amount',
+    selector: (row: Deposit) => row.amount,
+    sortable: true,
+  },
+  {
+    name: 'Status',
+    selector: (row: Deposit) => row.status,
+    cell: (row: Deposit) => <StatusBadge status={row.status} />,
+    sortable: true,
+  },
+  {
+    name: 'Date',
+    selector: (row: Deposit) => new Date(row.createdAt).toLocaleString(),
+    sortable: true,
+  },
+];
+
+const customTableStyles = {
+  rows: {
+    style: {
+      backgroundColor: '#1e1e1e',
+      color: 'white',
+      minHeight: '56px',
+    },
+  },
+  headCells: {
+    style: {
+      backgroundColor: '#2c2c2c',
+      color: '#00bcd4',
+      fontWeight: 'bold',
+      fontSize: '14px',
+    },
+  },
+  pagination: {
+    style: {
+      backgroundColor: '#1e1e1e',
+      color: 'white',
+    },
+  },
+};
+
+export default function Deposit() {
+  const { mutate: AddDepositforUser, isPending } = useAddDepositforUser();
+  const { data, isLoading, isError, error, refetch } = usegetDepositHistory(); // Fetching deposit history data
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+    reset,
+  } = useForm<FormValues>();
+
+  const amount = watch('amount');
+  const [convertedUSD, setConvertedUSD] = useState<string | null>(null);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
-      if (!pkrAmount || isNaN(Number(pkrAmount))) return setConvertedUSD(null)
-      convertPKRtoUSD(Number(pkrAmount))
-    }, 500)
+      if (!amount || isNaN(Number(amount))) return setConvertedUSD(null);
+      convertPKRtoUSD(Number(amount));
+    }, 500);
 
-    return () => clearTimeout(timeout)
-  }, [pkrAmount])
+    return () => clearTimeout(timeout);
+  }, [amount]);
 
-  // Convert PKR to USD
   async function convertPKRtoUSD(pkrAmount: number) {
-    const apiUrl =
-      "https://api.exchangeratesapi.io/v1/latest?access_key=28efabef496f650d981f930739aa25e2"
-
     try {
-      const response = await fetch(apiUrl)
-      const data = await response.json()
+      const res = await fetch(
+        "https://api.exchangeratesapi.io/v1/latest?access_key=28efabef496f650d981f930739aa25e2&symbols=USD,PKR"
+      );
+      const data = await res.json();
 
-      if (!data.success) {
-        throw new Error("API response was not successful")
-      }
+      const usdPerEur = data?.rates?.USD;
+      const pkrPerEur = data?.rates?.PKR;
 
-      const eurToUsd = data.rates["USD"]
-      const eurToPkr = data.rates["PKR"]
-      const pkrToUsdRate = eurToUsd / eurToPkr
-      const usdAmount = pkrAmount * pkrToUsdRate
+      if (!usdPerEur || !pkrPerEur) throw new Error('Invalid rates');
 
-      setConvertedUSD(usdAmount.toFixed(2))
-    } catch (error: any) {
-      console.error("Error converting currency:", error.message || error)
+      // Calculate USD per PKR
+      const usdPerPkr = usdPerEur / pkrPerEur;
+
+      const usdAmount = pkrAmount * usdPerPkr;
+      setConvertedUSD(usdAmount.toFixed(2));
+    } catch (err) {
+      toast.error('Conversion failed');
+      setConvertedUSD(null);
     }
   }
 
-  const handleDeposit = () => {
-    const amount = Number(pkrAmount);
-
-    // Validate the entered amount
-    if (isNaN(amount) || amount <= 0) {
-      toast.error("Please enter a valid amount.");
+  const onSubmit = (data: FormValues) => {
+    if (!convertedUSD) {
+      toast.error('USD conversion not ready.');
       return;
     }
 
-    // Initiate the deposit and handle success/error inside useMutation hooks
-    initDepositMutate({ amount });
+    const payload: FormValues = {
+      ...data,
+      amount: parseFloat(convertedUSD),
+    };
+
+    AddDepositforUser(payload, {
+      onSuccess: () => {
+        toast.success('Deposit Successful');
+        reset();
+        setConvertedUSD(null);
+        refetch(); // refresh the deposits list after successful deposit
+      },
+    });
   };
 
-
-  // Handle posting webhook
-  const handleWebhook = () => {
-    if (!reference) {
-      toast.error("No reference to send webhook.")
-      return
-    }
-
-    const webhookData = {
-      reference,
-      status: "SUCCESS", // Example: success status
-      amount: 500, // Example: amount
-      transactionId: "EP123456789", // Example: transaction ID
-    }
-
-    postWebhookMutate(webhookData)
+  if (isLoading) {
+    return <div className="text-white text-center mt-10">Loading deposits...</div>;
   }
 
-  // Example deposit data
-  const data: Deposit[] = [
-    {
-      id: 1,
-      packageName: "Level One",
-      depositPrice: "$20",
-      depositId: 2414142,
-      status: "SUCCESS",
-      depositDate: "04/22/2016",
-    },
-    // Add more if needed...
-  ]
-
-  const columns = [
-    {
-      name: "Package Name",
-      selector: (row: Deposit) => row.packageName,
-      sortable: true,
-    },
-    {
-      name: "Deposit Price",
-      selector: (row: Deposit) => row.depositPrice,
-      sortable: true,
-    },
-    {
-      name: "Deposit id",
-      selector: (row: Deposit) => row.depositId,
-      sortable: true,
-    },
-    {
-      name: "Status",
-      selector: (row: Deposit) => row.status,
-      sortable: true,
-      cell: (row: Deposit) => <StatusBadge status={row.status} />,
-    },
-    {
-      name: "Deposit Date",
-      selector: (row: Deposit) => row.depositDate,
-      sortable: true,
-    },
-  ]
+  if (isError) {
+    return (
+      <div className="text-red-500 text-center mt-10">
+        Failed to load deposits: {(error as any)?.message || 'Unknown error'}
+      </div>
+    );
+  }
 
   return (
-    <div>
-      <div className='text-white text-lg mt-2'>Deposit</div>
+    <div className="min-h-screen bg-[#121212] py-10 px-4">
+      {/* Form */}
+      <div className="bg-[#1e1e1e] p-6 rounded-xl max-w-xxl mx-auto shadow-lg mb-10">
+        <h2 className="text-2xl font-semibold text-white mb-6 text-center">Deposit Funds</h2>
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+          <div>
+            <label htmlFor="amount" className="block text-sm text-white mb-1">
+              Deposit Amount (PKR)
+            </label>
+            <input
+              id="amount"
+              type="number"
+              step="any"
+              {...register('amount', {
+                required: 'Amount is required',
+                min: { value: 1, message: 'Minimum 1 PKR' },
+                valueAsNumber: true,
+              })}
+              className={`bg-[#2c2c2c] text-white rounded-md px-4 py-2 w-full border ${
+                errors.amount ? 'border-red-500' : 'border-transparent'
+              } focus:outline-none focus:ring-2 focus:ring-blue-500 transition`}
+              placeholder="Enter PKR amount"
+            />
+            {errors.amount && <p className="text-red-500 text-sm mt-1">{errors.amount.message}</p>}
+          </div>
 
-      <div className='bg-[#161616] p-4 rounded-lg my-4 flex flex-col md:flex-row gap-4 md:items-center'>
-        <div className='space-y-2 flex-1'>
-          <label htmlFor='depositAmount' className='block text-white text-sm'>
-            Deposit Amount
-          </label>
-          <input
-            type='text'
-            value={pkrAmount}
-            onChange={(e) => setPkrAmount(e.target.value)}
-            className='bg-[#262626] placeholder:text-white rounded px-4 py-2 w-full'
-            placeholder='Enter PKR Amount'
-          />
-        </div>
+          <div>
+            <label className="block text-sm text-white mb-1">Converted Value (USD)</label>
+            <input
+              type="text"
+              value={convertedUSD ? `$${convertedUSD}` : 'Converting...'}
+              disabled
+              className="bg-[#262626] text-white rounded px-4 py-2 w-full"
+            />
+          </div>
 
-        <div className='flex-[0.5] self-end'>
-          <label htmlFor='depositAmount' className='block text-white text-sm'>
-            Converted Value to USD
-          </label>
-          <input
-            type='text'
-            value={convertedUSD ? "$" + convertedUSD : "Converted USD"}
-            disabled
-            className='bg-[#262626] placeholder:text-white rounded px-4 py-2 w-full'
-            placeholder='Converted USD'
-          />
-        </div>
+          <div>
+            <label htmlFor="email" className="block text-sm text-white mb-1">
+              User Email
+            </label>
+            <input
+              id="email"
+              type="email"
+              {...register('email', {
+                required: 'Email is required',
+                pattern: {
+                  value: /^\S+@\S+$/i,
+                  message: 'Enter a valid email address',
+                },
+              })}
+              className={`bg-[#2c2c2c] text-white rounded-md px-4 py-2 w-full border ${
+                errors.email ? 'border-red-500' : 'border-transparent'
+              } focus:outline-none focus:ring-2 focus:ring-blue-500 transition`}
+              placeholder="e.g. user@gmail.com"
+            />
+            {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>}
+          </div>
 
-        <div className='space-y-2 flex-1'>
-          <label htmlFor='walletName' className='block text-white text-sm'>
-            Wallet Name
-          </label>
-          <input
-            type='text'
-            className='bg-[#262626] placeholder:text-white rounded px-4 py-2 w-full'
-            placeholder='Enter Wallet Name'
-          />
-        </div>
-
-        <div className='self-end'>
-          <Button variant='contained' onClick={handleDeposit}>
-            Deposit
-          </Button>
-        </div>
+          <div className="pt-4 text-center">
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              size="large"
+              fullWidth
+              disabled={isPending}
+            >
+              {isPending ? 'Processing...' : 'Deposit'}
+            </Button>
+          </div>
+        </form>
       </div>
 
-      {reference && (
-        <div className='mt-4'>
-          <Button variant='contained' color='primary' onClick={handleWebhook}>
-            Confirm Deposit via Webhook
-          </Button>
-        </div>
-      )}
-
-      <DataTable data={data} columns={columns} themeStyle='black' />
+      {/* Table */}
+      <div className="max-w-6xl mx-auto">
+        <h3 className="text-xl font-semibold text-white mb-4">Deposit History</h3>
+        <DataTable
+          columns={columns}
+          data={data?.data || []} // Use fetched data here
+          customStyles={customTableStyles}
+          pagination
+          highlightOnHover
+          theme="dark"
+        />
+      </div>
     </div>
-  )
+  );
 }
-
-export default Page
