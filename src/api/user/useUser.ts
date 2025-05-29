@@ -9,6 +9,8 @@ import {
   getReferralTree,
   referralHistory,
   referralLink,
+  initDeposit,
+  postWebhook
 } from "./userService"
 import toast from "react-hot-toast"
 import { AxiosError } from "axios"
@@ -68,6 +70,35 @@ export const useBuyProduct = () => {
     },
   })
 }
+
+
+export const useinitDeposit = () => {
+  return useMutation<any, AxiosError, { amount: number }>({
+    mutationFn: (payload) => initDeposit( payload.amount), // Pass amount here
+    onSuccess: (data) => {
+      toast.success(data.message || 'Success');
+      // Data contains `reference`, you can handle it here or in the component
+      return data.data.reference;
+    },
+    onError: (error) => {
+      const err = error as AxiosError<{ message: string }>;
+      toast.error(err.response?.data?.message || "Something went wrong");
+    },
+  });
+};
+
+export const usePostWebhook = () => {
+  return useMutation<any, AxiosError, { reference: string; amount: number; transactionId: string }>({
+    mutationFn: (data) => postWebhook(data),
+    onSuccess: () => {
+      toast.success("Webhook posted successfully");
+    },
+    onError: (error) => {
+      const err = error as AxiosError<{ message: string }>;
+      toast.error(err.response?.data?.message || "Error posting webhook");
+    },
+  });
+};
 
 export const useGetCurrencyValue = () => {
   return useQuery({

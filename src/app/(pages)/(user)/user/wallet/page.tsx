@@ -95,35 +95,7 @@ const Wallet = () => {
     method: string
     status: string
   }
-  const dataSource = [
-    {
-      sr: 1,
-      date: "1 min ago",
-      amount: "Rs 1332",
-      fee: "Rs 5",
-      netPayout: "Rs 1327",
-      method: "Easypaisa",
-      status: "Approved",
-    },
-    {
-      sr: 2,
-      date: "1 min ago",
-      amount: "Rs 1332",
-      fee: "Rs 5",
-      netPayout: "Rs 1327",
-      method: "Easypaisa",
-      status: "Pending",
-    },
-    {
-      sr: 3,
-      date: "1 min ago",
-      amount: "Rs 1332",
-      fee: "Rs 5",
-      netPayout: "Rs 1327",
-      method: "Easypaisa",
-      status: "Rejected",
-    },
-  ]
+ const dataSource: Data[] = []
 
   const columns: TableColumn<Data>[] = [
     {
