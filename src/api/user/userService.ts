@@ -26,20 +26,27 @@ export const referralLink = async () => {
   return data.data
 }
 
+
 export const buyProduct = async (id: number) => {
   const { data } = await apiClient.post(`products/${id}/buy`)
   return data.data
 }
 
 
-export const initDeposit = async ( amount: number) => {
-  const { data } = await apiClient.post(`deposit/init`, {  amount });
-  return data; // This should return the whole response, which includes { reference: '...' }
+export const initDeposit = async (amount: number): Promise<any> => {
+  try {
+    const { data } = await apiClient.post('deposit/init', { amount });
+    return Promise.resolve(data); // Return data as a resolved promise
+  } catch (error) {
+    return Promise.reject(error); // Reject the promise if an error occurs
+  }
 };
+
 
 export const postWebhook = async (data: any) => {
   return apiClient.post("/deposit/webhook", data);
 };
+
 
 export const getReferralTree = async () => {
   const { data } = await apiClient.get('referral/tree')

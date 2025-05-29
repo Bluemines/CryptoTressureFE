@@ -58,19 +58,19 @@ const Page = () => {
     }
   }
 
-  // Handle deposit initiation
   const handleDeposit = () => {
-    const amount = Number(pkrAmount)
+    const amount = Number(pkrAmount);
 
+    // Validate the entered amount
     if (isNaN(amount) || amount <= 0) {
-      toast.error("Please enter a valid amount.")
-      return
+      toast.error("Please enter a valid amount.");
+      return;
     }
 
-    initDepositMutate({ amount })
-      .then((ref) => setReference(ref)) // Set reference if deposit is successful
-      .catch((err) => console.error(err))
-  }
+    // Initiate the deposit and handle success/error inside useMutation hooks
+    initDepositMutate({ amount });
+  };
+
 
   // Handle posting webhook
   const handleWebhook = () => {
