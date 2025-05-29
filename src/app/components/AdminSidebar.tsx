@@ -67,20 +67,20 @@ const menuItems: MenuItem[] = [
     icon: <DollarOutlined />,
     label: <Link href={routeMap.transactions}>Transactions</Link>,
   },
-  {
-    key: "agreementManagement",
-    icon: <WalletOutlined />,
-    label: (
-      <Link href={routeMap.agreementManagement}>Agreement Management</Link>
-    ),
-  },
-  {
-    key: "getagreement",
-    icon: <WalletOutlined />,
-    label: (
-      <Link href={routeMap.getagreement}>Agreement</Link>
-    ),
-  },
+  // {
+  //   key: "agreementManagement",
+  //   icon: <WalletOutlined />,
+  //   label: (
+  //     <Link href={routeMap.agreementManagement}>Agreement Management</Link>
+  //   ),
+  // },
+  // {
+  //   key: "getagreement",
+  //   icon: <WalletOutlined />,
+  //   label: (
+  //     <Link href={routeMap.getagreement}>Agreement</Link>
+  //   ),
+  // },
   {
     key: "rewardsDistribution",
     icon: <DownloadOutlined />,
