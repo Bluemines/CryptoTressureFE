@@ -1,95 +1,19 @@
 'use client';
 
 import { useForm } from 'react-hook-form';
-import { Button } from '@mui/material';
-import { useAddDepositforUser, useListAdminDepositsforUser } from '@/api/admin/useAdmin';
+import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
-import { useState, useEffect } from 'react';
-import DataTable from 'react-data-table-component';
-import StatusBadge from '@/app/components/ui/StatusBadge';
-import { usegetDepositHistory } from '@/api/user/useUser';; // Import the usegetDepositHistory hook
+import { useinitDeposit } from '@/api/user/useUser';
+import { useEffect, useState } from 'react';
 
 type FormValues = {
   amount: number;
-  email: string;
 };
 
-type Deposit = {
-  id: number;
-  amount: string;
-  status: 'SUCCESS' | 'PENDING' | 'FAILED';
-  provider: string;
-  createdAt: string;
-  user: {
-    id: number;
-    email: string;
-    username: string;
-  };
-};
-
-const columns = [
-  {
-    name: 'Email',
-    selector: (row: Deposit) => row.user.email,
-    sortable: true,
-  },
-  {
-    name: 'Username',
-    selector: (row: Deposit) => row.user.username,
-    sortable: true,
-  },
-  {
-    name: 'Amount',
-    selector: (row: Deposit) => row.amount,
-    sortable: true,
-  },
-  {
-    name: 'Status',
-    selector: (row: Deposit) => row.status,
-    cell: (row: Deposit) => <StatusBadge status={row.status} />,
-    sortable: true,
-  },
-  {
-    name: 'Date',
-    selector: (row: Deposit) => new Date(row.createdAt).toLocaleString(),
-    sortable: true,
-  },
-];
-
-const customTableStyles = {
-  rows: {
-    style: {
-      backgroundColor: '#1e1e1e',
-      color: 'white',
-      minHeight: '56px',
-    },
-  },
-  headCells: {
-    style: {
-      backgroundColor: '#2c2c2c',
-      color: '#00bcd4',
-      fontWeight: 'bold',
-      fontSize: '14px',
-    },
-  },
-  pagination: {
-    style: {
-      backgroundColor: '#1e1e1e',
-      color: 'white',
-    },
-  },
-};
-
-export default function Deposit() {
-  const { mutate: AddDepositforUser, isPending } = useAddDepositforUser();
-  const { data, isLoading, isError, error, refetch } = usegetDepositHistory(); // Fetching deposit history data
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors },
-    reset,
-  } = useForm<FormValues>();
+export default function InitiateDepositPage() {
+  const { register, handleSubmit, watch, formState: { errors } } = useForm<FormValues>();
+  const { mutate: AddDepositforUser, isPending } = useinitDeposit();
+  const router = useRouter();
 
   const amount = watch('amount');
   const [convertedUSD, setConvertedUSD] = useState<string | null>(null);
@@ -103,147 +27,84 @@ export default function Deposit() {
     return () => clearTimeout(timeout);
   }, [amount]);
 
-  async function convertPKRtoUSD(pkrAmount: number) {
+  const convertPKRtoUSD = async (pkrAmount: number) => {
     try {
       const res = await fetch(
-        "https://api.exchangeratesapi.io/v1/latest?access_key=28efabef496f650d981f930739aa25e2&symbols=USD,PKR"
+        'https://v6.exchangerate-api.com/v6/514f151f117da8b3be458ea2/latest/USD'
       );
       const data = await res.json();
 
-      const usdPerEur = data?.rates?.USD;
-      const pkrPerEur = data?.rates?.PKR;
+      const usdToPkrRate = data?.conversion_rates?.PKR;
 
-      if (!usdPerEur || !pkrPerEur) throw new Error('Invalid rates');
+      if (!usdToPkrRate) throw new Error('Invalid conversion rate');
 
-      // Calculate USD per PKR
-      const usdPerPkr = usdPerEur / pkrPerEur;
-
-      const usdAmount = pkrAmount * usdPerPkr;
+      const usdAmount = pkrAmount / usdToPkrRate;
       setConvertedUSD(usdAmount.toFixed(2));
     } catch (err) {
-      toast.error('Conversion failed');
+      toast.error('Currency conversion failed');
       setConvertedUSD(null);
     }
-  }
+  };
 
   const onSubmit = (data: FormValues) => {
-    if (!convertedUSD) {
-      toast.error('USD conversion not ready.');
-      return;
-    }
-
-    const payload: FormValues = {
-      ...data,
-      amount: parseFloat(convertedUSD),
-    };
-
-    AddDepositforUser(payload, {
-      onSuccess: () => {
-        toast.success('Deposit Successful');
-        reset();
-        setConvertedUSD(null);
-        refetch(); // refresh the deposits list after successful deposit
+    AddDepositforUser(data, {
+      onSuccess: (response: any) => {
+        toast.success('Redirecting to complete deposit');
+        const reference = response?.data?.reference;
+        router.push(`/user/deposit/webhook?amount=${data.amount}&reference=${reference}`);
       },
+      onError: () => {
+        toast.error('Failed to initiate deposit');
+      }
     });
   };
 
-  if (isLoading) {
-    return <div className="text-white text-center mt-10">Loading deposits...</div>;
-  }
-
-  if (isError) {
-    return (
-      <div className="text-red-500 text-center mt-10">
-        Failed to load deposits: {(error as any)?.message || 'Unknown error'}
-      </div>
-    );
-  }
-
   return (
-    <div className="min-h-screen bg-[#121212] py-10 px-4">
-      {/* Form */}
-      <div className="bg-[#1e1e1e] p-6 rounded-xl max-w-xxl mx-auto shadow-lg mb-10">
-        <h2 className="text-2xl font-semibold text-white mb-6 text-center">Deposit Funds</h2>
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+    <div className="min-h-screen bg-[#121212] flex items-center justify-center p-4">
+      <div className="bg-[#1e1e1e] p-8 rounded-xl w-full max-w-md">
+        <h2 className="text-white text-2xl font-semibold mb-6 text-center">Initiate Deposit</h2>
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          {/* Amount Input */}
           <div>
-            <label htmlFor="amount" className="block text-sm text-white mb-1">
-              Deposit Amount (PKR)
-            </label>
+            <label className="text-white text-sm mb-1 block">Amount (PKR)</label>
             <input
-              id="amount"
               type="number"
               step="any"
               {...register('amount', {
                 required: 'Amount is required',
                 min: { value: 1, message: 'Minimum 1 PKR' },
-                valueAsNumber: true,
+                valueAsNumber: true
               })}
-              className={`bg-[#2c2c2c] text-white rounded-md px-4 py-2 w-full border ${
+              className={`w-full px-4 py-2 rounded-md bg-[#2c2c2c] text-white border ${
                 errors.amount ? 'border-red-500' : 'border-transparent'
-              } focus:outline-none focus:ring-2 focus:ring-blue-500 transition`}
-              placeholder="Enter PKR amount"
+              } focus:outline-none`}
+              placeholder="Enter amount"
             />
-            {errors.amount && <p className="text-red-500 text-sm mt-1">{errors.amount.message}</p>}
+            {errors.amount && (
+              <p className="text-red-500 text-sm mt-1">{errors.amount.message}</p>
+            )}
           </div>
 
+          {/* Converted USD */}
           <div>
-            <label className="block text-sm text-white mb-1">Converted Value (USD)</label>
+            <label className="text-white text-sm mb-1 block">Converted (USD)</label>
             <input
               type="text"
               value={convertedUSD ? `$${convertedUSD}` : 'Converting...'}
               disabled
-              className="bg-[#262626] text-white rounded px-4 py-2 w-full"
+              className="w-full px-4 py-2 rounded-md bg-[#262626] text-white"
             />
           </div>
 
-          <div>
-            <label htmlFor="email" className="block text-sm text-white mb-1">
-              User Email
-            </label>
-            <input
-              id="email"
-              type="email"
-              {...register('email', {
-                required: 'Email is required',
-                pattern: {
-                  value: /^\S+@\S+$/i,
-                  message: 'Enter a valid email address',
-                },
-              })}
-              className={`bg-[#2c2c2c] text-white rounded-md px-4 py-2 w-full border ${
-                errors.email ? 'border-red-500' : 'border-transparent'
-              } focus:outline-none focus:ring-2 focus:ring-blue-500 transition`}
-              placeholder="e.g. user@gmail.com"
-            />
-            {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>}
-          </div>
-
-          <div className="pt-4 text-center">
-            <Button
-              type="submit"
-              variant="contained"
-              color="primary"
-              size="large"
-              fullWidth
-              disabled={isPending}
-            >
-              {isPending ? 'Processing...' : 'Deposit'}
-            </Button>
-          </div>
+          {/* Submit Button */}
+          <button
+            type="submit"
+            disabled={isPending}
+            className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition"
+          >
+            {isPending ? 'Processing...' : 'Initiate Deposit'}
+          </button>
         </form>
-      </div>
-
-      {/* Table */}
-      <div className="max-w-6xl mx-auto">
-        <h3 className="text-xl font-semibold text-white mb-4">Deposit History</h3>
-        <DataTable
-          columns={columns}
-          data={data?.data || []} // Use fetched data here
-          customStyles={customTableStyles}
-          pagination
-          highlightOnHover
-          theme="dark"
-        />
       </div>
     </div>
   );
