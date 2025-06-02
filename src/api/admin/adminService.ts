@@ -38,6 +38,11 @@ export const getReferralsData = async () => {
 export const getReferralDataById = async (id: number) => {
   const { data } = await apiClient.get(`referral/admin/tree/${id}`)
   return data
+}
+
+export const getUserWithdrawHistory = async (id: number) => {
+  const { data } = await apiClient.get(`withdraw/history/${id}`)
+  return data
 } 
 
 export const ListUserTransaction = async () => {
@@ -54,3 +59,5 @@ export const AdminAllWallets = async () => {
   const { data } = await apiClient.get(`wallet/admin-allWallets` )
   return data
 }
+
+
