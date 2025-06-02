@@ -9,6 +9,7 @@ interface SingleUser {
   status: string;
   role: string;
   level: number;
+   profile: string; // <-- add this line
   referralCode: string;
   emailVerified: boolean;
   createdAt: string;
@@ -26,6 +27,7 @@ export interface RawSingleUser {
   level: number;
   referralCode: string;
   emailVerified: boolean;
+   profile: string; // <-- add this line
   createdAt: string;
   updatedAt: string;
   referralsReceived: any[];
@@ -57,6 +59,7 @@ export const useSingleUserStore = create<SingleUserStore>((set) => ({
         status: capitalizeStatus(user.status),
         role: user.role,
         level: user.level,
+        profile: user.profile,
         referralCode: user.referralCode,
         emailVerified: user.emailVerified,
         createdAt: formatDistanceToNow(new Date(user.createdAt), {

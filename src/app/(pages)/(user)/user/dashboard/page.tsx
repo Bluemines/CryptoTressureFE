@@ -84,51 +84,38 @@ const page = () => {
         </div>
 
         {/* Popular Machines */}
-        <div>
-          <div className='flex flex-col md:flex-row items-center justify-between'>
-            <h2 className='text-2xl font-bold text-white mb-4'>
-              Popular Machines
-            </h2>
-            {loginData && !loginData?.trialFundTimeLeft.isExpired && (
-              <div className='flex items-center justify-between flex-col md:flex-row w-full md:w-auto gap-2 md:gap-4 bg-[#7367F0] p-2 my-4'>
-                <span>Trial Fund Expiry</span>
-                {loginData ? (
-                  <CountdownTimer
-                    timeLeft={loginData.trialFundTimeLeft}
-                    onExpire={() => {
-                      console.log("Trial fund expired")
-                    }}
-                  />
-                ) : (
-                  <span>Loading...</span>
-                )}
-              </div>
-            )}
+          <div>
+            <div className='flex flex-col md:flex-row items-center justify-between'>
+              <h2 className='text-2xl font-bold text-white mb-4'>
+                Popular Machines
+              </h2>
+
+              {loginData && !loginData?.trialFundTimeLeft.isExpired && (
+                <div className='flex items-center justify-between flex-col md:flex-row w-full md:w-auto gap-2 md:gap-4 bg-[#7367F0] p-2 my-4'>
+                  <span>Trial Fund Expiry</span>
+                  {loginData ? (
+                    <CountdownTimer
+                      timeLeft={loginData.trialFundTimeLeft}
+                      onExpire={() => {
+                        console.log("Trial fund expired")
+                      }}
+                    />
+                  ) : (
+                    <span>Loading...</span>
+                  )}
+                </div>
+              )}
+
+              {/* New Trial Amount Section */}
+              {loginData && (
+                <div className='flex items-center justify-between flex-col md:flex-row w-full md:w-auto gap-2 md:gap-4 bg-[#7367F0] p-2 my-4 text-white font-medium'>
+                  <span>Trial Amount</span>
+                  <span>$200</span>
+                </div>
+              )}
+            </div>
           </div>
 
-          <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4'>
-            {isLoading
-              ? Array.from({ length: 4 }).map((_, idx) => (
-                  <CardLoader key={idx} />
-                ))
-              : popularProducts?.map((nft: any, index: number) => (
-                  <NFTCard
-                    key={index}
-                    image={nft.image}
-                    title={nft.title}
-                    price={+nft.price}
-                    dailyIncome={+nft.dailyIncome}
-                    fee={+nft.fee}
-                    days={nft.rentalDays}
-                    level={nft.level}
-                    action='Buy'
-                    onClick={() =>
-                      router.push(`/user/explore/NFTdetails?id=${nft?.id}`)
-                    }
-                  />
-                ))}
-          </div>
-        </div>
 
         {/* My Machines */}
         <div>

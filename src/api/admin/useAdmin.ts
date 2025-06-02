@@ -5,6 +5,7 @@ import {
   getAllWallets, 
   getChartData, 
   getProducts, 
+  getUserWithdrawHistory,
   suspendProduct, 
   ListAdminDepositsforUser, getReferralsData, getReferralDataById, 
   ListUserTransaction,
@@ -100,6 +101,15 @@ export const useReferralDataById = (id: number) => {
   return useQuery<any, IAxiosError>({
     queryKey: ['get_admin_referral_data', id],
     queryFn: () => getReferralDataById(id),
+    enabled: !!id,
+  });
+};
+
+
+export const usegetUserWithdrawHistory = (id: number) => {
+  return useQuery<any, IAxiosError>({
+    queryKey: ['get_user_withdraw_history', id],
+    queryFn: () => getUserWithdrawHistory(id),
     enabled: !!id,
   });
 };
