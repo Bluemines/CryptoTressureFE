@@ -16,6 +16,7 @@ interface LoginData {
   role: string
   points: number
   trialFundTimeLeft: TrialFundTimeLeft
+  trialFundAmount: string   
 }
 
 interface LoginDataStore {

@@ -1,7 +1,7 @@
 "use client"
 
 import { Modal, Box, Typography, Button } from "@mui/material"
-import { useGetMyMachines, useGetPopularProducts } from "@/api/user/useUser"
+import { useGetMyMachines, useGetPopularProducts, usegetAllProducts } from "@/api/user/useUser"
 import { NFTCard } from "@/app/components/cards/NFTCard"
 import { StatsCard } from "@/app/components/cards/StatsCard"
 import CardLoader from "@/loaders/CardLoader"
@@ -26,8 +26,8 @@ const page = () => {
 
   const { loginData } = loginDataStore()
 
-  const { data, isLoading } = useGetPopularProducts()
-  const popularProducts = data ?? []
+  const { data, isLoading } = usegetAllProducts()
+  const products = data?.items ?? [];
 
   const { data: myMachinesData, isLoading: isMachinesLoading } = useGetMyMachines()
   const router = useRouter()
@@ -97,33 +97,35 @@ const page = () => {
               </div>
             )}
 
-            {loginData && (
-              <div className='flex items-center justify-between flex-col md:flex-row w-full md:w-auto gap-2 md:gap-4 bg-[#7367F0] p-2 my-4 text-white font-medium'>
-                <span>Trial Amount</span>
-                <span>$200</span>
-              </div>
-            )}
-          </div>
+                {loginData && (
+                    <div className='flex items-center justify-between flex-col md:flex-row w-full md:w-auto gap-2 md:gap-4 bg-[#7367F0] p-2 my-4 text-white font-medium'>
+                      <span>Trial Amount</span>
+                      <span>${loginData.trialFundAmount}</span>
+                    </div>
+                  )}
+                  </div>
 
-          <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4'>
-            {!isLoading && popularProducts.length > 0 ? (
-              popularProducts.map((product: any, index: number) => (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {isLoading ? (
+              Array.from({ length: 4 }).map((_, idx) => <CardLoader key={idx} />)
+            ) : products.length > 0 ? (
+              products.map((nft: any, index: number) => (
                 <NFTCard
                   key={index}
-                  image={product.image}
-                  title={product.title}
-                  price={+product.price}
-                  dailyIncome={+product.dailyIncome}
+                  image={nft.image}
+                  title={nft.title}
+                  price={+nft.price}
+                  dailyIncome={+nft.dailyIncome}
                   fee={0}
-                  days={product.rentalDays}
-                  level={product.level}
-                  action='Buy'
-                  countdownTimeLeft={undefined} // ✅ avoids TS error
+                  days={nft.rentalDays}
+                  level={nft.level}
+                  action="Buy"
+                  onClick={() => router.push(`/user/explore/NFTdetails?id=${nft.id}`)}
                 />
               ))
             ) : (
-              <div className='col-span-full text-center text-gray-400 py-10'>
-                {isLoading ? "Loading popular products..." : "No popular machines found."}
+              <div className="col-span-full text-center text-gray-400 py-10">
+                No products found.
               </div>
             )}
           </div>

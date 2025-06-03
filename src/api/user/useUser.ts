@@ -12,7 +12,8 @@ import {
   initDeposit,
   postWebhook,
   getDepositHistory,
-  getWalletHistory 
+  getWalletHistory,
+  getAllProducts
 } from "./userService"
 import toast from "react-hot-toast"
 import { AxiosError } from "axios"
@@ -23,6 +24,13 @@ export const useGetPopularProducts = () => {
     queryFn: getPopularProducts,
   })
 }
+
+export const usegetAllProducts = () => {
+  return useQuery<any, IAxiosError>({
+    queryKey: ["get_all_products"],
+    queryFn: getAllProducts,
+  });
+};
 
 export const useGetMyMachines = () => {
   return useQuery<any, IAxiosError>({
