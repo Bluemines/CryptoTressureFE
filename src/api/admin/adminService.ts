@@ -60,4 +60,16 @@ export const AdminAllWallets = async () => {
   return data
 }
 
+export const approveWithdraw = async (id: number) => {
+  const { data } = await apiClient.patch(`/withdraw/admin/${id}/approve`);
+  return data;
+};
+
+export const rejectWithdraw = async (id: number) => {
+  const { data } = await apiClient.patch(`/withdraw/admin/${id}/reject`);
+  return data;
+};
+
+
+
 

@@ -68,5 +68,5 @@ export default function useSingleUser() {
     }
   };
 
-  return { user, suspendUser, showToast, setShowToast, message };
+  return { user, suspendUser, showToast, setShowToast, message,   setMessage};
 }

@@ -10,7 +10,9 @@ import {
   ListAdminDepositsforUser, getReferralsData, getReferralDataById, 
   ListUserTransaction,
   GetAgreement,
-  AdminAllWallets
+  AdminAllWallets,
+  rejectWithdraw,
+ approveWithdraw
 } from "./adminService"
 import toast from "react-hot-toast"
 
@@ -111,5 +113,35 @@ export const usegetUserWithdrawHistory = (id: number) => {
     queryKey: ['get_user_withdraw_history', id],
     queryFn: () => getUserWithdrawHistory(id),
     enabled: !!id,
+  });
+};
+
+export const useApproveWithdraw = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation<any, IAxiosError, { id: number }>({
+    mutationFn: ({ id }) => approveWithdraw(id),
+    onSuccess: () => {
+      toast.success("Withdrawal approved successfully");
+      queryClient.invalidateQueries({ queryKey: ["get_user_withdraw_history"] }); // Refetch
+    },
+    onError: (error) => {
+      toast.error(error.response?.data?.message || "Failed to approve withdrawal");
+    },
+  });
+};
+
+export const useRejectWithdraw = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation<any, IAxiosError, { id: number }>({
+    mutationFn: ({ id }) => rejectWithdraw(id),
+    onSuccess: () => {
+      toast.success("Withdrawal rejected successfully");
+      queryClient.invalidateQueries({ queryKey: ["get_user_withdraw_history"] }); // Refetch
+    },
+    onError: (error) => {
+      toast.error(error.response?.data?.message || "Failed to reject withdrawal");
+    },
   });
 };
