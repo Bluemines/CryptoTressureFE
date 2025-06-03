@@ -6,6 +6,11 @@ export const getPopularProducts = async () => {
   return data.data
 }
 
+export const getAllProducts = async () => {
+  const { data } = await apiClient.get("products/all");
+  return data.data; // returns: { items: [...], meta: {...} }
+};
+
 export const getMyMachines = async () => {
   const { data } = await apiClient.get(`products/by-user`)
   return data.data
