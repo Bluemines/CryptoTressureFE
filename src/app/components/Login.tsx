@@ -87,7 +87,9 @@ const Login = () => {
 
   return (
     <div className='w-full max-w-md'>
-      <div className='text-[#737373] font-medium text-2xl'>LOGO</div>
+      <div className='h-16 text-white font-bold '>
+          <img src='/logo.jpg' alt="logo" className="w-16 h-16" />
+        </div>
       <div className='text-3xl mt-4'>Welcome to Bluemines</div>
       <div className='text-[#c0c0c0] text-sm mt-2'>
         Please sign in to your account and start the adventure
