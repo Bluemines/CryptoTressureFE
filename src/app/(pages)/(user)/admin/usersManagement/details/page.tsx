@@ -18,6 +18,10 @@ import StatusBadge from "@/app/components/ui/StatusBadge";
 import Modal from "@/app/components/modals/Modal";
 import Toast from "@/app/components/Toast";
 import useSingleUser from "../hooks/useSingleUser";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import IconButton from "@mui/material/IconButton";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
 import {
   usegetUserWithdrawHistory,
   useApproveWithdraw,
@@ -40,6 +44,29 @@ export default function UserDetails() {
   const { data: withdrawHistory, isLoading: isPendingLoading  } = usegetUserWithdrawHistory(userId);
   const { mutate: approveWithdrawMutate } = useApproveWithdraw();
   const { mutate: rejectWithdrawMutate } = useRejectWithdraw();
+
+    // Add menu state here:
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [selectedId, setSelectedId] = useState<number | null>(null);
+
+  // Menu handlers:
+  const handleMenuClick = (event: React.MouseEvent<HTMLButtonElement>, id: number) => {
+    setAnchorEl(event.currentTarget);
+    setSelectedId(id);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+    setSelectedId(null);
+  };
+
+  // Action handler called when user selects approve/reject from menu:
+  const handleAction = (action: "approve" | "reject") => {
+    if (selectedId !== null) {
+      handleWithdrawAction(selectedId, action);
+      handleMenuClose();
+    }
+  };
 
   const handleWithdrawAction = (id: number, action: "approve" | "reject") => {
     if (action === "approve") {
@@ -172,20 +199,29 @@ export default function UserDetails() {
                                 <StatusBadge status={item.status} />
                               </td>
                               <td className="px-6 py-4">
-                                <div className="flex gap-2">
-                                  <button
-                                    className="px-3 py-1 text-xs bg-green-500 text-white rounded"
-                                    onClick={() => handleWithdrawAction(item.id, "approve")}
-                                  >
-                                    Approve
-                                  </button>
-                                  <button
-                                    className="px-3 py-1 text-xs bg-red-500 text-white rounded"
-                                    onClick={() => handleWithdrawAction(item.id, "reject")}
-                                  >
-                                    Reject
-                                  </button>
-                                </div>
+                                <IconButton
+                                  onClick={(e) => handleMenuClick(e, item.id)}
+                                  size="small"
+                                  sx={{ color: "#fff" }}
+                                >
+                                  <MoreVertIcon />
+                                </IconButton>
+                                <Menu
+                                  anchorEl={anchorEl}
+                                  open={Boolean(anchorEl) && selectedId === item.id}
+                                  onClose={handleMenuClose}
+                                  anchorOrigin={{
+                                    vertical: "bottom",
+                                    horizontal: "left",
+                                  }}
+                                  transformOrigin={{
+                                    vertical: "top",
+                                    horizontal: "left",
+                                  }}
+                                >
+                                  <MenuItem onClick={() => handleAction("approve")}>Approve</MenuItem>
+                                  <MenuItem onClick={() => handleAction("reject")}>Reject</MenuItem>
+                                </Menu>
                               </td>
                             </tr>
                           ))
