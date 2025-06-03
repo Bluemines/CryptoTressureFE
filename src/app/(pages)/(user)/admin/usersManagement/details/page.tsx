@@ -12,22 +12,42 @@ import {
   Typography,
 } from "@mui/material";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
+import TableSkeleton from "@/loaders/TableSkeleton"
 import { useState } from "react";
-import StatusBadge from '@/app/components/ui/StatusBadge';
+import StatusBadge from "@/app/components/ui/StatusBadge";
 import Modal from "@/app/components/modals/Modal";
 import Toast from "@/app/components/Toast";
 import useSingleUser from "../hooks/useSingleUser";
-import { usegetUserWithdrawHistory } from '@/api/admin/useAdmin'; // <-- Make sure this is the correct path
+import {
+  usegetUserWithdrawHistory,
+  useApproveWithdraw,
+  useRejectWithdraw,
+} from "@/api/admin/useAdmin";
 
 export default function UserDetails() {
   const [isSuspendedModalOpen, setIsSuspendedModalOpen] = useState(false);
-  const { user, suspendUser, showToast, setShowToast, message } =
-    useSingleUser();
+  const {
+    user,
+    suspendUser,
+    showToast,
+    setShowToast,
+    message,
+    setMessage,
+  } = useSingleUser();
 
-const userId = user?.id;
+  const userId = user?.id ?? 0;
 
-const { data: withdrawHistory, isLoading } = usegetUserWithdrawHistory(userId ?? 0);
+  const { data: withdrawHistory, isLoading: isPendingLoading  } = usegetUserWithdrawHistory(userId);
+  const { mutate: approveWithdrawMutate } = useApproveWithdraw();
+  const { mutate: rejectWithdrawMutate } = useRejectWithdraw();
 
+  const handleWithdrawAction = (id: number, action: "approve" | "reject") => {
+    if (action === "approve") {
+      approveWithdrawMutate({ id });
+    } else {
+      rejectWithdrawMutate({ id });
+    }
+  };
 
   const columns = [
     { id: "amount", label: "Amount" },
@@ -35,24 +55,44 @@ const { data: withdrawHistory, isLoading } = usegetUserWithdrawHistory(userId ??
     { id: "status", label: "Status" },
   ];
 
-  const tableData = withdrawHistory?.data?.map((item: any) => ({
-    id: item.id,
-    amount: item.amount,
-    date: new Date(item.date).toLocaleString(),
-    status: <StatusBadge status={item.status} />
-  })) || [];
+  const tableData =
+    withdrawHistory?.data?.map((item: any) => ({
+      id: item.id,
+      amount: item.amount,
+      date: new Date(item.date).toLocaleString(),
+      status: <StatusBadge status={item.status} />,
+      actions: (
+        <Box display="flex" gap={1}>
+          <Button
+            variant="outlined"
+            color="success"
+            size="small"
+            onClick={() => handleWithdrawAction(item.id, "approve")}
+          >
+            Approve
+          </Button>
+          <Button
+            variant="outlined"
+            color="error"
+            size="small"
+            onClick={() => handleWithdrawAction(item.id, "reject")}
+          >
+            Reject
+          </Button>
+        </Box>
+      ),
+    })) || [];
 
   return (
     <div className="min-h-screen bg-black py-4 md:p-8">
       <div className="max-w-7xl mx-auto space-y-8">
         <Toast open={showToast} message={message} setOpen={setShowToast} />
         <Grid container spacing={4}>
-          <Grid size={{ xs: 12, md: 4 }}>
+           <Grid size={{ xs: 12, md: 4 }}>
             <Card
               sx={{
                 backgroundColor: "#1E1E1E",
                 color: "white",
-                height: "100vh",
                 padding: "5%",
               }}
             >
@@ -76,7 +116,7 @@ const { data: withdrawHistory, isLoading } = usegetUserWithdrawHistory(userId ??
                 </Box>
                 <Divider sx={{ backgroundColor: "#333", width: "100%" }} />
                 <Box textAlign="left" className="w-full space-y-2">
-                  <Typography className="text-[#A9A9A9] mt-20">Details</Typography>
+                  <Typography className="text-[#A9A9A9] mt-4">Details</Typography>
                   <Typography variant="body2">
                     <strong>Username:</strong> {user?.username}
                   </Typography>
@@ -107,11 +147,61 @@ const { data: withdrawHistory, isLoading } = usegetUserWithdrawHistory(userId ??
             </Card>
           </Grid>
 
-          <Grid size={{ xs: 12, md: 4 }}>
-            <Box>
-              <AdminTable columns={columns} data={tableData} icon2={false} />
-            </Box>
-          </Grid>
+           {isPendingLoading ? (
+              <TableSkeleton rows={5} cols={4} />
+            ) : (
+              <Grid size={{ xs: 12, md: 4 }}>
+
+                  <div className="overflow-auto rounded-lg border border-gray-700">
+                    <table className="min-w-full text-sm text-left text-gray-300 bg-[#262626]">
+                      <thead className="text-xs uppercase bg-[#262626] text-gray-400">
+                        <tr>
+                          <th className="px-6 py-3">Amount</th>
+                          <th className="px-6 py-3">Date</th>
+                          <th className="px-6 py-3">Status</th>
+                          <th className="px-6 py-3">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {withdrawHistory?.data?.length ? (
+                          withdrawHistory.data.map((item: any) => (
+                            <tr key={item.id} className="border-b border-gray-700 hover:bg-gray-800">
+                              <td className="px-6 py-4">${item.amount}</td>
+                              <td className="px-6 py-4">{new Date(item.date).toLocaleString()}</td>
+                              <td className="px-6 py-4">
+                                <StatusBadge status={item.status} />
+                              </td>
+                              <td className="px-6 py-4">
+                                <div className="flex gap-2">
+                                  <button
+                                    className="px-3 py-1 text-xs bg-green-500 text-white rounded"
+                                    onClick={() => handleWithdrawAction(item.id, "approve")}
+                                  >
+                                    Approve
+                                  </button>
+                                  <button
+                                    className="px-3 py-1 text-xs bg-red-500 text-white rounded"
+                                    onClick={() => handleWithdrawAction(item.id, "reject")}
+                                  >
+                                    Reject
+                                  </button>
+                                </div>
+                              </td>
+                            </tr>
+                          ))
+                        ) : (
+                          <tr>
+                            <td colSpan={4} className="text-center px-6 py-4 text-gray-400">
+                              No withdrawals found.
+                            </td>
+                          </tr>
+                        )}
+                      </tbody>
+                    </table>
+                  </div>
+                </Grid>
+
+            )}
 
         </Grid>
       </div>
@@ -119,7 +209,7 @@ const { data: withdrawHistory, isLoading } = usegetUserWithdrawHistory(userId ??
       <Modal open={isSuspendedModalOpen} setOpen={setIsSuspendedModalOpen}>
         <div className="text-lg font-medium">Suspend withdrawal?</div>
         <div className="text-[#A9A9A9] mt-4">
-          Do you want to Suspend user {user?.username}
+          Do you want to suspend user {user?.username}?
         </div>
         <div className="flex">
           <Button
@@ -129,9 +219,9 @@ const { data: withdrawHistory, isLoading } = usegetUserWithdrawHistory(userId ??
               marginTop: "22px",
               marginLeft: "auto",
             }}
-            onClick={() => suspendUser(Number(user?.id))}
+            onClick={() => suspendUser(userId)}
           >
-            Suspended
+            Suspend
           </Button>
         </div>
       </Modal>
