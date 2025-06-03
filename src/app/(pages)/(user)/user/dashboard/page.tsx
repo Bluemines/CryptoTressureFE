@@ -65,6 +65,8 @@ const page = () => {
     },
   ]
 
+  console.log('login user:::',loginData)
+
   return (
     <div className='min-h-screen bg-black py-4 md:p-8'>
       <div className='max-w-7xl mx-auto space-y-8'>
@@ -97,12 +99,12 @@ const page = () => {
               </div>
             )}
 
-                {loginData && (
-                    <div className='flex items-center justify-between flex-col md:flex-row w-full md:w-auto gap-2 md:gap-4 bg-[#7367F0] p-2 my-4 text-white font-medium'>
-                      <span>Trial Amount</span>
-                      <span>${loginData.trialFundAmount}</span>
-                    </div>
-                  )}
+                {loginData && Number(loginData.trialFundAmount) > 0 && (
+                  <div className='flex items-center justify-between flex-col md:flex-row w-full md:w-auto gap-2 md:gap-4 bg-[#7367F0] p-2 my-4 text-white font-medium'>
+                    <span>Trial Amount</span>
+                    <span>${loginData.trialFundAmount}</span>
+                  </div>
+                )}
                   </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
