@@ -129,7 +129,7 @@ const FormInput: React.FC<FormInputProps> = ({
                   edge="end"
                   sx={{ color: "#aaa" }}
                 >
-                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                  {!showPassword ? <VisibilityOff /> : <Visibility />}
                 </IconButton>
               </InputAdornment>
             ),

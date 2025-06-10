@@ -47,7 +47,20 @@ export default function InitiateDepositPage() {
   };
 
   const onSubmit = (data: FormValues) => {
-    AddDepositforUser(data, {
+
+    if (!convertedUSD) {
+      toast.error('value missing in dollars')
+      return
+    }
+
+    const amountInUSD = Number(convertedUSD);
+
+    if (amountInUSD < 50) {
+      toast.error('Minimum deposit is $50');
+      return;
+    }
+
+    AddDepositforUser({ amount: amountInUSD }, {
       onSuccess: (response: any) => {
         toast.success('Redirecting to complete deposit');
         const reference = response?.data?.reference;

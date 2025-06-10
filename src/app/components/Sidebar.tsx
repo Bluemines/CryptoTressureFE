@@ -19,6 +19,7 @@ import {
   LogoutOutlined,
   MenuUnfoldOutlined,
   CloseOutlined,
+  GiftOutlined,
 } from "@ant-design/icons"
 import type { MenuProps } from "antd"
 import Link from "next/link"
@@ -34,6 +35,7 @@ const routeMap = {
   explore: "/user/explore",
   collection: "/user/collection",
   wallet: "/user/wallet",
+  bonuses: '/user/bonuses',
   deposit: "/user/deposit",
   deposithistory: "/user/deposit/history",
   withdraw: "/user/withdraw",
@@ -52,6 +54,7 @@ const menuItems: MenuItem[] = [
   { key: "explore", icon: <CompassOutlined />, label: <Link href={routeMap.explore}>Explore</Link> },
   { key: "collection", icon: <AppstoreOutlined />, label: <Link href={routeMap.collection}>My Collection</Link> },
   { key: "wallet", icon: <WalletOutlined />, label: <Link href={routeMap.wallet}>Wallet</Link> },
+  { key: "bonuses", icon: <GiftOutlined />, label: <Link href={routeMap.bonuses}>Bonuses</Link> },
   { key: "deposit", icon: <DownloadOutlined />, label: <Link href={routeMap.deposit}>Deposit</Link> },
   { key: "deposithistory", icon: <DownloadOutlined />, label: <Link href={routeMap.deposithistory}>Deposit History</Link> },
   { key: "withdraw", icon: <UploadOutlined />, label: <Link href={routeMap.withdraw}>Withdraw History</Link> },

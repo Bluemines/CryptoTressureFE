@@ -65,7 +65,7 @@ const page = () => {
     },
   ]
 
-  console.log('login user:::',loginData)
+  console.log('login data:::',loginData)
 
   return (
     <div className='min-h-screen bg-black py-4 md:p-8'>
@@ -99,9 +99,9 @@ const page = () => {
               </div>
             )}
 
-                {loginData && Number(loginData.trialFundAmount) > 0 && (
+                {loginData && !loginData?.trialFundTimeLeft.isExpired && (
                   <div className='flex items-center justify-between flex-col md:flex-row w-full md:w-auto gap-2 md:gap-4 bg-[#7367F0] p-2 my-4 text-white font-medium'>
-                    <span>Trial Amount</span>
+                    <span>Trial Amount:</span>
                     <span>${loginData.trialFundAmount}</span>
                   </div>
                 )}
