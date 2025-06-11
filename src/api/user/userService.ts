@@ -75,3 +75,8 @@ export const convertCurrency = async () => {
   )
   return res.data
 }
+
+export const getBonuses = async () => {
+  const res = await apiClient.get('/bonus')
+  return res.data
+}

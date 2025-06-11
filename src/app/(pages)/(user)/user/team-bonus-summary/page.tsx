@@ -5,69 +5,57 @@ import TableSkeleton from "@/loaders/TableSkeleton"
 import { useState, useEffect } from "react"
 import { TableColumn } from "react-data-table-component"
 
-type TeamBonusSummary = {
+type TeamBonus = {
+  date: string
+  userId: string
   level: number
   bonusType: string
-  downlineCount: number
-  earningsToday: number
-  totalEarnings: number
+  amount: number
+  note: string
 }
 
-const columns: TableColumn<TeamBonusSummary>[] = [
+const columns: TableColumn<TeamBonus>[] = [
+  { name: "Date", selector: (row) => row.date, sortable: true },
+  { name: "Downline User ID", selector: (row) => row.userId, sortable: true },
+  { name: "Level", selector: (row) => `Level ${row.level}`, sortable: true },
+  { name: "Bonus Type", selector: (row) => row.bonusType, sortable: true },
   {
-    name: "Level",
-    selector: (row) => `Level ${row.level}`,
-    sortable: true,
-  },
-  {
-    name: "Bonus Type",
-    selector: (row) => row.bonusType,
-    sortable: true,
-  },
-  {
-    name: "Downlines",
-    selector: (row) => row.downlineCount.toString(),
-    sortable: true,
-  },
-  {
-    name: "Earnings Today",
-    selector: (row) => `$${row.earningsToday.toFixed(2)}`,
+    name: "Amount",
+    selector: (row) => `$${row.amount.toFixed(2)}`,
     sortable: true,
     right: true,
   },
-  {
-    name: "Total Earnings",
-    selector: (row) => `$${row.totalEarnings.toFixed(2)}`,
-    sortable: true,
-    right: true,
-  },
+  { name: "Note", selector: (row) => row.note },
 ]
 
-const dummyData: TeamBonusSummary[] = [
+const dummyData: TeamBonus[] = [
   {
+    date: "2025-06-01",
+    userId: "USR001",
     level: 1,
     bonusType: "Referral Bonus",
-    downlineCount: 5,
-    earningsToday: 25.0,
-    totalEarnings: 120.0,
+    amount: 50,
+    note: "Direct referral",
   },
   {
+    date: "2025-06-03",
+    userId: "USR045",
     level: 2,
     bonusType: "Team Growth Bonus",
-    downlineCount: 12,
-    earningsToday: 18.5,
-    totalEarnings: 250.0,
+    amount: 30,
+    note: "Level 2 downline activity",
   },
   {
+    date: "2025-06-05",
+    userId: "USR023",
     level: 3,
     bonusType: "Deposit Bonus",
-    downlineCount: 8,
-    earningsToday: 10.0,
-    totalEarnings: 145.0,
+    amount: 20,
+    note: "Triggered by deposit",
   },
 ]
 
-const page = () => {
+const Page = () => {
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
@@ -79,7 +67,7 @@ const page = () => {
     <div className='p-4'>
       <h2 className='text-2xl font-semibold mb-4 text-white'>Team Bonus Summary</h2>
       {isLoading ? (
-        <TableSkeleton rows={5} cols={5} />
+        <TableSkeleton rows={5} cols={6} />
       ) : (
         <DataTable
           columns={columns}
@@ -93,4 +81,4 @@ const page = () => {
   )
 }
 
-export default page
+export default Page

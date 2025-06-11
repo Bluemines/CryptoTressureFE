@@ -1,41 +1,16 @@
-'use client';
+"use client"
 
-import DataTable from "@/app/components/DataTable/DataTable";
-import { TableColumn } from 'react-data-table-component';
+import { useGetBonuses } from "@/api/user/useUser"
+import DataTable from "@/app/components/DataTable/DataTable"
+import TableSkeleton from "@/loaders/TableSkeleton"
+import { TableColumn } from "react-data-table-component"
 
 type Bonus = {
-  date: string;
-  type: string;
-  amount: number;
-  note: string;
-};
-
-const mockBonuses: Bonus[] = [
-  {
-    date: "2025-06-01",
-    type: "Referral Bonus",
-    amount: 25,
-    note: "Bonus for referring John Doe",
-  },
-  {
-    date: "2025-05-15",
-    type: "Signup Bonus",
-    amount: 10,
-    note: "First-time signup reward",
-  },
-  {
-    date: "2025-05-20",
-    type: "Milestone Bonus",
-    amount: 50,
-    note: "Achieved 100 deposits",
-  },
-  {
-    date: "2025-04-30",
-    type: "Cashback Bonus",
-    amount: 5,
-    note: "5% cashback on trading volume",
-  },
-];
+  date: string
+  type: string
+  amount: number
+  note: string
+}
 
 const columns: TableColumn<Bonus>[] = [
   {
@@ -58,21 +33,46 @@ const columns: TableColumn<Bonus>[] = [
     name: "Note",
     selector: (row) => row.note,
   },
-];
+]
+
+const mapBonusType = (type: string) => {
+  switch (type) {
+    case "REFERRAL":
+      return "Referral Bonus"
+    case "FIRST_DEPOSIT":
+      return "First Deposit Bonus"
+    default:
+      return type
+  }
+}
 
 const Page = () => {
-  return (
-    <div className="p-4">
-      <h2 className="text-2xl font-semibold mb-4 text-white">Bonuses</h2>
-      <DataTable
-        columns={columns}
-        data={mockBonuses}
-        pagination
-        highlightOnHover
-        responsive
-      />
-    </div>
-  );
-};
+  const { data, isLoading } = useGetBonuses()
+  const bonuses = data?.data || []
 
-export default Page;
+  const formattedBonuses: Bonus[] = bonuses.map((bonus: any) => ({
+    date: new Date(bonus.createdAt).toLocaleDateString(),
+    type: mapBonusType(bonus.type),
+    amount: parseFloat(bonus.amount),
+    note: bonus.note,
+  }))
+
+  return (
+    <div className='p-4'>
+      <h2 className='text-2xl font-semibold mb-4 text-white'>Bonuses</h2>
+      {isLoading ? (
+        <TableSkeleton rows={5} cols={4} />
+      ) : (
+        <DataTable
+          columns={columns}
+          data={formattedBonuses}
+          pagination
+          highlightOnHover
+          responsive
+        />
+      )}
+    </div>
+  )
+}
+
+export default Page

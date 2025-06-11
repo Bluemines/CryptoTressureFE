@@ -12,10 +12,6 @@ import {
   ShareAltOutlined,
   DollarOutlined,
   SettingOutlined,
-  InfoCircleOutlined,
-  TeamOutlined,
-  QuestionCircleOutlined,
-  PhoneOutlined,
   LogoutOutlined,
   MenuUnfoldOutlined,
   CloseOutlined,
@@ -41,6 +37,7 @@ const routeMap = {
   withdraw: "/user/withdraw",
   referral: "/user/referral",
   commission: "/user/commission",
+  teamBonusSummary: '/user/team-bonus-summary',
   transactions: "/user/transactions",
   settings: "/user/settings",
   about: "/user/aboutUs",
@@ -54,12 +51,13 @@ const menuItems: MenuItem[] = [
   { key: "explore", icon: <CompassOutlined />, label: <Link href={routeMap.explore}>Explore</Link> },
   { key: "collection", icon: <AppstoreOutlined />, label: <Link href={routeMap.collection}>My Collection</Link> },
   { key: "wallet", icon: <WalletOutlined />, label: <Link href={routeMap.wallet}>Wallet</Link> },
-  { key: "bonuses", icon: <GiftOutlined />, label: <Link href={routeMap.bonuses}>Bonuses</Link> },
+  { key: "bonuses", icon: <GiftOutlined />, label: <Link href={routeMap.bonuses}>My Bonuses</Link> },
   { key: "deposit", icon: <DownloadOutlined />, label: <Link href={routeMap.deposit}>Deposit</Link> },
   { key: "deposithistory", icon: <DownloadOutlined />, label: <Link href={routeMap.deposithistory}>Deposit History</Link> },
   { key: "withdraw", icon: <UploadOutlined />, label: <Link href={routeMap.withdraw}>Withdraw History</Link> },
   { key: "referral", icon: <ShareAltOutlined />, label: <Link href={routeMap.referral}>Referral</Link> },
-  { key: "commission", icon: <DollarOutlined />, label: <Link href={routeMap.commission}>Referral Commission</Link> },
+  { key: "commission", icon: <DollarOutlined />, label: <Link href={routeMap.commission}>Team Earnings</Link> },
+  { key: "teamBonusSummary", icon: <DollarOutlined />, label: <Link href={routeMap.teamBonusSummary}>Team Bonus Summary</Link> },
   { key: "transactions", icon: <DollarOutlined />, label: <Link href={routeMap.transactions}>Transactions</Link> },
   { key: "settings", icon: <SettingOutlined />, label: <Link href={routeMap.settings}>Settings</Link> },
   // {
@@ -94,16 +92,16 @@ const Sidebar = () => {
   }
 
   useEffect(() => {
-      if (!collapsed) {
-        document.body.classList.add("overflow-hidden")
-      } else {
-        document.body.classList.remove("overflow-hidden")
-      }
-  
-      return () => {
-        document.body.classList.remove("overflow-hidden")
-      }
-    }, [collapsed])
+    if (!collapsed) {
+      document.body.classList.add("overflow-hidden")
+    } else {
+      document.body.classList.remove("overflow-hidden")
+    }
+
+    return () => {
+      document.body.classList.remove("overflow-hidden")
+    }
+  }, [collapsed])
 
   return (
     <>

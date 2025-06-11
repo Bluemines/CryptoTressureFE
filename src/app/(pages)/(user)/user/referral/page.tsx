@@ -30,7 +30,7 @@ const page = () => {
     commissionAmount: 0,
   };
 
-  const data: Data[] = [rootUser];  // Only root user data for now
+  const data: Data[] = [rootUser];
   
   const columns: TableColumn<Data>[] = [
     {

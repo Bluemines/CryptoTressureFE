@@ -1,5 +1,3 @@
-// components/styles.ts
-
 import { TableStyles } from 'react-data-table-component';
 
 const black: TableStyles = {

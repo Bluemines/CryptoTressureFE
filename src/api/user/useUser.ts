@@ -13,7 +13,8 @@ import {
   postWebhook,
   getDepositHistory,
   getWalletHistory,
-  getAllProducts
+  getAllProducts,
+  getBonuses
 } from "./userService"
 import toast from "react-hot-toast"
 import { AxiosError } from "axios"
@@ -128,5 +129,12 @@ export const useGetWalletHistory = () => {
   return useQuery({
     queryKey: ['Wallt_History'],
     queryFn: getWalletHistory
+  })
+}
+
+export const useGetBonuses = () => {
+  return useQuery({
+    queryKey: ['user_bonuses'],
+    queryFn: getBonuses
   })
 }

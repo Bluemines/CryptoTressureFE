@@ -6,7 +6,7 @@ import DataTableComponent, {
   TableProps,
 } from "react-data-table-component";
 import styles from "./styles";
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, Tooltip } from "@mui/material";
 
 createTheme("customDark", {
   text: {
@@ -31,17 +31,41 @@ interface CustomDataTableProps<T> extends Partial<TableProps<T>> {
   data: T[];
   columns: TableColumn<T>[];
   themeStyle?: ThemeOption;
-  header?:false
+  header?: false;
+  maxLength?: number; // default limit for truncation
 }
+
+const truncate = (value: any, maxLength: number) => {
+  const stringValue = String(value ?? "");
+  return stringValue.length > maxLength
+    ? stringValue.slice(0, maxLength) + "..."
+    : stringValue;
+};
 
 const DataTable = <T,>({
   header,
   data,
   columns,
   themeStyle = "black",
+  maxLength = 40,
   ...rest
 }: CustomDataTableProps<T>) => {
   const customStyles = styles[themeStyle];
+
+  const enhancedColumns: TableColumn<T>[] = columns.map((col) => ({
+    ...col,
+    cell: (row: T) => {
+      const value =
+        typeof col.selector === "function" ? col.selector(row) : "";
+      const displayValue = truncate(value, maxLength);
+
+      return (
+        <Tooltip title={String(value)} arrow>
+          <span>{displayValue}</span>
+        </Tooltip>
+      );
+    },
+  }));
 
   return (
     <>
@@ -52,7 +76,7 @@ const DataTable = <T,>({
       )}
       <DataTableComponent
         data={data}
-        columns={columns}
+        columns={enhancedColumns}
         theme="customDark"
         customStyles={customStyles}
         pagination
