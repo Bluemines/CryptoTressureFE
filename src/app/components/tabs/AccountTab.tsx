@@ -3,6 +3,7 @@
 import { useGetCurrentUser, useUpdateUser } from "@/api/auth/useAuth"
 import { base_image_url } from "@/app/constants/keys"
 import { authStore } from "@/store/authStore"
+import { loginDataStore } from "@/store/loginDataStore"
 import { AxiosError } from "axios"
 // import Image from "next/image"
 import { useEffect, useRef, useState } from "react"
@@ -23,6 +24,7 @@ const AccountTab = () => {
   const { mutate: updateUser } = useUpdateUser()
   const userData = data
 
+  const loginData = loginDataStore((state) => state.loginData);
   const fileRef = useRef<HTMLInputElement | null>(null)
   const [preview, setPreview] = useState<string>("")
 
@@ -153,6 +155,7 @@ const AccountTab = () => {
           )}
         </div>
 
+
         <div className='space-y-2 w-full'>
           <label className='text-sm text-gray-400'>Email</label>
           <input
@@ -172,6 +175,18 @@ const AccountTab = () => {
             className='w-full h-10 px-3 py-2 bg-[#212121] border border-[#3c3c3c] rounded-md text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors'
           />
         </div>
+
+        {loginData?.level !== undefined && (
+          <div className='space-y-2 w-full'>
+            <label className='text-sm text-gray-400'>Level</label>
+            <input
+              value={loginData.level}
+              readOnly
+              disabled
+              className='w-full h-10 px-3 py-2 bg-[#2a2a2a] border border-[#3c3c3c] rounded-md text-gray-400 placeholder:text-gray-500 cursor-not-allowed'
+            />
+          </div>
+        )}
 
         <div className='col-span-1 md:col-span-2'>
           <button

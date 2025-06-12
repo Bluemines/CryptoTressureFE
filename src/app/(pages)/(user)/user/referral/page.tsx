@@ -1,6 +1,6 @@
 'use client';
 
-import { useGetReferralLink } from "@/api/user/useUser";
+import { useGetReferralLink, useGetReferralTree } from "@/api/user/useUser";
 import DataTable from "@/app/components/DataTable/DataTable";
 import { authStore } from "@/store/authStore";
 import { Button } from "@mui/material";
@@ -16,12 +16,39 @@ type Data = {
   commissionAmount: number;
 };
 
-const page = () => {
-
+const Page = () => {
   const { data: referralLink } = useGetReferralLink();
   const { user } = authStore();
+  const { data: referralTree } = useGetReferralTree();
 
-  // Root user data (no dynamic referral history yet)
+  const handleCopy = () => {
+    if (referralLink?.link) {
+      navigator.clipboard.writeText(referralLink.link);
+      toast.success("Referral link copied to clipboard!");
+    }
+  };
+
+  const flattenTree = (node: any, list: Data[] = []): Data[] => {
+    if (!node) return list;
+
+    // Skip the root user (it's already added manually)
+    if (node.level > 0) {
+      list.push({
+        id: node.userId || Math.random(), // fallback ID
+        userName: `${node.username} (level ${node.level})`,
+        email: node.email || "—",
+        date: format(new Date(node.joinedAt), "yyyy-MM-dd HH:mm"),
+        commissionAmount: 0, // Add real commission if available
+      });
+    }
+
+    if (node.children && node.children.length > 0) {
+      node.children.forEach((child: any) => flattenTree(child, list));
+    }
+
+    return list;
+  };
+
   const rootUser: Data = {
     id: user?.id || 0,
     userName: user?.username + " (root user)" || "",
@@ -30,8 +57,9 @@ const page = () => {
     commissionAmount: 0,
   };
 
-  const data: Data[] = [rootUser];
-  
+  const flattenedChildren: Data[] = flattenTree(referralTree);
+  const tableData: Data[] = [rootUser, ...flattenedChildren];
+
   const columns: TableColumn<Data>[] = [
     {
       name: "User Name",
@@ -50,17 +78,10 @@ const page = () => {
     },
     {
       name: "Commission Amount",
-      selector: (row) => row.commissionAmount,
+      selector: (row) => row.commissionAmount.toFixed(2),
       sortable: true,
     },
   ];
-
-  const handleCopy = () => {
-    if (referralLink?.link) {
-      navigator.clipboard.writeText(referralLink.link);
-      toast.success("Referral link copied to clipboard!");
-    }
-  };
 
   return (
     <div>
@@ -69,24 +90,26 @@ const page = () => {
         Invite your friends and get rewarded! You'll receive a 10% bonus on
         every user you refer. Start sharing now and watch your earnings 🚀💰
       </div>
+
       <div className="bg-[#161616] p-4 rounded-lg my-4 flex flex-col md:flex-row gap-4 items-center">
         <div className="flex-1">
           <input
             value={referralLink?.link}
             type="text"
             className="bg-[#262626] placeholder:text-white rounded px-4 py-2 w-full"
-            placeholder="https://www.treasure.org/register?referral_code=00e54ae3-440e-4c6e-9fc5-40f101b7f84f"
+            placeholder="https://www.treasure.org/register?referral_code=..."
+            readOnly
           />
         </div>
-
         <div className="self-end">
           <Button variant="contained" onClick={handleCopy}>Invite</Button>
         </div>
       </div>
+
       <div className="text-[#C0C0C0] text-xl">Referral History</div>
-      <DataTable data={data} columns={columns} themeStyle="black" />
+      <DataTable data={tableData} columns={columns} themeStyle="black" />
     </div>
   );
 };
 
-export default page;
+export default Page;
