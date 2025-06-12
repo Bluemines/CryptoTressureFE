@@ -56,8 +56,8 @@ const menuItems: MenuItem[] = [
   { key: "deposithistory", icon: <DownloadOutlined />, label: <Link href={routeMap.deposithistory}>Deposit History</Link> },
   { key: "withdraw", icon: <UploadOutlined />, label: <Link href={routeMap.withdraw}>Withdraw History</Link> },
   { key: "referral", icon: <ShareAltOutlined />, label: <Link href={routeMap.referral}>Referral</Link> },
-  { key: "commission", icon: <DollarOutlined />, label: <Link href={routeMap.commission}>Team Earnings</Link> },
-  { key: "teamBonusSummary", icon: <DollarOutlined />, label: <Link href={routeMap.teamBonusSummary}>Team Bonus Summary</Link> },
+  // { key: "commission", icon: <DollarOutlined />, label: <Link href={routeMap.commission}>Team Earnings</Link> },
+  // { key: "teamBonusSummary", icon: <DollarOutlined />, label: <Link href={routeMap.teamBonusSummary}>Team Bonus Summary</Link> },
   { key: "transactions", icon: <DollarOutlined />, label: <Link href={routeMap.transactions}>Transactions</Link> },
   { key: "settings", icon: <SettingOutlined />, label: <Link href={routeMap.settings}>Settings</Link> },
   // {
